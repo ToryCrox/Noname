@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tory.noname.R;
+import com.tory.noname.utils.Constance;
 
 public class GankListFragment extends BaseFragment {
 
@@ -38,7 +39,7 @@ public class GankListFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        mTitles = new String[]{"all", "Android", "休息视频", "福利", "iOS", "拓展资源", "前端", "瞎推荐"};
+        mTitles = Constance.Gank.TAGS.clone();
         mTabLayout = (TabLayout) view.findViewById(R.id.tl_gank);
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
         PagerAdapter tabPageAdapter = new TabFragmentPagerAdapter(getChildFragmentManager(),mTitles);
@@ -59,8 +60,6 @@ public class GankListFragment extends BaseFragment {
         public Fragment getItem(int position) {
             return GankPageFragment.newInstance(mTitles[position]);
         }
-
-
 
         @Override
         public int getCount() {

@@ -12,6 +12,12 @@ public class L {
     public static final String TAG = "NoName";
     public static final boolean DEBUG = true;
 
+    public static void d(String msg){
+        if(DEBUG){
+            Log.d(TAG,msg);
+        }
+    }
+
     public static void d(String tag,String msg){
         if(DEBUG){
             Log.d(TAG,tag +"  "+msg);

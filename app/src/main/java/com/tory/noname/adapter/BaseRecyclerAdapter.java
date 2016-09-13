@@ -15,7 +15,7 @@ import java.util.List;
  *
  * http://www.jianshu.com/p/b1ad50633732
  */
-public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder>{
+public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseViewHolder>{
 
     protected List<T> mData;
     private int mLayoutResId;
@@ -28,7 +28,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         mOnItemClickListener = onItemClickListener;
     }
 
-    public BaseAdapter(int layoutResId, List<T> data) {
+    public BaseRecyclerAdapter(int layoutResId, List<T> data) {
         this.mData = data == null ? new ArrayList<T>() : data;
         if (layoutResId != 0) {
             this.mLayoutResId = layoutResId;
@@ -63,12 +63,26 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         convert(holder, mData.get(position));
     }
 
-    protected abstract void convert(BaseViewHolder helper, T item);
+    protected abstract void convert(BaseViewHolder holder, T item);
 
     @Override
     public int getItemCount() {
         return mData.size();
     }
 
+    public void add(T bean) {
+        mData.add(bean);
+        notifyDataSetChanged();
+    }
+
+    public void addAll(List<T> beans) {
+        mData.addAll(beans);
+        notifyDataSetChanged();
+    }
+
+    public void clear() {
+        mData.clear();
+        notifyDataSetChanged();
+    }
 
 }
