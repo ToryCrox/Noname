@@ -30,6 +30,10 @@ public class L {
         }
     }
 
+    public static void w(String msg){
+        Log.w(TAG,msg);
+    }
+
     public static void w(String tag,String msg){
             Log.w(TAG,tag +"  "+msg);
     }

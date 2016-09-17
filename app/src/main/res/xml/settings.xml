@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:title="基本设置">
+
+    <SwitchPreferenceCompat
+        android:key="mode_night"
+        android:defaultValue="false"
+        android:title="日间模式"
+        android:summary="切换主题"
+        />
+</PreferenceScreen>

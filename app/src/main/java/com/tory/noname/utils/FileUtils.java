@@ -89,6 +89,7 @@ public class FileUtils {
 	 * @throws IOException
 	 */
 	public static String readString(File file, String charsetName) throws IOException {
+		if(!file.isFile()||!file.exists()) return null;
 		FileInputStream in = new FileInputStream(file);
 		String str = null;
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -159,6 +160,7 @@ public class FileUtils {
 	}
 
 	public static void writeString(String str, File destFile, boolean append) throws IOException {
+		if(!destFile.exists()) destFile.createNewFile();
 		Writer writer = new BufferedWriter(new FileWriter(destFile, append));
 		writer.write(str);
 		writer.close();

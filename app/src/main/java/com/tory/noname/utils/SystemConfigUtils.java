@@ -54,6 +54,12 @@ public class SystemConfigUtils {
         return result;
     }
 
+    public static int getThemeAttr(Context context,int attrName){
+        TypedValue tv = new TypedValue();
+        context.getTheme().resolveAttribute(attrName, tv, true);
+        return tv.resourceId;
+    }
+
     public static int getStatusBarHeight(Context context){
         return getInternalDimensionSize(context.getResources(), STATUS_BAR_HEIGHT_RES_NAME);
     }

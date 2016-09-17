@@ -1,4 +1,4 @@
-package com.tory.noname.fragment;
+package com.tory.noname.gank;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tory.noname.R;
+import com.tory.noname.fragment.BaseFragment;
 import com.tory.noname.utils.Constance;
 
 public class GankListFragment extends BaseFragment {
@@ -20,6 +21,7 @@ public class GankListFragment extends BaseFragment {
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private String mTitles[];
+
 
     public GankListFragment() {
         // Required empty public constructor
@@ -34,18 +36,21 @@ public class GankListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_gank_list, container, false);
+        return inflater.inflate(R.layout.fragment_common_list, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mTitles = Constance.Gank.TAGS.clone();
+
         mTabLayout = (TabLayout) view.findViewById(R.id.tl_gank);
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
         PagerAdapter tabPageAdapter = new TabFragmentPagerAdapter(getChildFragmentManager(),mTitles);
         mViewPager.setAdapter(tabPageAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
     }
+
+
 
     public static class TabFragmentPagerAdapter extends FragmentPagerAdapter {
 

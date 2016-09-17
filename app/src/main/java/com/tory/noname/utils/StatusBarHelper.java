@@ -20,7 +20,7 @@ public class StatusBarHelper {
     private static final String TAG = "StatusBarHelper";
 
 
-    public static final int DEFAULT_STATUS_BAR_ALPHA = 112;
+    public static final int DEFAULT_STATUS_BAR_ALPHA = 255;
 
     /**
      * 设置状态栏颜色
@@ -65,7 +65,7 @@ public class StatusBarHelper {
      * @param color    状态栏颜色值
      */
     public static void setColorNoTranslucent(Activity activity, int color) {
-        setColor(activity, color, 0);
+        setColor(activity, color, DEFAULT_STATUS_BAR_ALPHA);
     }
 
 
@@ -170,7 +170,7 @@ public class StatusBarHelper {
      * @return 最终的状态栏颜色
      */
     private static int calculateStatusColor(int color, int alpha) {
-        float a = 1 - alpha / 255f;
+        float a = alpha / 255f;
         int red = color >> 16 & 0xff;
         int green = color >> 8 & 0xff;
         int blue = color & 0xff;

@@ -1,4 +1,4 @@
-package com.tory.noname.ben;
+package com.tory.noname.gank;
 
 /**
  * Created by tao.xu2 on 2016/9/12.

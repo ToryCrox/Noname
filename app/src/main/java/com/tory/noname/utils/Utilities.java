@@ -1,0 +1,129 @@
+package com.tory.noname.utils;
+
+import android.app.Activity;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
+import android.view.View;
+
+import com.tory.noname.R;
+import com.tory.noname.activity.WebViewActivity;
+
+import java.lang.ref.WeakReference;
+
+/**
+ * Created by tao.xu2 on 2016/8/19.
+ */
+public class Utilities {
+
+    public static final boolean ATLEAST_MARSHMALLOW = Build.VERSION.SDK_INT >= 23;
+
+    public static final boolean ATLEAST_LOLLIPOP_MR1 =
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1;
+
+    public static final boolean ATLEAST_LOLLIPOP =
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+
+    public static final boolean ATLEAST_KITKAT =
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+
+    public static final boolean ATLEAST_JB_MR1 =
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
+
+    public static final boolean ATLEAST_JB_MR2 =
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2;
+
+    public static boolean isRtl(Resources res) {
+        return ATLEAST_JB_MR1 &&
+                (res.getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL);
+    }
+
+    public static void initSwipeRefresh(SwipeRefreshLayout swipeRefreshLayout) {
+        // 设置下拉圆圈上的颜色，蓝色、绿色、橙色、红色
+        swipeRefreshLayout.setColorSchemeResources(
+                android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+    }
+
+    public static void startWeb(Context context, String url) {
+        Intent intent = new Intent(WebViewActivity.ACTION);
+        intent.putExtra(WebViewActivity.WEB_URL, url);
+        context.startActivity(intent);
+    }
+
+    public static void setNightMode(Context context, boolean night) {
+        setNightMode(context, night, true);
+    }
+
+    public static void setNightMode(Context context, boolean night, boolean recreateNow) {
+        boolean nowmode = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
+        boolean modeChange = nowmode == night;
+        int mode = night ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
+        AppCompatDelegate.setDefaultNightMode(mode);
+        if (modeChange) {
+            L.d("DefaultNightMode not change nightMode:" + nowmode);
+            return;
+        }
+        SettingHelper.getInstance(context).setNightMode(night);
+        if (context instanceof AppCompatActivity) {
+            final AppCompatActivity activity = (AppCompatActivity) context;
+            int delay = recreateNow ? 0 : 300;
+            new DealyRecreateHandler(Looper.getMainLooper(), activity).sendEmptyMessageDelayed(0, delay);
+        }
+    }
+
+    static class DealyRecreateHandler extends Handler {
+        private WeakReference<Activity> weakReference;
+
+        public DealyRecreateHandler(Looper looper, Activity activity) {
+            super(looper);
+            weakReference = new WeakReference<Activity>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            Activity activity = weakReference.get();
+            if (activity != null && !activity.isDestroyed()) {
+                activity.getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
+                activity.recreate();
+            }
+        }
+    }
+
+    /**
+     * 实现文本复制功能
+     * add by wangqianzhou
+     *
+     * @param content
+     */
+    public static void copyToClipboar(Context context,String content) {
+        // 得到剪贴板管理器
+        ClipboardManager cmb = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        cmb.setText(content.trim());
+    }
+
+    /**
+     * 实现粘贴功能
+     * add by wangqianzhou
+     *
+     * @param context
+     * @return
+     */
+    public static String pasteFromClipboar(Context context) {
+// 得到剪贴板管理器
+        ClipboardManager cmb = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        return cmb.getText().toString().trim();
+    }
+
+
+}

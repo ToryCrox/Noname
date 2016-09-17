@@ -7,9 +7,9 @@
             android:icon="@drawable/ic_menu_ganhuo"
             android:title="@string/nav_ganhuo"/>
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import"/>
+            android:id="@+id/nav_bili"
+            android:icon="@drawable/bili_default_image_tv"
+            android:title="bilibili"/>
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
@@ -31,9 +31,13 @@
                 android:icon="@drawable/ic_menu_share"
                 android:title="Share"/>
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send"/>
+                android:id="@+id/nav_mode_change"
+                android:icon="@drawable/ic_mode_day"
+                android:title="@string/nav_mode_day"/>
+            <item
+                android:id="@+id/nav_setting"
+                android:icon="@drawable/ic_settings_black_24dp"
+                android:title="Settings"/>
         </menu>
     </item>
 

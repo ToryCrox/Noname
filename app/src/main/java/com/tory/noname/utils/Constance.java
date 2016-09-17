@@ -7,6 +7,7 @@ package com.tory.noname.utils;
  */
 public class Constance {
 
+
     public interface Apis {
         //以下api来自http://gank.io/api
 
@@ -33,5 +34,10 @@ public class Constance {
         //数据类型： 福利 | Android | iOS | 休息视频 | 拓展资源 | 前端 | all
         //example:  http://gank.io/api/data/Android/10/1
         public static String BASE_URL = "http://gank.io/api/data";
+    }
+
+    public interface Bili{
+
+
     }
 }

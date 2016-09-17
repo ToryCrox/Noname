@@ -1,4 +1,4 @@
-package com.tory.noname.fragment;
+package com.tory.noname.gank;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,19 +17,22 @@ import com.bumptech.glide.Glide;
 import com.tory.noname.R;
 import com.tory.noname.adapter.BaseRecyclerAdapter;
 import com.tory.noname.adapter.BaseViewHolder;
-import com.tory.noname.ben.Gank;
+import com.tory.noname.adapter.EndlessRecyclerOnScrollListener;
+import com.tory.noname.fragment.BasePageFragment;
 import com.tory.noname.utils.Constance;
 import com.tory.noname.utils.FileUtils;
-import com.tory.noname.utils.HttpUtil;
 import com.tory.noname.utils.L;
 import com.tory.noname.utils.Md5Util;
+import com.tory.noname.utils.Utilities;
+import com.tory.noname.utils.http.XOkHttpUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class GankPageFragment extends BasePageFragment {
+public class GankPageFragment extends BasePageFragment implements BaseRecyclerAdapter.OnRecyclerViewItemClickListener {
     private static final String TAG = "GankPageFragment";
 
     private static final String ARG_TYPE = "arg_type";
@@ -38,6 +41,9 @@ public class GankPageFragment extends BasePageFragment {
     private RecyclerView mRecyclerView;
     private BaseRecyclerAdapter<Gank> mRecyclerAdpater;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private int mPageCount = 15;
+    private int mPageIndex = 1;
 
     public GankPageFragment() {
         // Required empty public constructor
@@ -59,6 +65,7 @@ public class GankPageFragment extends BasePageFragment {
         }
         List<Gank> list = parseData(obtainOfflineData(getUrl()));
         mRecyclerAdpater = new GankRecyclerAdapter(list);
+        mRecyclerAdpater.setOnRecyclerViewItemClickListener(this);
     }
 
 
@@ -66,7 +73,7 @@ public class GankPageFragment extends BasePageFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_gank_page, container, false);
+        return inflater.inflate(R.layout.fragment_common_page, container, false);
     }
 
 
@@ -78,12 +85,7 @@ public class GankPageFragment extends BasePageFragment {
         mRecyclerView.setAdapter(mRecyclerAdpater);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
-        // 设置下拉圆圈上的颜色，蓝色、绿色、橙色、红色
-        mSwipeRefreshLayout.setColorSchemeResources(
-                android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+        Utilities.initSwipeRefresh(mSwipeRefreshLayout);
         /*
         * 设置手势下拉刷新的监听
         */
@@ -91,25 +93,35 @@ public class GankPageFragment extends BasePageFragment {
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
+                        mPageIndex = 1;
                         prepareFetchData(true);
                     }
                 }
         );
+
+        mRecyclerView.clearOnScrollListeners();
+        mRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager) mRecyclerView.getLayoutManager()) {
+            @Override
+            public void onLoadMore(int currentPage) {
+                mPageIndex = currentPage;
+                prepareFetchData(true);
+            }
+        });
     }
 
     public String getUrl() {
-        String url = Constance.Gank.BASE_URL + "/" + mTag + "/10/" + 1;
+        String url = Constance.Gank.BASE_URL + "/" + mTag + "/" + mPageCount + "/" + mPageIndex;
         L.d(TAG, url);
         return url;
     }
 
-    private List<Gank> parseData(String result){
+    private List<Gank> parseData(String result) {
         List<Gank> list;
-        if(!TextUtils.isEmpty(result)){
+        if (!TextUtils.isEmpty(result)) {
             JSONObject jsonObj = JSONObject.parseObject(result);
-            list= JSONObject.parseArray(jsonObj.getString("results"), Gank.class);
+            list = JSONObject.parseArray(jsonObj.getString("results"), Gank.class);
             L.d(list + "");
-        }else{
+        } else {
             list = new ArrayList<Gank>();
         }
 
@@ -118,27 +130,38 @@ public class GankPageFragment extends BasePageFragment {
 
     @Override
     public void fetchData() {
-        HttpUtil.getInstance().loadString(getUrl(), new HttpUtil.HttpCallBack() {
-            @Override
-            public void onLoading() {
-                mSwipeRefreshLayout.setRefreshing(true);
-            }
+        final String url = getUrl();
+        XOkHttpUtils
+                .get(url)
+                .tag(this)
+                .execute(new XOkHttpUtils.HttpCallBack() {
+                    @Override
+                    public void onLoadStart() {
+                        //mSwipeRefreshLayout.setRefreshing(true);
+                    }
 
-            @Override
-            public void onSuccess(String result) {
-                mSwipeRefreshLayout.setRefreshing(false);
-                mRecyclerAdpater.clear();
-                mRecyclerAdpater.addAll(parseData(result));
+                    @Override
+                    public void onSuccess(String result) {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        if (mPageIndex == 1) {
+                            mRecyclerAdpater.clear();
+                        }
+                        mRecyclerAdpater.addAll(parseData(result));
+                    }
 
-            }
+                    @Override
+                    public void onError(Exception e) {
+                        Toast.makeText(getContext(), "加载" + mTag + "失败", Toast.LENGTH_SHORT).show();
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                });
 
-            @Override
-            public void onError(Exception e) {
-                Toast.makeText(getContext(),"加载"+mTag+"失败",Toast.LENGTH_SHORT).show();
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        });
+    }
 
+    @Override
+    public void onDestroy() {
+        XOkHttpUtils.getInstance().cancelTag(this);
+        super.onDestroy();
     }
 
     /**
@@ -150,7 +173,8 @@ public class GankPageFragment extends BasePageFragment {
     private String obtainOfflineData(String url) {
         String result = null;
         try {
-            result = FileUtils.readString(getOfflineDir(url));
+            //result = FileUtils.readString(getOfflineDir(url));
+            result = XOkHttpUtils.getInstance().getStringFromCatch(getUrl());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -158,6 +182,19 @@ public class GankPageFragment extends BasePageFragment {
 
     }
 
+    /**
+     * 保存离线数据
+     *
+     * @param url
+     * @param result
+     */
+    private void saveOfficeLineData(String url, String result) {
+        try {
+            FileUtils.writeString(result, getOfflineDir(url));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     /**
@@ -168,9 +205,17 @@ public class GankPageFragment extends BasePageFragment {
      */
     private String getOfflineDir(String url) {
         String cacheDir = FileUtils.getCacheDir(getContext()) +
-                File.separator + "offline_gan_huo_cache" + File.separator + Md5Util.digest(url);
-        L.d(TAG,"getOfflineDir:"+cacheDir);
+                File.separator + "offline_gank" + File.separator + Md5Util.digest(url);
+        FileUtils.mkdir(new File(cacheDir).getParentFile());
+        L.d(TAG, "getOfflineDir:" + cacheDir);
         return cacheDir;
+
+    }
+
+    @Override
+    public void onItemClick(View v, int position) {
+        Gank bean = mRecyclerAdpater.getItem(position);
+        Utilities.startWeb(getContext(), bean.url);
 
     }
 
@@ -179,6 +224,7 @@ public class GankPageFragment extends BasePageFragment {
 
         public GankRecyclerAdapter(List<Gank> data) {
             super(R.layout.item_gank, data);
+            addFooterView();
         }
 
         @Override
@@ -189,7 +235,7 @@ public class GankPageFragment extends BasePageFragment {
             if (item.url.endsWith(".jpg")) {
                 holder.getView(R.id.iv_img).setVisibility(View.VISIBLE);
                 ImageView imageView = holder.getView(R.id.iv_img);
-                //HttpUtil.getInstance().loadImage(item.url, imageView, true);
+                //XOkHttpUtils.getInstance().loadImage(item.url, imageView, true);
                 Glide.with(GankPageFragment.this)
                         .load(item.url)
                         .placeholder(R.drawable.ic_default)
