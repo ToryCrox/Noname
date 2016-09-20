@@ -43,7 +43,7 @@ public class GankListFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mTitles = Constance.Gank.TAGS.clone();
 
-        mTabLayout = (TabLayout) view.findViewById(R.id.tl_gank);
+        mTabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
         PagerAdapter tabPageAdapter = new TabFragmentPagerAdapter(getChildFragmentManager(),mTitles);
         mViewPager.setAdapter(tabPageAdapter);

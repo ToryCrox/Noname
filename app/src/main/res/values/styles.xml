@@ -19,7 +19,17 @@
     <!--AppBar的样式 -->
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <!--toolbar弹出的poup框的样式 -->
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item> <!--新增一个item，用于控制menu-->
+        <item name="android:dropDownHorizontalOffset">0dp</item>
+    </style>
+
+    <style name="OverflowMenuStyle" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>  <!--把该属性改为false即可使menu位置位于toolbar之下-->
+        <item name="android:dropDownHorizontalOffset">0dp</item>  <!--把该属性改为false即可使menu位置位于toolbar之下-->
+        <item name="android:dropDownSelector">@drawable/abc_ic_menu_moreoverflow_mtrl_alpha</item><!--右边三个点的图标 -->
+        <item name="android:src">@drawable/abc_ic_menu_moreoverflow_mtrl_alpha</item>
+    </style>
 
     <style name="AppTheme.NoActionBar.Main">
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
