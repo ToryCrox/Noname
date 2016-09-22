@@ -31,7 +31,7 @@ public class BaseRequest {
     protected Request generateRequest(RequestBody requestBody) {
         Request.Builder builder = new Request.Builder();
         builder.url(XOkHttpUtils.createUrlFromParams(url,params));
-        if (tag != builder) builder.tag(tag);
+        if (tag != null) builder.tag(tag);
         return builder.build();
     }
 

@@ -3,7 +3,6 @@ package com.tory.noname.bili;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -109,6 +108,12 @@ public class BiliRankPageFragment extends BasePageFragment implements
     }
 
     @Override
+    public void onDestroy() {
+        XOkHttpUtils.getInstance().cancelTag(this);
+        super.onDestroy();
+    }
+
+    @Override
     public void fetchData() {
         final String url = getUrl();
         XOkHttpUtils.get(url)
@@ -204,8 +209,13 @@ public class BiliRankPageFragment extends BasePageFragment implements
             int rankNum = holder.getLayoutPosition();
             holder.setText(R.id.tv_rank_num,String.valueOf(rankNum+1));
             if(rankNum < 3){
-                holder.setTextColor(R.id.tv_rank_num, ContextCompat.getColor(getActivity(),
-                        SystemConfigUtils.getThemeAttr(getActivity(),R.attr.colorAccent)));
+                holder.setTextColor(R.id.tv_rank_num,
+                        SystemConfigUtils.getThemeColor(getActivity(),R.attr.colorAccent));
+                holder.setTextSize(R.id.tv_rank_num,18 + (3 - rankNum) * 2);
+            }else{
+                holder.setTextColor(R.id.tv_rank_num,
+                        SystemConfigUtils.getThemeColor(getActivity(),android.R.attr.textColorPrimary));
+                holder.setTextSize(R.id.tv_rank_num,18);
             }
             Glide.with(BiliRankPageFragment.this)
                     .load(item.pic)

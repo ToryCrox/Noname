@@ -7,6 +7,7 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.tory.noname.MApplication;
 import com.tory.noname.utils.FileUtils;
 import com.tory.noname.utils.L;
+import com.tory.noname.utils.NetUtils;
 
 import java.io.File;
 import java.io.FilterInputStream;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
+import okhttp3.CacheControl;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Interceptor;
@@ -59,7 +61,8 @@ public class XOkHttpUtils {
                 .writeTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
                 .readTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
                 .cache(provideCache()) //设置缓存
-                .addNetworkInterceptor(new CacheInterceptor())
+                //.addNetworkInterceptor(new CacheInterceptor())
+                .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
                 .addNetworkInterceptor(new StethoInterceptor())
                 .build();
     }
@@ -101,6 +104,41 @@ public class XOkHttpUtils {
             return response1;
         }
     }
+
+    /**
+     * http://werb.github.io/2016/07/29/%E4%BD%BF%E7%94%A8Retrofit2+OkHttp3%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98%E5%A4%84%E7%90%86/
+     */
+    //cache
+    Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR =new Interceptor() {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            CacheControl.Builder cacheBuilder = new CacheControl.Builder();
+            cacheBuilder.maxAge(0, TimeUnit.SECONDS);
+            cacheBuilder.maxStale(365,TimeUnit.DAYS);
+            CacheControl cacheControl = cacheBuilder.build();
+            Request request = chain.request();
+            if(!NetUtils.isNetworkAvailable(MApplication.getInstance())){
+                request = request.newBuilder()
+                        .cacheControl(cacheControl)
+                        .build();
+            }
+            Response originalResponse = chain.proceed(request);
+            if (NetUtils.isNetworkAvailable(MApplication.getInstance())) {
+                int maxAge = 10; // read from cache
+                return originalResponse.newBuilder()
+                        .removeHeader("Pragma")
+                        .header("Cache-Control", "public ,max-age=" + maxAge)
+                        .build();
+            } else {
+                int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
+                return originalResponse.newBuilder()
+                        .removeHeader("Pragma")
+                        .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
+                        .build();
+            }
+        }
+
+    };
 
     /**
      * 不开启异步线程

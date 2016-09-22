@@ -2,6 +2,7 @@ package com.tory.noname.utils;
 
 import android.content.Context;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.util.Log;
 
 import java.io.BufferedWriter;
@@ -202,6 +203,72 @@ public class FileUtils {
 		Log.i("getCacheDir", "cache dir: " + cacheDir.getAbsolutePath());
 
 		return cacheDir;
+	}
+
+	public static void clearCache(Context context){
+		L.d("clear cache start");
+		long t1 = SystemClock.uptimeMillis();
+		File cacheDir = getCacheDir(context);
+		if(cacheDir!= null && cacheDir.isDirectory()){
+			for (File file: cacheDir.listFiles()) {
+				delete(file);
+			}
+		}
+		L.d("clear cache end :"+(SystemClock.uptimeMillis() - t1));
+	}
+
+
+	public static String getCacheSize(Context context){
+		long httpSize = getFileSize(FileUtils.getCacheDir(context));
+		return getFileSizeFormat(httpSize);
+	}
+
+	/**
+	 * 删除文件或文件夹
+	 * @param dest
+     */
+	public static void delete(File dest){
+		if(dest == null || !dest.exists()) return;
+		if(dest.isFile()) {
+			dest.delete();
+			return;
+		}
+		for (File file: dest.listFiles()) {
+			delete(file);
+		}
+		dest.delete();
+	}
+
+	public static long getFileSize(File dest){
+		if(dest == null || !dest.exists()) return 0;
+		if(dest.isFile()){
+			return dest.length();
+		}
+		long len = 0;
+		for (File file: dest.listFiles()) {
+			len += getFileSize(file);
+		}
+		return len;
+	}
+
+	public static String getFileSizeFormat(File dest){
+		L.d("compute file size start :" + Thread.currentThread().getName());
+		long t1 = SystemClock.uptimeMillis();
+		long size = getFileSize(dest);
+		L.d("compute file end :"+(SystemClock.uptimeMillis() - t1));
+		return getFileSizeFormat(size);
+	}
+
+	public static String getFileSizeFormat(long size){
+		if(size < 1024){
+			return size + "B";
+		}else if(size < 1024 * 1024){
+			return String.format("%.1fK",size/1024.0f);
+		}else if(size < 1024 * 1024 * 1024){
+			return String.format("%.1fM",size/(1024.0 * 1024.0f));
+		}else{
+			return String.format("%.1fG",size/(1024.0f * 1024 * 1024));
+		}
 	}
 
 }

@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
+import android.support.annotation.AttrRes;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.ViewConfiguration;
@@ -54,10 +56,14 @@ public class SystemConfigUtils {
         return result;
     }
 
-    public static int getThemeAttr(Context context,int attrName){
+    public static int getThemeAttr(Context context,@AttrRes int attrName){
         TypedValue tv = new TypedValue();
         context.getTheme().resolveAttribute(attrName, tv, true);
         return tv.resourceId;
+    }
+
+    public static int getThemeColor(Context context, @AttrRes int attrName){
+        return ContextCompat.getColor(context, getThemeAttr(context, attrName));
     }
 
     public static int getStatusBarHeight(Context context){

@@ -143,6 +143,19 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+    /**
+     * Will set text size of a TextView.
+     *
+     * @param viewId    The view id.
+     * @param textSize size The scaled pixel size.
+     * @return The BaseViewHolder for chaining.
+     */
+    public BaseViewHolder setTextSize(int viewId, int textSize) {
+        TextView view = getView(viewId);
+        view.setTextSize(textSize);
+        return this;
+    }
+
 
     /**
      * Will set the image of an ImageView from a drawable.
