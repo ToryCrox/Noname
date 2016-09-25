@@ -9,7 +9,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarSize">48dp</item>
         <item name="android:textAppearanceLarge">?android:attr/textAppearance</item>
+
+        <item name="windowActionModeOverlay">true</item><!--让ActionMode能够覆盖我们的Toolbar -->
+        <item name="windowActionBarOverlay">true</item>
+        <item name="actionModeStyle">@style/CustomActionMode</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -18,7 +24,8 @@
     </style>
 
     <!--AppBar的样式 -->
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        </style>
     <!--toolbar弹出的poup框的样式 -->
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
         <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item> <!--新增一个item，用于控制menu-->
@@ -27,9 +34,17 @@
 
     <style name="OverflowMenuStyle" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
         <item name="overlapAnchor">false</item>  <!--把该属性改为false即可使menu位置位于toolbar之下-->
-        <item name="android:dropDownHorizontalOffset">0dp</item>  <!--把该属性改为false即可使menu位置位于toolbar之下-->
+        <item name="android:dropDownHorizontalOffset">0dp</item>  <!--指定下拉菜单与文本之间的水平间距;-->
+        <item name="android:dropDownVerticalOffset">0dp</item>  <!--同上,不过这个是竖直方向的偏移,这里的话我们设置为4dp，默认值这里是-4dp;-->
         <item name="android:dropDownSelector">@drawable/abc_ic_menu_moreoverflow_mtrl_alpha</item><!--右边三个点的图标 -->
         <item name="android:src">@drawable/abc_ic_menu_moreoverflow_mtrl_alpha</item>
+    </style>
+
+    <style name="ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="ToolbarSubtitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">11sp</item>
     </style>
 
     <style name="AppTheme.NoActionBar.Main">
@@ -39,5 +54,10 @@
     <style name="WindowAnimationFadeInOut">
         <item name="@android:windowEnterAnimation">@anim/fade_in</item>
         <item name="@android:windowExitAnimation">@anim/fade_out</item>
+    </style>
+
+
+    <style name="CustomActionMode" parent="@style/Widget.AppCompat.ActionMode">
+        <item name="background">?attr/colorPrimary</item>
     </style>
 </resources>

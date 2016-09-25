@@ -3,13 +3,18 @@ package com.tory.noname.activity.base;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.tory.noname.R;
+import com.tory.noname.utils.L;
 import com.tory.noname.utils.StatusBarHelper;
 import com.tory.noname.utils.Utilities;
 
@@ -29,6 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity  {
             setContentView(layoutId);
         }
         setThemeColor();
+        initToolbar();
         initView();
         doBusiness();
 
@@ -45,12 +51,29 @@ public abstract class BaseActivity extends AppCompatActivity  {
         }
     }
 
+    //监听toolbar左上角后退按钮
+    public void setToolbarBackpress() {
+        if(mToolbar!=null){
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+        }
+
+    }
+
     public void setToolbarTitle(String title) {
         if (mToolbar != null) {
             this.mTitle = title;
             //  mToolbar.setTitle(title);
             getSupportActionBar().setTitle(mTitle);
         }
+    }
+
+    public Toolbar getToolbar(){
+        return mToolbar;
     }
 
     public String getToolbarTitle(){
@@ -88,6 +111,51 @@ public abstract class BaseActivity extends AppCompatActivity  {
         }else{
             StatusBarHelper.setColorForDrawerLayout(this,drawerLayout,statusbarColor);
         }
+    }
+
+
+    public void showFragment(String tag, boolean show, boolean executeImmediately) {
+        //Trace.beginSection("showFragment - " + tag);
+        final FragmentManager fm = getSupportFragmentManager();
+
+        if (fm == null) {
+            L.w(TAG, "Fragment manager is null for : " + tag);
+            return;
+        }
+
+        Fragment fragment = fm.findFragmentByTag(tag);
+        if (!show && fragment == null) {
+            // Nothing to show, so bail early.
+            return;
+        }
+
+        final FragmentTransaction transaction = fm.beginTransaction();
+        if (show) {
+            if (fragment == null) {
+                L.d(TAG, "showFragment: fragment need create: " + tag);
+                fragment = createNewFragmentForTag(tag);
+                transaction.add(getFragmentContainer(tag), fragment, tag);
+            } else {
+                L.d(TAG, "showFragment: fragment is all ready created " + tag);
+                transaction.show(fragment);
+            }
+        } else {
+            transaction.hide(fragment);
+        }
+
+        transaction.commitAllowingStateLoss();
+        if (executeImmediately) {
+            fm.executePendingTransactions();
+        }
+        //Trace.endSection();
+    }
+
+    public int getFragmentContainer(String tag){
+        throw new IllegalStateException("Unexpected fragmentContainer: " + tag);
+    }
+
+    public Fragment createNewFragmentForTag(String tag) {
+        throw new IllegalStateException("Unexpected fragment: " + tag);
     }
 
     /**

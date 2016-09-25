@@ -5,6 +5,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -53,12 +54,6 @@ public class Utilities {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-    }
-
-    public static void startWeb(Context context, String url) {
-        Intent intent = new Intent(WebViewActivity.ACTION);
-        intent.putExtra(WebViewActivity.WEB_URL, url);
-        context.startActivity(intent);
     }
 
     public static void setNightMode(Context context, boolean night) {
@@ -125,5 +120,22 @@ public class Utilities {
         return cmb.getText().toString().trim();
     }
 
+    public static void startWeb(Context context, String url) {
+        Intent intent = new Intent(WebViewActivity.ACTION);
+        intent.putExtra(WebViewActivity.WEB_URL, url);
+        context.startActivity(intent);
+    }
+
+    /**
+     * 用外部浏览器打开
+     * @param context
+     * @param url
+     */
+    public static void openInBrowser(Context context,String url){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setData(Uri.parse(url));
+        context.startActivity(intent);
+    }
 
 }

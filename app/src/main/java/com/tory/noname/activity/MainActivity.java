@@ -4,8 +4,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,7 +14,9 @@ import android.view.MenuItem;
 
 import com.tory.noname.R;
 import com.tory.noname.activity.base.BaseActivity;
-import com.tory.noname.fragment.BaseFragment;
+import com.tory.noname.bili.PartitionListFragment;
+import com.tory.noname.fragment.SettingsFragment;
+import com.tory.noname.gank.GankListFragment;
 import com.tory.noname.utils.L;
 import com.tory.noname.utils.SettingHelper;
 import com.tory.noname.utils.Utilities;
@@ -49,7 +49,6 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void initView() {
-        initToolbar();
         setToolbarScrolled(true);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -129,15 +128,15 @@ public class MainActivity extends BaseActivity
 
     private void initTagMenuIds() {
         mTagMenuIds = new SparseArray<>();
-        mTagMenuIds.put(R.id.nav_ganhuo,BaseFragment.TAG_GANK_LIST_FRAGMENT);
-        mTagMenuIds.put(R.id.nav_setting,BaseFragment.TAG_SETTING_FRAGMENT);
-        mTagMenuIds.put(R.id.nav_bili,BaseFragment.TAG_BILI_FRAGMENT);
+        mTagMenuIds.put(R.id.nav_ganhuo,GankListFragment.FRAGMENT_TAG);
+        mTagMenuIds.put(R.id.nav_setting,SettingsFragment.FRAGMENT_TAG);
+        mTagMenuIds.put(R.id.nav_bili,PartitionListFragment.FRAGMENT_TAG);
     }
 
 
     private void initDefalutFragment(){
         if(mShowingFragmentTag == null){
-            mShowingFragmentTag = BaseFragment.TAG_GANK_LIST_FRAGMENT;
+            mShowingFragmentTag = GankListFragment.FRAGMENT_TAG;
         }
 
         int size = mTagMenuIds.size();
@@ -154,11 +153,11 @@ public class MainActivity extends BaseActivity
     }
 
     public void showGankListFragment() {
-        showFragmentAndHideOther(BaseFragment.TAG_GANK_LIST_FRAGMENT);
+        showFragmentAndHideOther(GankListFragment.FRAGMENT_TAG);
     }
 
     private void showSettingFragment() {
-        showFragmentAndHideOther(BaseFragment.TAG_SETTING_FRAGMENT);
+        showFragmentAndHideOther(SettingsFragment.FRAGMENT_TAG);
     }
 
     public void showFragmentAndHideOther(String tag){
@@ -178,39 +177,20 @@ public class MainActivity extends BaseActivity
         showFragment(tag,show,false);
     }
 
-    public void showFragment(String tag, boolean show, boolean executeImmediately) {
-        //Trace.beginSection("showFragment - " + tag);
-        final FragmentManager fm = getSupportFragmentManager();
 
-        if (fm == null) {
-            L.w(TAG, "Fragment manager is null for : " + tag);
-            return;
-        }
+    @Override
+    public int getFragmentContainer(String tag) {
+        return R.id.frame_content;
+    }
 
-        Fragment fragment = fm.findFragmentByTag(tag);
-        if (!show && fragment == null) {
-            // Nothing to show, so bail early.
-            return;
+    public Fragment createNewFragmentForTag(String tag){
+        if (GankListFragment.FRAGMENT_TAG.equals(tag)) {
+            return new GankListFragment();
+        }else if(SettingsFragment.FRAGMENT_TAG.equals(tag)) {
+            return SettingsFragment.newInstance();
+        }else if(PartitionListFragment.FRAGMENT_TAG.equals(tag)){
+            return new PartitionListFragment();
         }
-
-        final FragmentTransaction transaction = fm.beginTransaction();
-        if (show) {
-            if (fragment == null) {
-                L.d(TAG, "showFragment: fragment need create: " + tag);
-                fragment = BaseFragment.createNewFragmentForTag(tag);
-                transaction.add(R.id.frame_content, fragment, tag);
-            } else {
-                L.d(TAG, "showFragment: fragment is all ready created " + tag);
-                transaction.show(fragment);
-            }
-        } else {
-            transaction.hide(fragment);
-        }
-
-        transaction.commitAllowingStateLoss();
-        if (executeImmediately) {
-            fm.executePendingTransactions();
-        }
-        //Trace.endSection();
+        throw new IllegalStateException("Unexpected fragment: " + tag);
     }
 }

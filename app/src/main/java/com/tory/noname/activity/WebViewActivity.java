@@ -50,15 +50,12 @@ public class WebViewActivity extends BaseActivity {
         Utilities.initSwipeRefresh(mSwipeRefreshLayout);
 
         setToolbarTitle("页面加载中……");
-        //监听toolbar左上角后退按钮
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+
+        setToolbarBackpress();
         initNavIcon();
     }
+
+
 
     @Override
     public void doBusiness() {
@@ -178,12 +175,10 @@ public class WebViewActivity extends BaseActivity {
         Intent intent;
         switch (item.getItemId()) {
             case R.id.action_open_in_brower:
-                intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(mWebView.getUrl()));
-                startActivity(intent);
+                Utilities.openInBrowser(this,mWebView.getUrl());
                 break;
             case R.id.action_url_copy:
-                Utilities.copyToClipboar(this, mUrl);
+                Utilities.copyToClipboar(this,mWebView.getUrl());
                 break;
             case R.id.action_share:
                 break;
@@ -194,7 +189,6 @@ public class WebViewActivity extends BaseActivity {
     public boolean startActionView(Context context, String url) {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-
             compeletIntentWithUrl(intent, url);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);

@@ -3,7 +3,8 @@
     "root": [
       {
         "tid": 65537,
-        "typename": "直播"
+        "typename": "直播",
+        "type":1
       },
       {
         "captionname": "番 剧",

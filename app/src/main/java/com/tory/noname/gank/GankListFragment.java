@@ -1,55 +1,26 @@
 package com.tory.noname.gank;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.tory.noname.R;
-import com.tory.noname.fragment.BaseFragment;
+import com.tory.noname.fragment.BaseListFragment;
 import com.tory.noname.utils.Constance;
 
-public class GankListFragment extends BaseFragment {
+public class GankListFragment extends BaseListFragment {
 
-    private TabLayout mTabLayout;
-    private ViewPager mViewPager;
-    private String mTitles[];
-
+    public static final String FRAGMENT_TAG = "tag_gank_list_fragment";
 
     public GankListFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_common_list, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    protected PagerAdapter createPageAdpater() {
         mTitles = Constance.Gank.TAGS.clone();
-
-        mTabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
-        mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        PagerAdapter tabPageAdapter = new TabFragmentPagerAdapter(getChildFragmentManager(),mTitles);
-        mViewPager.setAdapter(tabPageAdapter);
-        mTabLayout.setupWithViewPager(mViewPager);
+        return new TabFragmentPagerAdapter(getChildFragmentManager(),mTitles);
     }
-
 
 
     public static class TabFragmentPagerAdapter extends FragmentPagerAdapter {

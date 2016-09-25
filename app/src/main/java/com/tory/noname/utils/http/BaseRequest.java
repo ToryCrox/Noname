@@ -40,12 +40,19 @@ public class BaseRequest {
         return this;
     }
 
+    public BaseRequest params(Map<String,String> data){
+        getParams().putAll(data);
+        return this;
+    }
+
     public Map<String,String> getParams(){
         if(params == null){
             params = new HashMap<>();
         }
         return params;
     }
+
+
 
 
 }

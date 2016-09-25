@@ -21,4 +21,7 @@ public class BiliApis {
      *连载动画最新
      * http://api.bilibili.com/archive_rank/getarchiverankbypartion?callback=jQuery17206667210870638649_1474099779991&type=jsonp&tid=33&pn=1&_=1474099780284
      */
+
+    public static final String ACCESS_KEY = "ba761f9faa500a6c8529a0e18fc794f0";
+    public static final String APPKEY = "1d8b6e7d45233436";
 }

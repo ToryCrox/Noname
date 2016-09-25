@@ -24,6 +24,8 @@ import rx.schedulers.Schedulers;
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 
+    public static final String FRAGMENT_TAG = "TAG_SETTING_FRAGMENT";
+
     private static final String TAG = "SettingsFragment";
     private SettingHelper mSettingHelper;
 

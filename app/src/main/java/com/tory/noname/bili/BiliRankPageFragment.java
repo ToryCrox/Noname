@@ -1,8 +1,11 @@
 package com.tory.noname.bili;
 
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
@@ -26,6 +30,7 @@ import com.tory.noname.utils.Utilities;
 import com.tory.noname.utils.http.XOkHttpUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BiliRankPageFragment extends BasePageFragment implements
@@ -36,10 +41,11 @@ public class BiliRankPageFragment extends BasePageFragment implements
 
     private static final String RANK_TITLE= "rank_title";
     private static final String RANK_TYPE_NAME = "rank_menu_name";
+    private static final String RANK_RANGE = "rank_range";
     private static final String RANK_CATALOGY_TAB_ID = "rank_catalogy_tab_id";
 
     private String mRankType;
-    private int mRankComId = 3;
+    private int mRankRange = 30;
     private int mRankCatelogyId;
 
 
@@ -59,10 +65,11 @@ public class BiliRankPageFragment extends BasePageFragment implements
      * @param rankMenuName Parameter 2.
      * @return A new instance of fragment BiliRankPageFragment.
      */
-    public static BiliRankPageFragment newInstance(String title,String rankMenuName, int rankCatelogyId) {
+    public static BiliRankPageFragment newInstance(String title ,String rankMenuName, int rankRange,int rankCatelogyId) {
         BiliRankPageFragment fragment = new BiliRankPageFragment();
         Bundle args = new Bundle();
         args.putString(RANK_TITLE, title);
+        args.putInt(RANK_RANGE, rankRange);
         args.putInt(RANK_CATALOGY_TAB_ID, rankCatelogyId);
         args.putString(RANK_TYPE_NAME, rankMenuName);
         fragment.setArguments(args);
@@ -73,13 +80,13 @@ public class BiliRankPageFragment extends BasePageFragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            mRankRange = getArguments().getInt(RANK_RANGE);
             mRankCatelogyId = getArguments().getInt(RANK_CATALOGY_TAB_ID);
             mRankType = getArguments().getString(RANK_TYPE_NAME);
             mTitle = getArguments().getString(RANK_TITLE);
         }
         mRecyclerAdpater = new BiliRankRecyclerAdapter(new ArrayList<BiliRank>());
     }
-
 
 
     @Override
@@ -142,8 +149,10 @@ public class BiliRankPageFragment extends BasePageFragment implements
 
 
     private String getUrl(){
-        return BiliApis.BASE_RANK_URL +
-                String.format("%s-%d-%d.json", mRankType,mRankComId,mRankCatelogyId);
+        String url = BiliApis.BASE_RANK_URL +
+                String.format("%s-%d-%d.json", mRankType, mRankRange,mRankCatelogyId);
+        L.d(TAG,url);
+        return url;
     }
 
     private void refresData(String result) {
@@ -154,14 +163,20 @@ public class BiliRankPageFragment extends BasePageFragment implements
     private List<BiliRank> parseData(String result) {
         List<BiliRank> list = null;
         if (!TextUtils.isEmpty(result)) {
-            JSONObject jsonObj = JSONObject.parseObject(result);
-            JSONObject rankObj = jsonObj.getJSONObject("rank");
-            int code = rankObj.getIntValue("code");
-            if(code == 0){
-                list = JSONObject.parseArray(rankObj.getString("list"), BiliRank.class);
-                L.d(list + "");
-            }else{
-                L.w(TAG," return code error:"+code);
+            try {
+                JSONObject jsonObj = JSONObject.parseObject(result);
+                JSONObject rankObj = jsonObj.getJSONObject("rank");
+                int code = rankObj.getIntValue("code");
+                if(code == 0){
+                    list = JSONObject.parseArray(rankObj.getString("list"), BiliRank.class);
+                    L.d(list + "");
+                }else{
+                    L.w(TAG," return code error:"+code);
+                }
+            } catch (Exception e) {
+                L.d(TAG,"parseData error url:"+getUrl()+"\n"+result);
+                e.printStackTrace();
+
             }
 
         } else {
@@ -197,11 +212,40 @@ public class BiliRankPageFragment extends BasePageFragment implements
     }
 
 
+    public void setRankRange(int rankRange){
+        if(rankRange != mRankRange){
+            mRankRange = rankRange;
+            isDataInitiated = false;
+            if(isVisibleToUser && isViewInitiated){
+                prepareFetchData(true);
+            }
+            putArgument(RANK_RANGE,mRankRange);
+        }
+    }
+
+    protected void putArgument(String key,Object value){
+        Bundle bundle = getArguments();
+        if(bundle == null) bundle = new Bundle();
+        if(value instanceof String){
+            bundle.putString(key,(String)value);
+        }else if(value instanceof Integer){
+            bundle.putInt(key,(int)value);
+        }
+        //setArguments(bundle);
+    }
+
 
     private class BiliRankRecyclerAdapter extends BaseRecyclerAdapter<BiliRank>{
 
+        int colorAccent;
+        int textColorPrimary;
+        int textColorSecondary;
+
         public BiliRankRecyclerAdapter(List<BiliRank> data) {
             super(R.layout.item_bili_rank, data);
+            colorAccent = SystemConfigUtils.getThemeColor(getActivity(),R.attr.colorAccent);
+            textColorPrimary = SystemConfigUtils.getThemeColor(getActivity(),android.R.attr.textColorPrimary);
+            textColorSecondary = SystemConfigUtils.getThemeColor(getActivity(),android.R.attr.textColorSecondary);
         }
 
         @Override
@@ -209,22 +253,58 @@ public class BiliRankPageFragment extends BasePageFragment implements
             int rankNum = holder.getLayoutPosition();
             holder.setText(R.id.tv_rank_num,String.valueOf(rankNum+1));
             if(rankNum < 3){
-                holder.setTextColor(R.id.tv_rank_num,
-                        SystemConfigUtils.getThemeColor(getActivity(),R.attr.colorAccent));
+                holder.setTextColor(R.id.tv_rank_num,colorAccent
+                        );
                 holder.setTextSize(R.id.tv_rank_num,18 + (3 - rankNum) * 2);
             }else{
-                holder.setTextColor(R.id.tv_rank_num,
-                        SystemConfigUtils.getThemeColor(getActivity(),android.R.attr.textColorPrimary));
+                holder.setTextColor(R.id.tv_rank_num,textColorPrimary);
                 holder.setTextSize(R.id.tv_rank_num,18);
             }
             Glide.with(BiliRankPageFragment.this)
                     .load(item.pic)
                     .placeholder(R.drawable.bili_default_image_tv)
                     .into((ImageView) holder.getView(R.id.iv_pic));
-            holder.setText(R.id.tv_title,item.title);
-            holder.setText(R.id.tv_author,item.author);
-            holder.setText(R.id.tv_play,formatNumber(item.play));
-            holder.setText(R.id.tv_danmakus,formatNumber(item.video_review));
+            holder.setText(R.id.tv_title,item.title)
+                    .setText(R.id.tv_author,item.author)
+                    .setText(R.id.tv_play,formatNumber(item.play))
+                    .setText(R.id.tv_danmakus,formatNumber(item.video_review));
+            tintTextDrawables(holder,textColorSecondary,R.id.iv_author,R.id.iv_play,R.id.iv_danmakus);
+        }
+
+        private void tintTextDrawables(BaseViewHolder holder,int color,int ...resIds){
+            for(int resId : resIds){
+                if(Boolean.TRUE.equals(holder.getView(resId).getTag(R.id.text_view_drawable_tint))){
+                    L.d("drawablesdrawables: continue");
+                    continue;
+                }
+                tintDrawable(holder.getView(resId),color);
+            }
+        }
+
+        //http://chuansong.me/n/400689551333
+        private void tintDrawable(View view, int color) {
+            if(view instanceof TextView){//not function
+                TextView tv = (TextView) view;
+                Drawable[] drawables = tv.getCompoundDrawablesRelative();
+                L.d("drawablesdrawables:"+ Arrays.toString(drawables));
+                if(drawables == null ) return;
+                for(int i = 0;i < drawables.length;i++){
+                    Drawable drawable = drawables[i];
+                    if(drawable != null){
+                        Drawable d = DrawableCompat.wrap(drawable).mutate();
+                        DrawableCompat.setTintList(d, ColorStateList.valueOf(color));
+                        drawables[i] = d;
+                    }
+                }
+                tv.setCompoundDrawablesRelative(drawables[0],drawables[1],drawables[2],drawables[3]);
+                L.d("drawablesdrawables 11:"+ Arrays.toString(drawables));
+                tv.setTag(R.id.text_view_drawable_tint,Boolean.TRUE);
+            }else if(view instanceof ImageView){
+                ImageView iv = (ImageView) view;
+                Drawable d = DrawableCompat.wrap(iv.getDrawable());
+                DrawableCompat.setTintList(d, ColorStateList.valueOf(color));
+                iv.setImageDrawable(d);
+            }
         }
     }
 

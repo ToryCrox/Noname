@@ -14,10 +14,19 @@ public class SpHelper {
     private static SpHelper sInstance;
     private SharedPreferences sp;
 
-    private SpHelper(Context context){
-        sp = PreferenceManager.getDefaultSharedPreferences(context);
-        //sp = context.getSharedPreferences(SHARED_PATH,Context.MODE_PRIVATE);
+    private SpHelper(Context context,String filepath){
+        if(filepath == null){
+            sp = PreferenceManager.getDefaultSharedPreferences(context);
+        }else{
+            sp = context.getSharedPreferences(filepath,Context.MODE_PRIVATE);
+        }
     }
+
+    private SpHelper(Context context){
+        this(context,null);
+    }
+
+
 
     public static SpHelper getInstance(Context context){
         if(sInstance == null){
@@ -26,6 +35,17 @@ public class SpHelper {
             }
         }
         return sInstance;
+    }
+
+    public static SpHelper newInstance(Context context,String filepath){
+        return new SpHelper(context,filepath);
+    }
+
+    public int getInt(String key) {
+        if (key != null && !key.equals("")) {
+            return sp.getInt(key, 0);
+        }
+        return 0;
     }
 
     public long getLong(String key) {

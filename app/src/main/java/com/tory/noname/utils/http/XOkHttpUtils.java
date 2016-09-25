@@ -244,6 +244,7 @@ public class XOkHttpUtils {
                 sb.append(urlParams.getKey()).append("=").append(urlValue).append("&");
             }
             sb.deleteCharAt(sb.length() - 1);
+            L.d("createUrl:"+sb.toString());
             return sb.toString();
         } catch (UnsupportedEncodingException e) {
 

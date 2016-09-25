@@ -1,8 +1,10 @@
 package com.tory.noname.gank;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -32,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class GankPageFragment extends BasePageFragment implements BaseRecyclerAdapter.OnRecyclerViewItemClickListener {
+public class GankPageFragment extends BasePageFragment implements BaseRecyclerAdapter.OnRecyclerViewItemClickListener, BaseRecyclerAdapter.OnRecyclerViewItemLongClickListener {
     private static final String TAG = "GankPageFragment";
 
     private static final String ARG_TYPE = "arg_type";
@@ -66,6 +68,7 @@ public class GankPageFragment extends BasePageFragment implements BaseRecyclerAd
         List<Gank> list = parseData(obtainOfflineData(getUrl()));
         mRecyclerAdpater = new GankRecyclerAdapter(list);
         mRecyclerAdpater.setOnRecyclerViewItemClickListener(this);
+        mRecyclerAdpater.setOnRecyclerViewItemLongClickListener(this);
     }
 
 
@@ -217,6 +220,25 @@ public class GankPageFragment extends BasePageFragment implements BaseRecyclerAd
         Gank bean = mRecyclerAdpater.getItem(position);
         Utilities.startWeb(getContext(), bean.url);
 
+    }
+
+    @Override
+    public boolean onLongClick(View v, int position) {
+        Gank gank = mRecyclerAdpater.getItem(position);
+        final String url = gank.url;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                .setItems(new String[]{"复制链接", "浏览器打开"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(which == 0){
+                            Utilities.copyToClipboar(getActivity(),url);
+                        }else if(which == 1){
+                            Utilities.openInBrowser(getActivity(),url);
+                        }
+                    }
+                });
+        builder.show();
+        return true;
     }
 
 

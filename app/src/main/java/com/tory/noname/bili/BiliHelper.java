@@ -4,13 +4,22 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.SparseIntArray;
 
 import com.alibaba.fastjson.JSONObject;
-import com.tory.noname.bili.bean.BiliCate;
+import com.tory.noname.MApplication;
+import com.tory.noname.R;
+import com.tory.noname.bili.bean.CategoryMeta;
 import com.tory.noname.utils.FileUtils;
+import com.tory.noname.utils.L;
+import com.tory.noname.utils.Md5Util;
 
 import java.io.InputStream;
+import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @Author: Tory
@@ -20,6 +29,8 @@ import java.util.List;
 public class BiliHelper {
 
 
+    public static CategoryMeta sRootCateMeta;
+    public static SparseIntArray sCoverResources;
 
     public static String getUrlFromAid(int aid){
         return BiliApis.BASE_URL + "/video/av"+aid+"/";
@@ -50,23 +61,28 @@ public class BiliHelper {
      * 重构cate
      * @return
      */
-    public static BiliCate buildCate(Context context){
+    public static CategoryMeta buildCate(Context context){
+        if(sRootCateMeta != null){
+            return sRootCateMeta;
+        }
+
         try {
             InputStream inputStream = context.getAssets().open("bilicat.json");
             String str = FileUtils.readString(inputStream);
             JSONObject resultObj = JSONObject.parseObject(str).getJSONObject("result");
-            List<BiliCate> rootList = JSONObject.parseArray(resultObj.getString("root"),BiliCate.class);
+            List<CategoryMeta> rootList = JSONObject.parseArray(resultObj.getString("root"),CategoryMeta.class);
             JSONObject childObj = resultObj.getJSONObject("child");
-            for(BiliCate biliCate : rootList){
+            for(CategoryMeta biliCate : rootList){
                 String tid = String.valueOf(biliCate.tid);
                 if(!childObj.keySet().contains(tid)) continue;
-                List<BiliCate> child = JSONObject.parseArray(childObj.getString(tid),BiliCate.class);
+                List<CategoryMeta> child = JSONObject.parseArray(childObj.getString(tid),CategoryMeta.class);
                 fileParentCate(biliCate,child);
             }
 
-            BiliCate rootCate = new BiliCate();
+            CategoryMeta rootCate = new CategoryMeta();
             rootCate.tid = 0;
             fileParentCate(rootCate,rootList);
+            sRootCateMeta = rootCate;
             return rootCate;
 
         } catch (Exception e) {
@@ -75,11 +91,65 @@ public class BiliHelper {
         return null;
     }
 
-    private static void fileParentCate(BiliCate parent,List<BiliCate> child){
+    private static void fileParentCate(CategoryMeta parent, List<CategoryMeta> child){
         parent.child = child;
-        for (BiliCate cate : child){
+        SparseIntArray coverRes = coverResources();
+        for (CategoryMeta cate : child){
             cate.parent = parent;
+            cate.coverRes = coverRes.get(cate.tid);
         }
     }
+
+    public static SparseIntArray coverResources(){
+        if(sCoverResources != null) return sCoverResources;
+        SparseIntArray array = new SparseIntArray(20);
+        array.put(65537, R.drawable.ic_category_live);
+        array.put(1,R.drawable.ic_category_t1);
+        array.put(3,R.drawable.ic_category_t3);
+        array.put(4,R.drawable.ic_category_t4);
+        array.put(5,R.drawable.ic_category_t5);
+        array.put(11,R.drawable.ic_category_t11);
+        array.put(13,R.drawable.ic_category_t13);
+        array.put(23,R.drawable.ic_category_t23);
+        array.put(33,R.drawable.ic_category_t33);
+        array.put(36,R.drawable.ic_category_t36);
+        array.put(119,R.drawable.ic_category_t119);
+        array.put(129,R.drawable.ic_category_t129);
+        array.put(155,R.drawable.ic_category_t155);
+        sCoverResources = array;
+        return array;
+    }
+
+
+    public static CategoryMeta getCategoryInfo(int tid){
+        CategoryMeta root = buildCate(MApplication.getInstance());
+        List<CategoryMeta> cates = root.child;
+        for(CategoryMeta cate: cates){
+            if(cate.tid == tid){
+                return cate;
+            }
+        }
+        throw new RuntimeException("no CategoryMeta matched tid:"+tid);
+    }
+
+    public static String sign(Map<String,String> data,String appkey){
+        Set<String> keySet = data.keySet();
+        String[] keyStrs = new String[keySet.size()];
+        keySet.toArray(keyStrs);
+        Arrays.sort(keyStrs);
+        StringBuilder sb = new StringBuilder();
+
+        try {
+            for (String key : keyStrs){
+                String val = data.get(key);
+                sb.append("&").append(key).append("=").append(URLEncoder.encode(val, "UTF-8"));
+            }
+        } catch (Exception e){
+            L.d(e.getMessage());
+        }
+        sb.deleteCharAt(0);
+        return Md5Util.digest(sb.append(appkey).toString());
+    }
+
 
 }
