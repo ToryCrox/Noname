@@ -1,11 +1,8 @@
 package com.tory.noname.bili;
 
 import android.content.DialogInterface;
-import android.content.res.ColorStateList;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
@@ -202,13 +198,11 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
                 if (code == 0) {
                     //list = JSONObject.parseArray(jsonObj.getString("list"), VideoItem.class);
                     JSONObject dataObj = jsonObj.getJSONObject("data");
-                    L.d("parseData1 archives"+dataObj.getString("archives") + "");
                     try {
                         list = JSONObject.parseArray(dataObj.getString("archives"), VideoItem.class);
                     } catch (Exception e) {
                         L.w(e.toString());
                     }
-                    L.d("parseData1"+list + "");
                 } else {
                     L.w(TAG, " return code error:" + code + "result:" + result);
                 }
@@ -304,7 +298,7 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
 
         int textColorSecondary;
         public CatePageRecyclerAdapter(List<VideoItem> data) {
-            super(R.layout.item_bili_rank, data);
+            super(R.layout.item_bili_video, data);
             textColorSecondary = SystemConfigUtils.getThemeColor(getActivity(),android.R.attr.textColorSecondary);
         }
 
@@ -313,65 +307,17 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
             holder.setVisible(R.id.tv_rank_num, false)
                     .setText(R.id.tv_title, item.title)
                     .setText(R.id.tv_author, item.author)
-                    .setText(R.id.tv_play, formatNumber(item.play))
-                    .setText(R.id.tv_danmakus, formatNumber(item.video_review));
+                    .setText(R.id.tv_play, BiliHelper.formatNumber(item.play))
+                    .setText(R.id.tv_danmakus, BiliHelper.formatNumber(item.video_review));
             Glide.with(CategoryPageFragment.this)
                     .load(item.pic)
                     .placeholder(R.drawable.bili_default_image_tv)
                     .into((ImageView) holder.getView(R.id.iv_pic));
-            tintTextDrawables(holder,textColorSecondary,R.id.iv_author,R.id.iv_play,R.id.iv_danmakus);
-        }
-
-        private void tintTextDrawables(BaseViewHolder holder,int color,int ...resIds){
-            for(int resId : resIds){
-                if(Boolean.TRUE.equals(holder.getView(resId).getTag(R.id.text_view_drawable_tint))){
-                    L.d("drawablesdrawables: continue");
-                    continue;
-                }
-                tintDrawable(holder.getView(resId),color);
-            }
-        }
-
-        //http://chuansong.me/n/400689551333
-        private void tintDrawable(View view, int color) {
-            if(view instanceof TextView){//not function
-                TextView tv = (TextView) view;
-                Drawable[] drawables = tv.getCompoundDrawablesRelative();
-                L.d("drawablesdrawables:"+ Arrays.toString(drawables));
-                if(drawables == null ) return;
-                for(int i = 0;i < drawables.length;i++){
-                    Drawable drawable = drawables[i];
-                    if(drawable != null){
-                        Drawable d = DrawableCompat.wrap(drawable).mutate();
-                        DrawableCompat.setTintList(d, ColorStateList.valueOf(color));
-                        drawables[i] = d;
-                    }
-                }
-                tv.setCompoundDrawablesRelative(drawables[0],drawables[1],drawables[2],drawables[3]);
-                L.d("drawablesdrawables 11:"+ Arrays.toString(drawables));
-                tv.setTag(R.id.text_view_drawable_tint,Boolean.TRUE);
-            }else if(view instanceof ImageView){
-                ImageView iv = (ImageView) view;
-                Drawable d = DrawableCompat.wrap(iv.getDrawable());
-                DrawableCompat.setTintList(d, ColorStateList.valueOf(color));
-                iv.setImageDrawable(d);
-            }
-        }
-    }
-
-    public static String formatNumber(String num) {
-        if(TextUtils.isDigitsOnly(num)){
-            return formatNumber(Integer.parseInt(num));
-        }
-        return num;
-    }
-
-    public static String formatNumber(int num) {
-        if (num > 10000) {
-            return String.format("%.1f万", (num * 1.0f / 10000));
-        } else {
-            return String.valueOf(num);
+            BiliViewHelper.tintTextDrawables(holder,textColorSecondary,
+                    R.id.tv_author,R.id.tv_play,R.id.tv_danmakus);
         }
 
     }
+
+
 }

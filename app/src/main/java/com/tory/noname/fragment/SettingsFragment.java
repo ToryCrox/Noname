@@ -1,11 +1,12 @@
 package com.tory.noname.fragment;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.bumptech.glide.Glide;
 import com.tory.noname.R;
@@ -20,8 +21,11 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-
-public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+/**
+ * https://developer.android.com/guide/topics/ui/settings.html#Activity
+ * https://developer.android.com/reference/android/support/v14/preference/PreferenceFragment.html
+ */
+public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 
     public static final String FRAGMENT_TAG = "TAG_SETTING_FRAGMENT";
@@ -39,21 +43,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
-    }
-
-    @Override
-    public void onCreatePreferences(Bundle bundle, String s) {
+    public void onCreate(Bundle bundle) {
         addPreferencesFromResource(R.xml.settings);
         //getPreferenceManager().setSharedPreferencesName(SettingHelper.SHARED_PATH);
         //onSharedPreferenceChanged(getPreferenceScreen().getSharedPreferences());
         mSettingHelper = SettingHelper.getInstance(getActivity());
         onHiddenChanged(false);
     }
+
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -65,11 +62,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     public void onCatchSizeChange() {
+        final Activity activity = getActivity();
         Observable.create(new Observable.OnSubscribe<String>() {
                     @Override
                     public void call(Subscriber<? super String> subscriber) {
-                        String s = FileUtils.getCacheSize(getContext());
-                        String s1 = FileUtils.getFileSizeFormat(Glide.getPhotoCacheDir(getContext()));
+                        String s = FileUtils.getCacheSize(activity);
+                        String s1 = FileUtils.getFileSizeFormat(Glide.getPhotoCacheDir(activity));
                         subscriber.onNext(s);
                         subscriber.onNext("图片缓存:"+s1);
                         subscriber.onCompleted();
@@ -112,10 +110,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         }
     }
 
+
     @Override
-    public boolean onPreferenceTreeClick(Preference preference) {
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, android.preference.Preference preference) {
         if (preference.getKey().equals("cache_clear")) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                     .setMessage("清除缓存")
                     .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                         @Override
@@ -128,7 +127,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                             Observable.create(new Observable.OnSubscribe<Void>() {
                                         @Override
                                         public void call(Subscriber<? super Void> subscriber) {
-                                            FileUtils.clearCache(getContext());
+                                            FileUtils.clearCache(getActivity());
                                             subscriber.onNext(null);
                                             subscriber.onCompleted();
                                         }
@@ -146,7 +145,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                     });
             builder.show();
         }else if(preference.getKey().equals("photo_cache_clear")){
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                     .setMessage("清除图片缓存")
                     .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                         @Override
@@ -159,7 +158,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                             Observable.create(new Observable.OnSubscribe<Void>() {
                                 @Override
                                 public void call(Subscriber<? super Void> subscriber) {
-                                    Glide.get(getContext()).clearDiskCache();
+                                    Glide.get(getActivity()).clearDiskCache();
                                     subscriber.onNext(null);
                                     subscriber.onCompleted();
                                 }
@@ -177,6 +176,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                     });
             builder.show();
         }
-        return super.onPreferenceTreeClick(preference);
+        return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
 }

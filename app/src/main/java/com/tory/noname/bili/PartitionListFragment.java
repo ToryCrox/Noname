@@ -97,7 +97,7 @@ public class PartitionListFragment extends Fragment implements BaseRecyclerAdapt
 
 
         public CategoryAdpater(List<CategoryMeta> data) {
-            super(R.layout.fragment_bili_category, data);
+            super(R.layout.item_bili_partition, data);
         }
 
         @Override

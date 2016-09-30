@@ -1,6 +1,7 @@
 package com.tory.noname.adapter;
 
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -147,7 +148,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
         notifyDataSetChanged();
     }
 
-    public void addAll(List<T> beans) {
+    public void addAll(@NonNull List<T> beans) {
         mData.addAll(beans);
         notifyDataSetChanged();
     }

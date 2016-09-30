@@ -32,6 +32,8 @@ import okhttp3.internal.io.FileSystem;
 import okio.BufferedSource;
 import okio.Okio;
 
+import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
+
 /**
  * Author: XT
  *http://www.jianshu.com/p/4c17956fe3b4
@@ -247,7 +249,7 @@ public class XOkHttpUtils {
             L.d("createUrl:"+sb.toString());
             return sb.toString();
         } catch (UnsupportedEncodingException e) {
-
+            L.e(TAG,"createUrlFromParams "+e.toString());
         }
         return url;
     }

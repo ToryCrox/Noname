@@ -3,19 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="基本设置">
 
-    <CheckBoxPreference
-        android:key="mode_night"
-        android:defaultValue="false"
-        android:title="日间模式"
-        android:summary="切换主题"
-        />
+    <PreferenceCategory android:title="其它">
 
-    <Preference
-        android:key="cache_clear"
-        android:defaultValue="false"
-        android:title="清除缓存" />
-    <Preference
-        android:key="photo_cache_clear"
-        android:defaultValue="false"
-        android:title="清除图片缓存" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="mode_night"
+            android:summary="切换主题"
+            android:title="日间模式" />
+
+        <Preference
+            android:defaultValue="false"
+            android:key="cache_clear"
+            android:title="清除缓存" />
+        <Preference
+            android:defaultValue="false"
+            android:key="photo_cache_clear"
+            android:title="清除图片缓存" />
+    </PreferenceCategory>
 </PreferenceScreen>

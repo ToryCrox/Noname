@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.SparseIntArray;
 
 import com.alibaba.fastjson.JSONObject;
@@ -151,5 +152,20 @@ public class BiliHelper {
         return Md5Util.digest(sb.append(appkey).toString());
     }
 
+
+    public static String formatNumber(String num) {
+        if(TextUtils.isDigitsOnly(num)){
+            return formatNumber(Integer.parseInt(num));
+        }
+        return num;
+    }
+
+    public static String formatNumber(int num) {
+        if (num > 10000) {
+            return String.format("%.1f万", (num * 1.0f / 10000));
+        } else {
+            return String.valueOf(num);
+        }
+    }
 
 }

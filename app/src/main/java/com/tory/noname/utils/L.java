@@ -10,7 +10,7 @@ import android.util.Log;
 public class L {
 
     public static final String TAG = "NoName";
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = Log.isLoggable(TAG,Log.VERBOSE);
 
     public static void d(String msg){
         if(DEBUG){
