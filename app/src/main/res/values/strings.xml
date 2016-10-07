@@ -16,4 +16,17 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+
+    <string name="pf_web_selete_key">pf_web_selete_key</string>
+    <string name="pf_web_selete_title">设置默认Web内核</string>
+    <string name="pf_web_selete_summary">设置默认Web内核</string>
+    <string-array name="pf_web_selete_entries">
+        <item>默认</item>
+        <item>X5</item>
+    </string-array>
+    <string-array name="pf_web_selete_entry_values">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
 </resources>

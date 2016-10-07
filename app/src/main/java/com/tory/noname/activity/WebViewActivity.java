@@ -1,32 +1,14 @@
 package com.tory.noname.activity;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ProgressBar;
 
 import com.tory.noname.R;
-import com.tory.noname.activity.base.BaseActivity;
-import com.tory.noname.utils.L;
-import com.tory.noname.utils.Utilities;
+import com.tory.noname.activity.base.BaseWebViewActivity;
 
-public class WebViewActivity extends BaseActivity {
-
-    public static final String WEB_URL = "web_url";
-    public static final String ACTION = "com.tory.action.WEB_VIEW";
-
-    private WebView mWebView;
-    private ProgressBar mProgressBar;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private String mUrl;
+public class WebViewActivity extends BaseWebViewActivity<WebView> {
 
     @Override
     public int bindLayout() {
@@ -35,60 +17,36 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        initToolbar();
-        setDisplayHomeAsUpEnabled(true);
-        setToolbarScrolled(true);
-        mUrl = getIntent().getStringExtra(WEB_URL);
-        mProgressBar = (ProgressBar) findViewById(R.id.progressbar);
-        mProgressBar.setMax(100);
-        mWebView = (WebView) findViewById(R.id.webView);
-        initWebViewSetting(mWebView);
+        super.initView();
         mWebView.setWebViewClient(new MyWebViewClient());
         mWebView.setWebChromeClient(new MyWebChromeClient());
-
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
-        Utilities.initSwipeRefresh(mSwipeRefreshLayout);
-
         setToolbarTitle("页面加载中……");
-
-        setToolbarBackpress();
-        initNavIcon();
-    }
-
-
-
-    @Override
-    public void doBusiness() {
-        mWebView.loadUrl(mUrl);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mWebView.loadUrl(mWebView.getUrl());
-            }
-        });
     }
 
     @Override
-    public void onBackPressed() {
-        if (canGoBanck()) {
-            goBack();
-            initNavIcon();
-        } else {
-            finish();
-        }
+    protected void loadUrl(String url) {
+        mWebView.loadUrl(url);
     }
 
-    private void goBack() {
+    @Override
+    protected void goBack() {
         if (mWebView != null) {
             mWebView.goBack();
         }
     }
 
-    private boolean canGoBanck() {
+    @Override
+    protected boolean canGoBanck() {
         return mWebView != null && mWebView.canGoBack();
     }
 
-    private void initWebViewSetting(WebView webView) {
+    @Override
+    protected String getWebUrl() {
+        return mWebView.getUrl();
+    }
+
+    @Override
+    protected void initWebViewSetting(WebView webView) {
         WebSettings webSettings = webView.getSettings();
         webView.requestFocusFromTouch();//支持获取手势焦点，输入用户名、密码或其他
         webSettings.setJavaScriptEnabled(true);//支持js
@@ -119,13 +77,7 @@ public class WebViewActivity extends BaseActivity {
     private class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (url.startsWith("http")) {
-                view.loadUrl(url);
-            } else {
-                return startActionView(WebViewActivity.this, url);
-            }
-            return true;
-
+            return interceptUrlLoading(url);
         }
     }
 
@@ -133,14 +85,7 @@ public class WebViewActivity extends BaseActivity {
     private class MyWebChromeClient extends WebChromeClient {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
-            //super.onProgressChanged(view, newProgress);
-            mProgressBar.setProgress(newProgress);
-            if (newProgress == 100) {
-                mSwipeRefreshLayout.setRefreshing(false);
-                mProgressBar.setVisibility(View.GONE);
-            } else {
-                mProgressBar.setVisibility(View.VISIBLE);
-            }
+            progressChanged(newProgress);
         }
 
         //获取Web页中的title用来设置自己界面中的title
@@ -149,78 +94,9 @@ public class WebViewActivity extends BaseActivity {
         @Override
         public void onReceivedTitle(WebView view, String title) {
             //super.onReceivedTitle(view, title);
-            initNavIcon();
-            mToolbar.setTitle(title);
-            mSwipeRefreshLayout.setRefreshing(false);
+            receivedTitle(title);
+
         }
     }
 
-
-    private void initNavIcon() {
-        if (canGoBanck()) {
-            mToolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        } else {
-            mToolbar.setNavigationIcon(R.drawable.abc_ic_clear_mtrl_alpha);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_web, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
-        switch (item.getItemId()) {
-            case R.id.action_open_in_brower:
-                Utilities.openInBrowser(this,mWebView.getUrl());
-                break;
-            case R.id.action_url_copy:
-                Utilities.copyToClipboar(this,mWebView.getUrl());
-                break;
-            case R.id.action_share:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public boolean startActionView(Context context, String url) {
-        try {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            compeletIntentWithUrl(intent, url);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
-            return true;
-        } catch (Exception e) {
-            L.w(TAG, "open url error:" + url);
-            return false;
-        }
-    }
-
-    private void compeletIntentWithUrl(Intent intent, String url) {
-        if(url.startsWith("intent://")){
-            L.d(TAG,"compeletIntentWithUrl ");
-            String[] strs = url.split(";");
-            String uri = null;
-            String scheme=null;
-            for (String str :  strs){
-                if(str.startsWith("intent://")){
-                    uri = str;
-                }else if(str.startsWith("package=")){
-                    intent.setPackage(str.split("=")[1]);
-                }else if(str.startsWith("scheme=")){
-                    scheme = str.split("=")[1];
-                }
-            }
-            if(scheme != null && uri != null){
-                uri = uri.replaceFirst("intent",scheme);
-            }
-            L.d(TAG,"compeletIntentWithUrl:"+uri);
-            intent.setData(Uri.parse(uri));
-        }else{
-            intent.setData(Uri.parse(url));
-        }
-    }
 }

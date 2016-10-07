@@ -40,4 +40,8 @@ public class SettingHelper {
     public void setNightMode(boolean night){
         mSpHelper.put(SP_KEY_MODE_NIGHT,night);
     }
+
+    public String getWebKener(){
+        return mSpHelper.getString("pf_web_selete_key");
+    }
 }

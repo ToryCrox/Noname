@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * To work on unit tests, switch the Test Artifact in the Build Variants view.
@@ -23,6 +25,12 @@ public class ExampleUnitTest {
         getParams();
     }
 
+    @Test
+    public void testMatcher() throws Exception{
+        Pattern p=Pattern.compile("(le|letv)\\.com");
+        Matcher matcher = p.matcher("http://www.le.com/comic/5938.html");
+        System.out.println("matcher1:"+matcher.find());
+    }
 
     private Map<String, String> getParams() {
         Map<String, String> params = new HashMap<>();

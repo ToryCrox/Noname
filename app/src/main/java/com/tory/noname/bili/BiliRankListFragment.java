@@ -87,7 +87,6 @@ public class BiliRankListFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        L.d(TAG,"onResume isHidden:"+isHidden());
         onHiddenChanged(isHidden());
     }
 
@@ -100,10 +99,10 @@ public class BiliRankListFragment extends Fragment{
     private void showSpinner(boolean show){
         BaseActivity activity = (BaseActivity) getActivity();
         Toolbar toolbar = activity.getToolbar();
-        Spinner rankRangeSpinner = (Spinner) toolbar.findViewById(R.id.spinner_filter_rank_range);
+        Spinner rankRangeSpinner = (Spinner) toolbar.findViewById(R.id.simple_spinner_item_in_toolbar);
         if(rankRangeSpinner == null && show){
             rankRangeSpinner = creatSpinner();
-            rankRangeSpinner.setId(R.id.spinner_filter_rank_range);
+            rankRangeSpinner.setId(R.id.simple_spinner_item_in_toolbar);
             Toolbar.LayoutParams lp = new Toolbar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             lp.gravity = GravityCompat.END;

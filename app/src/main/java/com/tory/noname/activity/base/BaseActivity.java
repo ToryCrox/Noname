@@ -37,7 +37,6 @@ public abstract class BaseActivity extends AppCompatActivity  {
         initToolbar();
         initView();
         doBusiness();
-
     }
 
     protected void setThemeColor(){
@@ -49,6 +48,8 @@ public abstract class BaseActivity extends AppCompatActivity  {
         if(mToolbar != null){
             setSupportActionBar(mToolbar);
         }
+        setDisplayHomeAsUpEnabled(true);
+        setToolbarBackpress();
     }
 
     //监听toolbar左上角后退按钮
@@ -176,9 +177,4 @@ public abstract class BaseActivity extends AppCompatActivity  {
      *
      */
     public abstract void doBusiness();
-
-    /**
-     * Actionbar点击返回键关闭事件
-     */
-
 }

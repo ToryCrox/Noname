@@ -16,7 +16,8 @@ public class CategoryMeta implements Parcelable{
     public static int TYPE_NOMAL = 0;
     public static int TYPE_LIVE = 1;
     public static int TYPE_GAME= 2;
-    public static int TYPE_RANK= 2;
+    public static int TYPE_RANK= 3;
+    public static int TYPE_BGM_LIST= 4;
 
     public int tid;
     public String typename;

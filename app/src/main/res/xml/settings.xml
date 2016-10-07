@@ -1,23 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:title="基本设置">
+                  xmlns:app="http://schemas.android.com/apk/res-auto"
+                  android:title="基本设置">
 
-    <PreferenceCategory android:title="其它">
+    <PreferenceCategory
+        android:layout="@layout/preference_category_widget"
+        android:title="常规">
 
-        <CheckBoxPreference
+        <com.tory.preference.SwitchPreference
+            android:id="@+id/switchPreferenceCompat"
             android:defaultValue="false"
             android:key="mode_night"
             android:summary="切换主题"
-            android:title="日间模式" />
-
-        <Preference
+            android:title="日间模式"/>
+        <com.tory.preference.Preference
             android:defaultValue="false"
             android:key="cache_clear"
-            android:title="清除缓存" />
-        <Preference
+            android:title="清除缓存"/>
+        <com.tory.preference.Preference
             android:defaultValue="false"
             android:key="photo_cache_clear"
-            android:title="清除图片缓存" />
+            android:title="清除图片缓存"/>
+        <ListPreference
+            android:entries="@array/pf_web_selete_entries"
+            android:entryValues="@array/pf_web_selete_entry_values"
+            android:key="@string/pf_web_selete_key"
+            android:layout="@layout/preference_item"
+            android:summary="@string/pf_web_selete_summary"
+            android:title="@string/pf_web_selete_title"/>
     </PreferenceCategory>
 </PreferenceScreen>

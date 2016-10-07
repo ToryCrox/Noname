@@ -21,6 +21,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
+
 /**
  * https://developer.android.com/guide/topics/ui/settings.html#Activity
  * https://developer.android.com/reference/android/support/v14/preference/PreferenceFragment.html
@@ -43,7 +44,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     }
 
     @Override
-    public void onCreate(Bundle bundle) {
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
         //getPreferenceManager().setSharedPreferencesName(SettingHelper.SHARED_PATH);
         //onSharedPreferenceChanged(getPreferenceScreen().getSharedPreferences());
@@ -63,6 +66,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     public void onCatchSizeChange() {
         final Activity activity = getActivity();
+
         Observable.create(new Observable.OnSubscribe<String>() {
                     @Override
                     public void call(Subscriber<? super String> subscriber) {
@@ -106,7 +110,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (SettingHelper.SP_KEY_MODE_NIGHT.equals(key)) {
             L.d(TAG, "onSharedPreferenceChanged key:" + mSettingHelper.isNightMode());
-            Utilities.setNightMode(getActivity(), mSettingHelper.isNightMode(), true);
+            Utilities.setNightMode(getActivity(), mSettingHelper.isNightMode(), false);
         }
     }
 

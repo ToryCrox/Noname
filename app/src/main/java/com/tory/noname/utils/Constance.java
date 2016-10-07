@@ -35,9 +35,4 @@ public class Constance {
         //example:  http://gank.io/api/data/Android/10/1
         public static String BASE_URL = "http://gank.io/api/data";
     }
-
-    public interface Bili{
-
-
-    }
 }

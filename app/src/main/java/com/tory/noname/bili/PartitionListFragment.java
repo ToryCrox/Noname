@@ -75,6 +75,8 @@ public class PartitionListFragment extends Fragment implements BaseRecyclerAdapt
         list.addAll(root.child);
         CategoryMeta rank = new CategoryMeta(-1,"排行",R.drawable.ic_btn_rank_all,CategoryMeta.TYPE_RANK);
         list.add(rank);
+        CategoryMeta bgmlist = new CategoryMeta(-1,"番组放送",R.drawable.logo_bgmlist,CategoryMeta.TYPE_BGM_LIST);
+        list.add(bgmlist);
         mCateList = list;
         L.d(TAG,"list:"+mCateList);
     }

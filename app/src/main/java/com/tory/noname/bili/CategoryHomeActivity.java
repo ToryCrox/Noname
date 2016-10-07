@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import com.tory.noname.R;
 import com.tory.noname.activity.base.BaseActivity;
 import com.tory.noname.bili.bean.CategoryMeta;
+import com.tory.noname.bili.bgmlist.BgmlistFragment;
 import com.tory.noname.utils.L;
 
 public class CategoryHomeActivity extends BaseActivity {
@@ -21,7 +22,7 @@ public class CategoryHomeActivity extends BaseActivity {
 
     @Override
     public int bindLayout() {
-        return R.layout.activity_category_home;
+        return R.layout.activity_content_main;
     }
 
     @Override
@@ -37,6 +38,8 @@ public class CategoryHomeActivity extends BaseActivity {
             showFragment(BiliRankListFragment.FRAGMENT_TAG, true, false);
         }else if(mCate.type == CategoryMeta.TYPE_NOMAL){
             showFragment(CategoryHomeFragment.FRAGMENT_TAG,true,false);
+        }else if(mCate.type == CategoryMeta.TYPE_BGM_LIST){
+            showFragment(BgmlistFragment.FRAGMENT_TAG,true,false);
         }
         setToolbarTitle(mCate.typename);
     }
@@ -56,6 +59,8 @@ public class CategoryHomeActivity extends BaseActivity {
             return new BiliRankListFragment();
         }else if(CategoryHomeFragment.FRAGMENT_TAG.equals(tag)){
             return CategoryHomeFragment.newInstance(mCate);
+        }else if(BgmlistFragment.FRAGMENT_TAG.equals(tag)){
+            return BgmlistFragment.newInstance();
         }
         throw new IllegalStateException("Unexpected fragment: " + tag);
     }

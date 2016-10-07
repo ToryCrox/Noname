@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="95dp"
     android:gravity="center"
-    android:foreground="?attr/selectableItemBackgroundBorderless"
+    android:clickable="true"
+    android:background="?attr/selectableItemBackgroundBorderless"
     android:orientation="vertical">
 
     <ImageView

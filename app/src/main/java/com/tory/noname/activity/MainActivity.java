@@ -1,5 +1,6 @@
 package com.tory.noname.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -15,7 +16,6 @@ import android.view.MenuItem;
 import com.tory.noname.R;
 import com.tory.noname.activity.base.BaseActivity;
 import com.tory.noname.bili.PartitionListFragment;
-import com.tory.noname.fragment.SettingsFragment;
 import com.tory.noname.gank.GankListFragment;
 import com.tory.noname.utils.L;
 import com.tory.noname.utils.SettingHelper;
@@ -102,10 +102,12 @@ public class MainActivity extends BaseActivity
 
         switch (id){
             case R.id.nav_ganhuo:
-            case R.id.nav_setting:
             case R.id.nav_bili:
                 String tag = mTagMenuIds.get(id);
                 showFragmentAndHideOther(tag);
+                break;
+            case R.id.nav_setting:
+                startActivity(SettingActivity.class);
                 break;
             case R.id.nav_mode_change:
                 boolean nightMode = mSettingHelper.isNightModeNow();
@@ -129,8 +131,8 @@ public class MainActivity extends BaseActivity
     private void initTagMenuIds() {
         mTagMenuIds = new SparseArray<>();
         mTagMenuIds.put(R.id.nav_ganhuo,GankListFragment.FRAGMENT_TAG);
-        mTagMenuIds.put(R.id.nav_setting,SettingsFragment.FRAGMENT_TAG);
         mTagMenuIds.put(R.id.nav_bili,PartitionListFragment.FRAGMENT_TAG);
+        //mTagMenuIds.put(R.id.nav_setting,SettingsFragment.FRAGMENT_TAG);
     }
 
 
@@ -152,14 +154,6 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    public void showGankListFragment() {
-        showFragmentAndHideOther(GankListFragment.FRAGMENT_TAG);
-    }
-
-    private void showSettingFragment() {
-        showFragmentAndHideOther(SettingsFragment.FRAGMENT_TAG);
-    }
-
     public void showFragmentAndHideOther(String tag){
         hideShowingFragment(tag);
         showFragment(tag,true,false);
@@ -172,12 +166,6 @@ public class MainActivity extends BaseActivity
             showFragment(mShowingFragmentTag,false,false);
         }
     }
-
-    public void showFragment(String tag,boolean show){
-        showFragment(tag,show,false);
-    }
-
-
     @Override
     public int getFragmentContainer(String tag) {
         return R.id.frame_content;
@@ -186,11 +174,16 @@ public class MainActivity extends BaseActivity
     public Fragment createNewFragmentForTag(String tag){
         if (GankListFragment.FRAGMENT_TAG.equals(tag)) {
             return new GankListFragment();
-        }else if(SettingsFragment.FRAGMENT_TAG.equals(tag)) {
+        }/*else if(SettingsFragment.FRAGMENT_TAG.equals(tag)) {
             return SettingsFragment.newInstance();
-        }else if(PartitionListFragment.FRAGMENT_TAG.equals(tag)){
+        }*/else if(PartitionListFragment.FRAGMENT_TAG.equals(tag)){
             return new PartitionListFragment();
         }
         throw new IllegalStateException("Unexpected fragment: " + tag);
+    }
+
+    protected void startActivity(Class cls){
+        Intent intent = new Intent(this,cls);
+        startActivity(intent);
     }
 }

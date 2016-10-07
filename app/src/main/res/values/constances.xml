@@ -2,7 +2,7 @@
 <resources>
     <item name = "text_view_drawable_tint" type="id"/>
 
-    <item name = "spinner_filter_rank_range" type="id"/>
+    <item name = "simple_spinner_item_in_toolbar" type="id"/>
 
 
 </resources>

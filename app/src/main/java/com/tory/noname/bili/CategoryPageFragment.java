@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.tory.noname.R;
 import com.tory.noname.adapter.BaseRecyclerAdapter;
 import com.tory.noname.adapter.BaseViewHolder;
+import com.tory.noname.adapter.EndlessRecyclerOnScrollListener;
 import com.tory.noname.bili.bean.CategoryMeta;
 import com.tory.noname.bili.bean.VideoItem;
 import com.tory.noname.fragment.BasePageFragment;
@@ -28,12 +29,9 @@ import com.tory.noname.utils.Utilities;
 import com.tory.noname.utils.http.XOkHttpUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 
 /**
@@ -57,11 +55,11 @@ import java.util.Set;
  */
 public class CategoryPageFragment extends BasePageFragment implements BaseRecyclerAdapter.OnRecyclerViewItemClickListener, BaseRecyclerAdapter.OnRecyclerViewItemLongClickListener {
 
-    public static final String FRAGMENT_TAG = "CategoryPageFragment";
+    public static final String FRAGMENT_TAG = "BgmPageFragment";
 
     public static final String ARG_CATE = "arg_cate";
 
-    private static final String TAG = "CategoryPageFragment";
+    private static final String TAG = "BgmPageFragment";
 
     CategoryMeta mCate;
     private String mTag;
@@ -116,16 +114,25 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
+                        mPageIndex = 1;
                         prepareFetchData(true);
                     }
                 }
         );
+
+        mRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager) mRecyclerView.getLayoutManager()) {
+            @Override
+            public void onLoadMore(int currentPage) {
+                mPageIndex = currentPage;
+                prepareFetchData(true);
+            }
+        });
     }
 
     @Override
     public void fetchData() {
-        XOkHttpUtils.get(getBaseUrl1())
-                .params(getParams1())
+        XOkHttpUtils.get(getBaseUrl())
+                .params(getParams())
                 .tag(this)
                 .execute(new XOkHttpUtils.HttpCallBack() {
                     @Override
@@ -147,39 +154,11 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
                 });
 
     }
-
-    private Map<String, String> getParams() {
-        Map<String, String> params = new HashMap<>();
-        params.put("access_key", BiliApis.ACCESS_KEY);
-        params.put("_device", "android");
-        params.put("_hwid", "c475c83f9dfc26b7");
-        params.put("_ulv", "10000");
-        params.put("build", "426003");
-        params.put("mobi_app", "android");
-        params.put("order", "default");
-        params.put("platform", "android");
-        params.put("tid", mCate.tid + "");
-        params.put("page", mPageIndex + "");
-        params.put("pagesize", mPageSize + "");
-        String sign = BiliHelper.sign(params, BiliApis.APPKEY);
-        params.put("appkey", BiliApis.APPKEY);
-        params.put("type", "json");
-        L.d(TAG, "sign:" + sign);
-        params.put("sign", sign);
-        //params.put("ts", ""+ System.currentTimeMillis()/1000);
-        return params;
-    }
-
-
     public String getBaseUrl() {
-        return "http://api.bilibili.com/list";
-    }
-
-    public String getBaseUrl1() {
         return "http://api.bilibili.com/archive_rank/getarchiverankbypartion";
     }
 
-    private Map<String, String> getParams1() {
+    private Map<String, String> getParams() {
         Map<String, String> params = new HashMap<>();
         params.put("type", "json");
         params.put("pn", "" + mPageIndex);
@@ -188,7 +167,7 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
         return params;
     }
 
-    private List<VideoItem> parseData1(String result) {
+    private List<VideoItem> parseData(String result) {
         List<VideoItem> list = null;
         if (!TextUtils.isEmpty(result)) {
             try {
@@ -207,7 +186,7 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
                     L.w(TAG, " return code error:" + code + "result:" + result);
                 }
             } catch (Exception e) {
-                L.d(TAG, "parseData error url:" + getBaseUrl1() + "\n" + result);
+                L.d(TAG, "parseData error url:" + getBaseUrl() + "\n" + result);
                 Log.e(TAG, "" + e.toString());
 
             }
@@ -219,53 +198,10 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
 
 
     private void refresData(String result) {
-        mRecyclerAdpater.clear();
-        mRecyclerAdpater.addAll(parseData1(result));
-    }
-
-    private List<VideoItem> parseData(String result) {
-        List<VideoItem> list = null;
-        if (!TextUtils.isEmpty(result)) {
-            try {
-                JSONObject jsonObj = JSONObject.parseObject(result);
-                //JSONObject listObj = jsonObj.getJSONObject("list");
-                int code = jsonObj.getIntValue("code");
-                if (code == 0) {
-                    //list = JSONObject.parseArray(jsonObj.getString("list"), VideoItem.class);
-                    JSONObject listObj = jsonObj.getJSONObject("list");
-                    L.d("listObj: " + listObj);
-                    list = new ArrayList<>();
-                    Set<String> keySet = listObj.keySet();
-                    String[] keyStr = new String[keySet.size()];
-                    keySet.toArray(keyStr);
-                    Arrays.sort(keyStr, new Comparator<String>() {
-                        @Override
-                        public int compare(String s1, String s2) {
-                            if (!TextUtils.isDigitsOnly(s1) || !TextUtils.isDigitsOnly(s2))
-                                return 0;
-                            return Integer.parseInt(s1) - Integer.parseInt(s2);
-                        }
-                    });
-                    L.d("keyStr:" + keyStr);
-                    for (String key : keyStr) {
-                        if (!TextUtils.isDigitsOnly(key)) continue;
-                        VideoItem item = listObj.getObject(key, VideoItem.class);
-                        list.add(item);
-                    }
-
-                    L.d(list + "");
-                } else {
-                    L.w(TAG, " return code error:" + code + "result:" + result);
-                }
-            } catch (Exception e) {
-                L.d(TAG, "parseData error url:" + getBaseUrl() + "\n" + result);
-                Log.e(TAG, "" + e.toString());
-
-            }
-
+        if(mPageIndex == 1){
+            mRecyclerAdpater.clear();
         }
-        if (list == null) list = new ArrayList<>();
-        return list;
+        mRecyclerAdpater.addAll(parseData(result));
     }
 
     @Override
@@ -299,6 +235,7 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
         int textColorSecondary;
         public CatePageRecyclerAdapter(List<VideoItem> data) {
             super(R.layout.item_bili_video, data);
+            addFooterView();
             textColorSecondary = SystemConfigUtils.getThemeColor(getActivity(),android.R.attr.textColorSecondary);
         }
 

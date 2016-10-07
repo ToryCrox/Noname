@@ -10,13 +10,13 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 
 import com.tory.noname.R;
-import com.tory.noname.activity.WebViewActivity;
 
 import java.lang.ref.WeakReference;
 
@@ -24,6 +24,8 @@ import java.lang.ref.WeakReference;
  * Created by tao.xu2 on 2016/8/19.
  */
 public class Utilities {
+
+
 
     public static final boolean ATLEAST_MARSHMALLOW = Build.VERSION.SDK_INT >= 23;
 
@@ -60,7 +62,7 @@ public class Utilities {
         setNightMode(context, night, true);
     }
 
-    public static void setNightMode(Context context, boolean night, boolean recreateNow) {
+    public static void setNightMode(@NonNull Context context, boolean night, boolean recreateNow) {
         boolean nowmode = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
         boolean modeChange = nowmode == night;
         int mode = night ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
@@ -115,14 +117,28 @@ public class Utilities {
      * @return
      */
     public static String pasteFromClipboar(Context context) {
-// 得到剪贴板管理器
+        // 得到剪贴板管理器
         ClipboardManager cmb = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         return cmb.getText().toString().trim();
     }
 
+
+    public static final String WEB_URL = "web_url";
+    public static final String ACTION_WEB_VIEW = "com.tory.action.WEB_VIEW";
+    public static final String ACTION_WEB_VIEW_X5 = "com.tory.action.WEB_VIEW_X5";
+    /**
+     * 用内部浏览器打开
+     * @param context
+     * @param url
+     */
     public static void startWeb(Context context, String url) {
-        Intent intent = new Intent(WebViewActivity.ACTION);
-        intent.putExtra(WebViewActivity.WEB_URL, url);
+        Intent intent = new Intent();
+        if(SettingHelper.getInstance(context).getWebKener().equals("1")){
+            intent.setAction(ACTION_WEB_VIEW);
+        }else{
+            intent.setAction(ACTION_WEB_VIEW_X5);
+        }
+        intent.putExtra(WEB_URL, url);
         context.startActivity(intent);
     }
 
