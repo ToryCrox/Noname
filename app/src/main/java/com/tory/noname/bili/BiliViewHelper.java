@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tory.noname.R;
-import com.tory.noname.adapter.BaseViewHolder;
+import com.tory.noname.recycler.BaseViewHolder;
 
 /**
  * Created by tao.xu2 on 2016/9/26.
@@ -28,7 +28,7 @@ public class BiliViewHelper {
 
     //http://chuansong.me/n/400689551333
     public  static void tintDrawable(View view, int color) {
-        if(view instanceof TextView){//not function
+        if(view instanceof TextView){
             TextView tv = (TextView) view;
             Drawable[] drawables = tv.getCompoundDrawablesRelative();
             if(drawables == null ) return;

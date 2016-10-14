@@ -16,10 +16,11 @@ import android.widget.ImageView;
 import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 import com.tory.noname.R;
-import com.tory.noname.adapter.BaseRecyclerAdapter;
-import com.tory.noname.adapter.BaseViewHolder;
+import com.tory.noname.bili.apis.BiliApis;
+import com.tory.noname.recycler.BaseRecyclerAdapter;
+import com.tory.noname.recycler.BaseViewHolder;
 import com.tory.noname.bili.bean.BiliRank;
-import com.tory.noname.fragment.BasePageFragment;
+import com.tory.noname.main.base.BasePageFragment;
 import com.tory.noname.utils.L;
 import com.tory.noname.utils.SystemConfigUtils;
 import com.tory.noname.utils.Utilities;
@@ -74,15 +75,24 @@ public class BiliRankPageFragment extends BasePageFragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mRankRange = getArguments().getInt(RANK_RANGE);
-            mRankCatelogyId = getArguments().getInt(RANK_CATALOGY_TAB_ID);
-            mRankType = getArguments().getString(RANK_TYPE_NAME);
-            mTitle = getArguments().getString(RANK_TITLE);
+        Bundle bundle = savedInstanceState != null ? savedInstanceState : getArguments();
+        if (bundle != null) {
+            mTitle = bundle.getString(RANK_TITLE);
+            mRankRange = bundle.getInt(RANK_RANGE);
+            mRankCatelogyId = bundle.getInt(RANK_CATALOGY_TAB_ID);
+            mRankType = bundle.getString(RANK_TYPE_NAME);
         }
-        mRecyclerAdpater = new BiliRankRecyclerAdapter(new ArrayList<BiliRank>());
+        mRecyclerAdpater = new BiliRankRecyclerAdapter();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(RANK_TITLE, mTitle);
+        outState.putInt(RANK_RANGE, mRankRange);
+        outState.putInt(RANK_CATALOGY_TAB_ID, mRankCatelogyId);
+        outState.putString(RANK_TYPE_NAME, mRankType);
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -150,9 +160,13 @@ public class BiliRankPageFragment extends BasePageFragment implements
         return url;
     }
 
-    private void refresData(String result) {
+    private void refresData(List<BiliRank> list) {
         mRecyclerAdpater.clear();
-        mRecyclerAdpater.addAll(parseData(result));
+        mRecyclerAdpater.addAll(list);
+    }
+
+    private void refresData(String result) {
+        refresData(parseData(result));
     }
 
     private List<BiliRank> parseData(String result) {
@@ -171,7 +185,6 @@ public class BiliRankPageFragment extends BasePageFragment implements
             } catch (Exception e) {
                 L.d(TAG,"parseData error url:"+getUrl()+"\n"+result);
                 e.printStackTrace();
-
             }
 
         } else {
@@ -236,8 +249,8 @@ public class BiliRankPageFragment extends BasePageFragment implements
         int textColorPrimary;
         int textColorSecondary;
 
-        public BiliRankRecyclerAdapter(List<BiliRank> data) {
-            super(R.layout.item_bili_video, data);
+        public BiliRankRecyclerAdapter() {
+            super(R.layout.item_bili_video);
             colorAccent = SystemConfigUtils.getThemeColor(getActivity(),R.attr.colorAccent);
             textColorPrimary = SystemConfigUtils.getThemeColor(getActivity(),android.R.attr.textColorPrimary);
             textColorSecondary = SystemConfigUtils.getThemeColor(getActivity(),android.R.attr.textColorSecondary);
@@ -248,8 +261,7 @@ public class BiliRankPageFragment extends BasePageFragment implements
             int rankNum = holder.getLayoutPosition();
             holder.setText(R.id.tv_rank_num,String.valueOf(rankNum+1));
             if(rankNum < 3){
-                holder.setTextColor(R.id.tv_rank_num,colorAccent
-                        );
+                holder.setTextColor(R.id.tv_rank_num,colorAccent);
                 holder.setTextSize(R.id.tv_rank_num,18 + (3 - rankNum) * 2);
             }else{
                 holder.setTextColor(R.id.tv_rank_num,textColorPrimary);
@@ -263,7 +275,6 @@ public class BiliRankPageFragment extends BasePageFragment implements
                     .setText(R.id.tv_author,item.author)
                     .setText(R.id.tv_play,BiliHelper.formatNumber(item.play))
                     .setText(R.id.tv_danmakus,BiliHelper.formatNumber(item.video_review));
-            //tintTextDrawables(holder,textColorSecondary,R.id.iv_author,R.id.iv_play,R.id.iv_danmakus);
             BiliViewHelper.tintTextDrawables(holder,textColorSecondary,
                     R.id.tv_author,R.id.tv_play,R.id.tv_danmakus);
         }

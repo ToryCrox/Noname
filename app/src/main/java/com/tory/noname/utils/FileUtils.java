@@ -2,9 +2,7 @@ package com.tory.noname.utils;
 
 import android.content.Context;
 import android.os.Environment;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -25,7 +23,10 @@ public class FileUtils {
 
     public final static String CHARSETNAME = "UTF-8";
 
-    public final static int SIZE_BYTE = 1024;
+    public final static int SIZE_KB = 1024;
+    public final static int SIZE_MB = SIZE_KB * 1024;
+    public final static int SIZE_GB = SIZE_MB * 1024;
+
 
     /**
      * 将给定输入流中的内容转移到给定输出流
@@ -120,13 +121,32 @@ public class FileUtils {
     }
 
     /**
-     * 判断文件是否存在
+     * 判断目录是否存在
      * 
      * @param file
      * @return
      */
-    public static boolean dirExits(File file) {
+    public static boolean isDir(File file) {
         return file != null && file.isDirectory();
+    }
+
+    /**
+     * 判断是否是文件
+     *
+     * @param file
+     * @return
+     */
+    public static boolean isFile(File file){
+        return file != null &&  file.exists() && file.isFile();
+    }
+
+    /**
+     * 文件是否存在
+     * @param file
+     * @return
+     */
+    public static boolean fileExists(File file){
+        return file != null &&  file.exists();
     }
 
     /**
@@ -136,7 +156,7 @@ public class FileUtils {
      * @return
      */
     public static boolean mkdir(File file) {
-        if (!dirExits(file)) {
+        if (!isDir(file)) {
             return file.mkdirs();
         }
         return true;
@@ -210,16 +230,46 @@ public class FileUtils {
      * 可递归删除所有
      * @param dest
      */
-    public static void delete(File dest){
+    public static void delete(File dest,boolean deleteSelf){
         if(dest == null || !dest.exists()) return;
         if(dest.isFile()) {
             dest.delete();
             return;
         }
-        for (File file: dest.listFiles()) {
-            delete(file);
+        File[] files = dest.listFiles();
+        for (File file: files) {
+            delete(file,true);
         }
-        dest.delete();
+        if(deleteSelf){
+            dest.delete();
+        }
+    }
+
+    /**
+     * 删除文件或文件夹
+     * 可递归删除所有
+     * @param dest
+     */
+    public static void delete(File dest){
+        delete(dest,false);
+    }
+
+    public static boolean deletEmptyDir(File dest,boolean deleteSelf){
+        if(!isDir(dest)) return false;
+        File[] files = dest.listFiles();
+        boolean empty =  true;
+        if(files != null){
+            for (File file : files) {
+                if(!deletEmptyDir(file,true)){
+                    empty = false;
+                    break;
+                }
+            }
+        }
+        if(empty && deleteSelf){
+            return dest.delete();
+        }
+        return false;
     }
 
     /**
@@ -249,15 +299,20 @@ public class FileUtils {
         return getFileSizeFormat(size);
     }
 
+    /**
+     * 格式化文件大小字符串,保留1位小数
+     * @param size
+     * @return
+     */
     public static String getFileSizeFormat(long size){
-        if(size < SIZE_BYTE){
+        if(size < SIZE_KB){
             return size + "B";
-        }else if(size < 1024 * 1024){
-            return String.format("%.1fK",size/1024.0f);
-        }else if(size < 1024 * 1024 * 1024){
-            return String.format("%.1fM",size/(1024.0 * 1024.0f));
+        }else if(size < SIZE_MB){
+            return String.format("%.1fK",size/(float)SIZE_KB);
+        }else if(size < SIZE_GB){
+            return String.format("%.1fM",size/(float)SIZE_MB);
         }else{
-            return String.format("%.1fG",size/(1024.0f * 1024 * 1024));
+            return String.format("%.1fG",size/(float)SIZE_GB);
         }
     }
 
@@ -270,18 +325,14 @@ public class FileUtils {
      * @return
      */
     public static File getCacheDir(@NonNull Context context) {
-        Log.i("getCacheDir", "cache sdcard state: " + Environment.getExternalStorageState());
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             File cacheDir = context.getExternalCacheDir();
             if (cacheDir != null && (cacheDir.exists() || cacheDir.mkdirs())) {
-                Log.v("getCacheDir", "cache dir: " + cacheDir.getAbsolutePath());
                 return cacheDir;
             }
         }
 
         File cacheDir = context.getCacheDir();
-        Log.v("getCacheDir", "cache dir: " + cacheDir.getAbsolutePath());
-
         return cacheDir;
     }
 
@@ -290,20 +341,22 @@ public class FileUtils {
      * @param context
      */
     public static void clearCache(@NonNull Context context){
-        L.d("clear cache start");
-        long t1 = SystemClock.uptimeMillis();
         File cacheDir = getCacheDir(context);
         if(cacheDir!= null && cacheDir.isDirectory()){
             for (File file: cacheDir.listFiles()) {
                 delete(file);
             }
         }
-        L.d("clear cache end :"+(SystemClock.uptimeMillis() - t1));
     }
 
 
-    public static String getCacheSize(Context context){
-        long httpSize = getFileSize(FileUtils.getCacheDir(context));
+    /**
+     * 获取缓存大小
+     * @param context
+     * @return
+     */
+    public static String getCacheSize(@NonNull Context context){
+        long httpSize = getFileSize(getCacheDir(context));
         return getFileSizeFormat(httpSize);
     }
 

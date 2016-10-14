@@ -13,10 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tory.noname.R;
-import com.tory.noname.adapter.BaseRecyclerAdapter;
-import com.tory.noname.adapter.BaseViewHolder;
+import com.tory.noname.recycler.BaseRecyclerAdapter;
+import com.tory.noname.recycler.BaseViewHolder;
 import com.tory.noname.bili.BiliHelper;
-import com.tory.noname.fragment.BasePageFragment;
+import com.tory.noname.main.base.BasePageFragment;
 import com.tory.noname.utils.L;
 import com.tory.noname.utils.Utilities;
 

@@ -1,4 +1,4 @@
-package com.tory.noname.activity;
+package com.tory.noname.main;
 
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -6,7 +6,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.tory.noname.R;
-import com.tory.noname.activity.base.BaseWebViewActivity;
+import com.tory.noname.main.base.BaseWebViewActivity;
 
 public class WebViewActivity extends BaseWebViewActivity<WebView> {
 

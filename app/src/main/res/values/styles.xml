@@ -10,12 +10,13 @@
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionBarSize">48dp</item>
-        <!--<item name="android:textAppearanceLarge">?android:attr/textAppearance</item>-->
 
         <item name="windowActionModeOverlay">true</item><!--让ActionMode能够覆盖我们的Toolbar -->
         <item name="windowActionBarOverlay">true</item>
         <item name="actionModeStyle">@style/CustomActionMode</item>
 
+        <item name="preferenceTheme">@style/AppPreferenceThemeCustom</item>
+        <item name="alertDialogTheme">@style/AppTheme.AppDialogThemeAlert</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -55,8 +56,17 @@
         <item name="@android:windowExitAnimation">@anim/fade_out</item>
     </style>
 
+    <style name="AppTheme.AppDialogThemeAlert" parent="@style/Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 
     <style name="CustomActionMode" parent="@style/Widget.AppCompat.ActionMode">
         <item name="background">?attr/colorPrimary</item>
     </style>
+
+    <!--preference compat style start-->
+    <style name="AppPreferenceThemeCustom" parent="PreferenceThemeCustom">
+
+    </style>
+    <!--preference compat style end-->
 </resources>

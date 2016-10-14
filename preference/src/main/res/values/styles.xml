@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="PreferenceCustom">
+        <item name="android:layout">@layout/preference_item</item>
+    </style>
+
+    <style name="PreferenceCustom.Category">
+        <item name="android:layout">@layout/preference_category_widget</item>
+        <!-- The title should not dim if the category is disabled, instead only the preference children should dim. -->
+        <item name="android:shouldDisableView">false</item>
+        <item name="android:selectable">false</item>
+    </style>
+
+    <style name="PreferenceCustom.CheckBoxPreference">
+        <item name="android:widgetLayout">@layout/preference_widget_checkbox</item>
+    </style>
+
+    <style name="PreferenceCustom.DialogPreference">
+        <item name="android:positiveButtonText">@android:string/ok</item>
+        <item name="android:negativeButtonText">@android:string/cancel</item>
+    </style>
+
+    <style name="PreferenceCustom.DialogPreference.EditTextPreference">
+        <item name="android:dialogLayout">@layout/preference_dialog_edittext</item>
+    </style>
+
+    <style name="PreferenceCustom.Information">
+        <item name="android:layout">@layout/preference_information</item>
+        <item name="android:enabled">false</item>
+        <item name="android:shouldDisableView">false</item>
+    </style>
+
+    <style name="PreferenceCustom.PreferenceScreen"></style>
+
+    <style name="PreferenceCustom.SwitchPreferenceCompat">
+        <item name="android:widgetLayout">@layout/preference_widget_switch_compat</item>
+        <item name="android:switchTextOn">@string/v7_preference_on</item>
+        <item name="android:switchTextOff">@string/v7_preference_off</item>
+    </style>
+
+    <style name="PreferenceFragmentCustom">
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:divider">?android:attr/listDivider</item>
+    </style>
+
+    <style name="PreferenceFragmentListCustom">
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+    </style>
+
+    <style name="PreferenceThemeCustom" >
+        <item name="preferenceScreenStyle">@style/PreferenceCustom.PreferenceScreen</item>
+        <item name="preferenceFragmentCompatStyle">@style/PreferenceFragmentCustom</item>
+        <item name="preferenceCategoryStyle">@style/PreferenceCustom.Category</item>
+        <item name="preferenceStyle">@style/PreferenceCustom</item>
+        <item name="preferenceInformationStyle">@style/PreferenceCustom.Information</item>
+        <item name="checkBoxPreferenceStyle">@style/PreferenceCustom.CheckBoxPreference</item>
+        <item name="switchPreferenceCompatStyle">@style/PreferenceCustom.SwitchPreferenceCompat</item>
+        <item name="dialogPreferenceStyle">@style/PreferenceCustom.DialogPreference</item>
+        <item name="editTextPreferenceStyle">@style/PreferenceCustom.DialogPreference.EditTextPreference</item>
+        <item name="preferenceFragmentListStyle">@style/PreferenceFragmentListCustom</item>
+
+        <item name="android:textAppearanceLarge">?attr/textAppearanceListItem</item>
+        <item name="android:listPreferredItemHeightSmall">60dp</item>
+        <item name="android:listPreferredItemPaddingStart">16dp</item>
+        <item name="android:listPreferredItemPaddingEnd">16dp</item>
+    </style>
+</resources>

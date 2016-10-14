@@ -1,4 +1,4 @@
-package com.tory.noname.fragment;
+package com.tory.noname.main.base;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

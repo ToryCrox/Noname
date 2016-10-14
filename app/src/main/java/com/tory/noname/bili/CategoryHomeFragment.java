@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 
 import com.tory.noname.bili.bean.CategoryMeta;
-import com.tory.noname.fragment.BaseListFragment;
+import com.tory.noname.main.base.BaseListFragment;
 import com.tory.noname.utils.L;
 
 import java.util.List;

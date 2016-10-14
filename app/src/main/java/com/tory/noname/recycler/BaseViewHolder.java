@@ -1,4 +1,4 @@
-package com.tory.noname.adapter;
+package com.tory.noname.recycler;
 
 import android.graphics.Bitmap;
 import android.graphics.Paint;
@@ -64,7 +64,6 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     }
 
     public View getConvertView() {
-
         return convertView;
     }
 

@@ -10,6 +10,7 @@ import android.util.SparseIntArray;
 import com.alibaba.fastjson.JSONObject;
 import com.tory.noname.MApplication;
 import com.tory.noname.R;
+import com.tory.noname.bili.apis.BiliApis;
 import com.tory.noname.bili.bean.CategoryMeta;
 import com.tory.noname.utils.FileUtils;
 import com.tory.noname.utils.L;
@@ -41,6 +42,11 @@ public class BiliHelper {
         return new ComponentName(BiliApis.CLIENT_PACKE_NAME,BiliApis.CLIENT_HANDLE_INTENT);
     }
 
+    /**
+     * 打开bilibili
+     * @param context
+     * @param url
+     */
     public static void openInBili(Context context,String url){
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(url));

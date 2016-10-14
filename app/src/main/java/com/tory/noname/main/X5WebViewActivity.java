@@ -1,4 +1,4 @@
-package com.tory.noname.activity;
+package com.tory.noname.main;
 
 import android.graphics.PixelFormat;
 import android.view.WindowManager;
@@ -8,7 +8,7 @@ import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 import com.tory.noname.R;
-import com.tory.noname.activity.base.BaseWebViewActivity;
+import com.tory.noname.main.base.BaseWebViewActivity;
 
 public class X5WebViewActivity extends BaseWebViewActivity<WebView> {
 

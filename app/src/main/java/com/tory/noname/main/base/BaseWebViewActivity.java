@@ -1,4 +1,4 @@
-package com.tory.noname.activity.base;
+package com.tory.noname.main.base;
 
 import android.content.Context;
 import android.content.Intent;
@@ -105,7 +105,6 @@ public abstract class BaseWebViewActivity<V extends View> extends BaseActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
         switch (item.getItemId()) {
             case R.id.action_open_in_brower:
                 Utilities.openInBrowser(this,getWebUrl());
@@ -128,7 +127,6 @@ public abstract class BaseWebViewActivity<V extends View> extends BaseActivity{
         }
 
     }
-
 
     public boolean startActionView(Context context, String url) {
         try {

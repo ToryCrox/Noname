@@ -22,7 +22,7 @@ public class BiliSetting {
 
 
     private BiliSetting(Context context){
-        mSpHelper = SpHelper.getInstance(context);
+        mSpHelper = SpHelper.newInstance(context,SHARED_PATH);
     }
 
     public static BiliSetting getInstance(){

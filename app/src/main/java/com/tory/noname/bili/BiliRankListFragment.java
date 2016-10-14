@@ -21,7 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.tory.noname.R;
-import com.tory.noname.activity.base.BaseActivity;
+import com.tory.noname.main.base.BaseActivity;
 import com.tory.noname.utils.L;
 
 import java.util.Arrays;
@@ -116,8 +116,6 @@ public class BiliRankListFragment extends Fragment{
                 rankRangeSpinner.setSelection(Arrays.binarySearch(mRankRangeList,mRankRange));
             }
         }
-
-
     }
 
     /**
@@ -130,7 +128,7 @@ public class BiliRankListFragment extends Fragment{
         String[] rankRangeNames = new String[]{"日排行","三日榜","周排行","月排行"};
         ArrayAdapter<String> adapter = new ArrayAdapter(getActivity(),
                 R.layout.simple_spinner_item_in_toolbar,rankRangeNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override

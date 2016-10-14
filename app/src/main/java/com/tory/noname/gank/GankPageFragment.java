@@ -17,10 +17,10 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 import com.tory.noname.R;
-import com.tory.noname.adapter.BaseRecyclerAdapter;
-import com.tory.noname.adapter.BaseViewHolder;
-import com.tory.noname.adapter.EndlessRecyclerOnScrollListener;
-import com.tory.noname.fragment.BasePageFragment;
+import com.tory.noname.recycler.BaseRecyclerAdapter;
+import com.tory.noname.recycler.BaseViewHolder;
+import com.tory.noname.recycler.EndlessRecyclerOnScrollListener;
+import com.tory.noname.main.base.BasePageFragment;
 import com.tory.noname.utils.Constance;
 import com.tory.noname.utils.FileUtils;
 import com.tory.noname.utils.L;
@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 
 public class GankPageFragment extends BasePageFragment implements BaseRecyclerAdapter.OnRecyclerViewItemClickListener, BaseRecyclerAdapter.OnRecyclerViewItemLongClickListener {
@@ -230,10 +231,10 @@ public class GankPageFragment extends BasePageFragment implements BaseRecyclerAd
                 .setItems(new String[]{"复制链接", "浏览器打开"}, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(which == 0){
-                            Utilities.copyToClipboar(getActivity(),url);
-                        }else if(which == 1){
-                            Utilities.openInBrowser(getActivity(),url);
+                        if (which == 0) {
+                            Utilities.copyToClipboar(getActivity(), url);
+                        } else if (which == 1) {
+                            Utilities.openInBrowser(getActivity(), url);
                         }
                     }
                 });
@@ -257,7 +258,6 @@ public class GankPageFragment extends BasePageFragment implements BaseRecyclerAd
             if (item.url.endsWith(".jpg")) {
                 holder.getView(R.id.iv_img).setVisibility(View.VISIBLE);
                 ImageView imageView = holder.getView(R.id.iv_img);
-                //XOkHttpUtils.getInstance().loadImage(item.url, imageView, true);
                 Glide.with(GankPageFragment.this)
                         .load(item.url)
                         .placeholder(R.drawable.ic_default)
@@ -268,10 +268,15 @@ public class GankPageFragment extends BasePageFragment implements BaseRecyclerAd
                 holder.setText(R.id.tv_desc, item.desc);
             }
             holder.setText(R.id.tv_source, item.source);
-            holder.setText(R.id.tv_people, item.who);
+            holder.setText(R.id.tv_people, item.who+ matchGithub(item.url));
             holder.setText(R.id.tv_time, item.publishedAt.substring(0, 10));
             holder.setText(R.id.tv_tag, item.type);
         }
     }
 
+
+    public static Pattern sGitHubPattern = Pattern.compile("github\\.com");
+    private String matchGithub(String url){
+        return sGitHubPattern.matcher(url).find() ? " GitHub" : "" ;
+    }
 }

@@ -1,10 +1,9 @@
-package com.tory.noname.activity;
+package com.tory.noname.main;
 
 import android.os.Bundle;
 
 import com.tory.noname.R;
-import com.tory.noname.activity.base.BaseActivity;
-import com.tory.noname.fragment.SettingsFragment;
+import com.tory.noname.main.base.BaseActivity;
 
 public class SettingActivity extends BaseActivity {
 
@@ -13,7 +12,7 @@ public class SettingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         if(savedInstanceState == null){
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .add(R.id.frame_content,SettingsFragment.newInstance(),SettingsFragment.FRAGMENT_TAG)
                     .commit();
         }

@@ -1,4 +1,4 @@
-package com.tory.noname.activity.base;
+package com.tory.noname.main.base;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;

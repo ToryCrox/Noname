@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tory.noname.R;
-import com.tory.noname.adapter.BaseRecyclerAdapter;
-import com.tory.noname.adapter.BaseViewHolder;
+import com.tory.noname.recycler.BaseRecyclerAdapter;
+import com.tory.noname.recycler.BaseViewHolder;
 import com.tory.noname.bili.bean.CategoryMeta;
 import com.tory.noname.utils.L;
 
@@ -31,7 +31,6 @@ public class PartitionListFragment extends Fragment implements BaseRecyclerAdapt
 
     private static final String TAG = "PartitionListFragment";
     private RecyclerView mRecyclerView;
-
 
     private BaseRecyclerAdapter<CategoryMeta> mRecyclerAdpater;
     private List<CategoryMeta> mCateList;

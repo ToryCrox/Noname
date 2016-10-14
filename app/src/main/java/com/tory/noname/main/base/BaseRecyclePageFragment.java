@@ -1,4 +1,4 @@
-package com.tory.noname.fragment;
+package com.tory.noname.main.base;
 
 /**
  * @Author: Tory

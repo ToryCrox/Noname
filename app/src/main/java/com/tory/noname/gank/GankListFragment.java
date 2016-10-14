@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 
-import com.tory.noname.fragment.BaseListFragment;
+import com.tory.noname.main.base.BaseListFragment;
 import com.tory.noname.utils.Constance;
 
 public class GankListFragment extends BaseListFragment {

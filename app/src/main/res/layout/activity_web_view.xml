@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.tory.noname.activity.WebViewActivity">
+    tools:context=".main.WebViewActivity">
 
     <include
         android:id="@+id/appbar"

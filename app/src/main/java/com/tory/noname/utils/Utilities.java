@@ -50,6 +50,7 @@ public class Utilities {
     }
 
     public static void initSwipeRefresh(SwipeRefreshLayout swipeRefreshLayout) {
+        if(swipeRefreshLayout == null) return;
         // 设置下拉圆圈上的颜色，蓝色、绿色、橙色、红色
         swipeRefreshLayout.setColorSchemeResources(
                 android.R.color.holo_blue_bright,
@@ -133,7 +134,7 @@ public class Utilities {
      */
     public static void startWeb(Context context, String url) {
         Intent intent = new Intent();
-        if(SettingHelper.getInstance(context).getWebKener().equals("1")){
+        if("1".equals(SettingHelper.getInstance(context).getWebKener())){
             intent.setAction(ACTION_WEB_VIEW);
         }else{
             intent.setAction(ACTION_WEB_VIEW_X5);

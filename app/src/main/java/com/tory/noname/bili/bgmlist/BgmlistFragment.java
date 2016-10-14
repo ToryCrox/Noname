@@ -18,8 +18,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.tory.noname.R;
-import com.tory.noname.activity.base.BaseActivity;
-import com.tory.noname.fragment.BaseListFragment;
+import com.tory.noname.main.base.BaseActivity;
+import com.tory.noname.main.base.BaseListFragment;
 
 import java.util.Calendar;
 import java.util.List;

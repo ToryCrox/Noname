@@ -1,4 +1,4 @@
-package com.tory.noname.activity;
+package com.tory.noname.main;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -14,9 +14,9 @@ import android.util.SparseArray;
 import android.view.MenuItem;
 
 import com.tory.noname.R;
-import com.tory.noname.activity.base.BaseActivity;
 import com.tory.noname.bili.PartitionListFragment;
 import com.tory.noname.gank.GankListFragment;
+import com.tory.noname.main.base.BaseActivity;
 import com.tory.noname.utils.L;
 import com.tory.noname.utils.SettingHelper;
 import com.tory.noname.utils.Utilities;
@@ -103,12 +103,13 @@ public class MainActivity extends BaseActivity
         switch (id){
             case R.id.nav_ganhuo:
             case R.id.nav_bili:
+            case R.id.nav_setting:
                 String tag = mTagMenuIds.get(id);
                 showFragmentAndHideOther(tag);
                 break;
-            case R.id.nav_setting:
+            /*case R.id.nav_setting:
                 startActivity(SettingActivity.class);
-                break;
+                break;*/
             case R.id.nav_mode_change:
                 boolean nightMode = mSettingHelper.isNightModeNow();
                 Utilities.setNightMode(this, !nightMode, false);
@@ -132,9 +133,8 @@ public class MainActivity extends BaseActivity
         mTagMenuIds = new SparseArray<>();
         mTagMenuIds.put(R.id.nav_ganhuo,GankListFragment.FRAGMENT_TAG);
         mTagMenuIds.put(R.id.nav_bili,PartitionListFragment.FRAGMENT_TAG);
-        //mTagMenuIds.put(R.id.nav_setting,SettingsFragment.FRAGMENT_TAG);
+        mTagMenuIds.put(R.id.nav_setting,SettingsFragment.FRAGMENT_TAG);
     }
-
 
     private void initDefalutFragment(){
         if(mShowingFragmentTag == null){
@@ -174,15 +174,16 @@ public class MainActivity extends BaseActivity
     public Fragment createNewFragmentForTag(String tag){
         if (GankListFragment.FRAGMENT_TAG.equals(tag)) {
             return new GankListFragment();
-        }/*else if(SettingsFragment.FRAGMENT_TAG.equals(tag)) {
+        }else if(SettingsFragment.FRAGMENT_TAG.equals(tag)) {
             return SettingsFragment.newInstance();
-        }*/else if(PartitionListFragment.FRAGMENT_TAG.equals(tag)){
+        }else if(PartitionListFragment.FRAGMENT_TAG.equals(tag)){
             return new PartitionListFragment();
         }
         throw new IllegalStateException("Unexpected fragment: " + tag);
     }
 
     protected void startActivity(Class cls){
+
         Intent intent = new Intent(this,cls);
         startActivity(intent);
     }

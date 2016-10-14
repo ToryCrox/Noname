@@ -7,6 +7,7 @@ import com.tory.noname.MApplication;
 import com.tory.noname.utils.FileUtils;
 import com.tory.noname.utils.L;
 import com.tory.noname.utils.Md5Util;
+import com.tory.noname.utils.NetUtils;
 import com.tory.noname.utils.SpHelper;
 import com.tory.noname.utils.http.XOkHttpUtils;
 
@@ -31,13 +32,13 @@ public class BgmPresenter {
     public static final String SP_WEEKDAY_FITER = "sp_weekday_fiter";
 
 
-    private BgmPresenter(){
+    private BgmPresenter() {
 
     }
 
-    public static BgmPresenter getInstance(){
-        if(sInstance == null){
-            synchronized (BgmPresenter.class){
+    public static BgmPresenter getInstance() {
+        if (sInstance == null) {
+            synchronized (BgmPresenter.class) {
                 sInstance = new BgmPresenter();
             }
         }
@@ -47,38 +48,39 @@ public class BgmPresenter {
     private Set<OnBgmlistLoadCompeletListener> listeners = new HashSet<>();
 
     public void saveFilterState(boolean mWeekDayFiter) {
-        SpHelper.getInstance(MApplication.getInstance()).put(SP_WEEKDAY_FITER,mWeekDayFiter);
+        SpHelper.getInstance(MApplication.getInstance()).put(SP_WEEKDAY_FITER, mWeekDayFiter);
     }
+
     public boolean getFilterState() {
         return SpHelper.getInstance(MApplication.getInstance()).getBoolean(SP_WEEKDAY_FITER);
     }
 
-    public interface OnBgmlistLoadCompeletListener{
+    public interface OnBgmlistLoadCompeletListener {
         void onLoadCompelte(List<BgmItem> list);
     }
 
-    public void addLoadListener(OnBgmlistLoadCompeletListener listener){
-        if(!listeners.contains(listener)){
+    public void addLoadListener(OnBgmlistLoadCompeletListener listener) {
+        if (!listeners.contains(listener)) {
             listeners.add(listener);
         }
-        if(!mList.isEmpty()){
+        if (!mList.isEmpty()) {
             listener.onLoadCompelte(mList);
         }
     }
 
-    public void removeListener(OnBgmlistLoadCompeletListener listener){
+    public void removeListener(OnBgmlistLoadCompeletListener listener) {
         listeners.remove(listener);
     }
 
-    public void loadData(boolean foreceLoad){
-        if(!foreceLoad ){
-            if(mList == null){
+    public void loadData(boolean foreceLoad) {
+        if (!foreceLoad || !NetUtils.isNetworkAvailable(MApplication.getInstance())) {
+            if (mList == null) {
                 L.d("onLoadComplete: hasload!");
                 onLoadComplete();
                 return;
             }
             String result = obtainFromCache();//XOkHttpUtils.getInstance().getStringFromCatch(getUrl());
-            if(!TextUtils.isEmpty(result)){
+            if (!TextUtils.isEmpty(result)) {
                 L.d("onLoadComplete: load from catach!");
                 mList.addAll(parseResult(result));
                 onLoadComplete();
@@ -110,19 +112,18 @@ public class BgmPresenter {
                 });
     }
 
-    public List<BgmItem> getBgmList(){
+    public List<BgmItem> getBgmList() {
         return mList;
     }
 
 
-    public void tearDown(){
+    public void tearDown() {
         XOkHttpUtils.getInstance().cancelTag(this);
         mList.clear();
         mSitelist.clear();
-        mSitelist = null;
     }
 
-    private String obtainFromCache(){
+    private String obtainFromCache() {
         try {
             return FileUtils.readString(getCacheFile());
         } catch (IOException e) {
@@ -133,7 +134,7 @@ public class BgmPresenter {
 
     private void writeToCache(String result) {
         try {
-            FileUtils.writeString(result,getCacheFile());
+            FileUtils.writeString(result, getCacheFile());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -141,11 +142,11 @@ public class BgmPresenter {
 
     private String getCacheFile() {
         return FileUtils.getCacheDir(MApplication.getInstance())
-                +File.separator + Md5Util.digest(getUrl());
+                + File.separator + Md5Util.digest(getUrl());
     }
 
     private void onLoadComplete() {
-        L.d("onLoadComplete:"+mList);
+        L.d("onLoadComplete:" + mList);
         for (OnBgmlistLoadCompeletListener listener : listeners) {
             listener.onLoadCompelte(mList);
         }
@@ -157,7 +158,7 @@ public class BgmPresenter {
             JSONObject json = JSONObject.parseObject(result);
             Set<String> keySet = json.keySet();
             for (String key : keySet) {
-                BgmItem item = json.getObject(key,BgmItem.class);
+                BgmItem item = json.getObject(key, BgmItem.class);
                 list.add(item);
             }
         } catch (Exception e) {
@@ -171,7 +172,7 @@ public class BgmPresenter {
     }
 
 
-    public class Site{
+    public class Site {
 
         public String regular;
         public String name;
@@ -184,38 +185,39 @@ public class BgmPresenter {
             pattern = Pattern.compile(regular);
         }
 
-        public boolean match(String url){
-            return pattern != null &&pattern.matcher(url).find();
+        public boolean match(String url) {
+            return pattern != null && pattern.matcher(url).find();
         }
     }
 
 
-    List<Site> mSitelist ;
+    List<Site> mSitelist = new ArrayList<>();
+
     public void initSiteList() {
-        if(mSitelist != null) return;
+        if (!mSitelist.isEmpty()) return;
         List<Site> sitelist = new ArrayList<>();
-        sitelist.add(new Site("acfun\\.(tv|tudou)","A"));
-        sitelist.add(new Site("bilibili\\.com","B站"));
-        sitelist.add(new Site("tucao\\.(tv|cc)","C站"));
-        sitelist.add(new Site("sohu\\.com","搜狐"));
-        sitelist.add(new Site("youku\\.com","优酷"));
-        sitelist.add(new Site("qq\\.com","腾讯"));
-        sitelist.add(new Site("iqiyi\\.com","爱奇艺"));
-        sitelist.add(new Site("(le|letv)\\.com","乐视"));
-        sitelist.add(new Site("pptv\\.com","PPTV"));
-        sitelist.add(new Site("tudou\\.com","土豆"));
-        sitelist.add(new Site("kankan\\.com","迅雷"));
-        sitelist.add(new Site("mgtv\\.com","芒果"));
-        mSitelist = sitelist;
+        sitelist.add(new Site("acfun\\.(tv|tudou)", "A"));
+        sitelist.add(new Site("bilibili\\.com", "B站"));
+        sitelist.add(new Site("tucao\\.(tv|cc)", "C站"));
+        sitelist.add(new Site("sohu\\.com", "搜狐"));
+        sitelist.add(new Site("youku\\.com", "优酷"));
+        sitelist.add(new Site("qq\\.com", "腾讯"));
+        sitelist.add(new Site("iqiyi\\.com", "爱奇艺"));
+        sitelist.add(new Site("(le|letv)\\.com", "乐视"));
+        sitelist.add(new Site("pptv\\.com", "PPTV"));
+        sitelist.add(new Site("tudou\\.com", "土豆"));
+        sitelist.add(new Site("kankan\\.com", "迅雷"));
+        sitelist.add(new Site("mgtv\\.com", "芒果"));
+        mSitelist.addAll(sitelist);
     }
 
-    public String[] findSite(List<String> airSites){
-        if(airSites == null || airSites.isEmpty()) return new String [0];
+    public String[] findSite(List<String> airSites) {
+        if (airSites == null || airSites.isEmpty()) return new String[0];
         initSiteList();
         List<String> siteNames = new ArrayList<>();
         for (String airSite : airSites) {
             for (Site site : mSitelist) {
-                if(site.match(airSite)){
+                if (site.match(airSite)) {
                     siteNames.add(site.name);
                     break;
                 }

@@ -17,12 +17,15 @@ import android.widget.ImageView;
 import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 import com.tory.noname.R;
-import com.tory.noname.adapter.BaseRecyclerAdapter;
-import com.tory.noname.adapter.BaseViewHolder;
-import com.tory.noname.adapter.EndlessRecyclerOnScrollListener;
+import com.tory.noname.bili.apis.BiliApis;
+import com.tory.noname.bili.apis.BiliService;
+import com.tory.noname.bili.apis.VideoListConverterFactory;
 import com.tory.noname.bili.bean.CategoryMeta;
 import com.tory.noname.bili.bean.VideoItem;
-import com.tory.noname.fragment.BasePageFragment;
+import com.tory.noname.main.base.BasePageFragment;
+import com.tory.noname.recycler.BaseRecyclerAdapter;
+import com.tory.noname.recycler.BaseViewHolder;
+import com.tory.noname.recycler.EndlessRecyclerOnScrollListener;
 import com.tory.noname.utils.L;
 import com.tory.noname.utils.SystemConfigUtils;
 import com.tory.noname.utils.Utilities;
@@ -32,6 +35,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 
 /**
@@ -130,7 +138,35 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
     }
 
     @Override
+    public void onDestroy() {
+        XOkHttpUtils.getInstance().cancelTag(this);
+        super.onDestroy();
+    }
+
+    @Override
     public void fetchData() {
+        Retrofit retrofit =new Retrofit.Builder()
+                .baseUrl(BiliApis.BASE_URL_API)
+                .addConverterFactory(VideoListConverterFactory.create())
+                .build();
+        BiliService biliService = retrofit.create(BiliService.class);
+        Call<List<VideoItem>> call = biliService.getVideoByPartion(getParams());
+        call.enqueue(new Callback<List<VideoItem>>() {
+            @Override
+            public void onResponse(Call<List<VideoItem>> call,
+                                   Response<List<VideoItem>> response) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                refresData(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<VideoItem>> call, Throwable t) {
+                mSwipeRefreshLayout.setRefreshing(false);
+
+            }
+        });
+
+        if(true) return;
         XOkHttpUtils.get(getBaseUrl())
                 .params(getParams())
                 .tag(this)
@@ -144,7 +180,6 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
                     public void onSuccess(String result) {
                         mSwipeRefreshLayout.setRefreshing(false);
                         refresData(result);
-
                     }
 
                     @Override
@@ -196,12 +231,15 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
         return list;
     }
 
-
-    private void refresData(String result) {
+    private void refresData(List<VideoItem> list){
         if(mPageIndex == 1){
             mRecyclerAdpater.clear();
         }
-        mRecyclerAdpater.addAll(parseData(result));
+        mRecyclerAdpater.addAll(list);
+    }
+
+    private void refresData(String result) {
+        refresData(parseData(result));
     }
 
     @Override

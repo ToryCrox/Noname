@@ -7,6 +7,9 @@ package com.tory.noname.bili.bean;
  */
 public class VideoItem {
 
+    /**
+     * av号
+     */
     public int aid;
 
     public String copyright;

@@ -1,4 +1,4 @@
-package com.tory.noname.adapter;
+package com.tory.noname.recycler;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
