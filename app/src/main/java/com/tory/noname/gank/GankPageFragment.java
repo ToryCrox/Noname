@@ -113,6 +113,12 @@ public class GankPageFragment extends BasePageFragment implements BaseRecyclerAd
         });
     }
 
+    @Override
+    public void onResume() {
+        L.d(TAG,"onResume:"+mTag);
+        super.onResume();
+    }
+
     public String getUrl() {
         String url = Constance.Gank.BASE_URL + "/" + mTag + "/" + mPageCount + "/" + mPageIndex;
         L.d(TAG, url);

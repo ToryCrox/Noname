@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.os.TraceCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -116,13 +117,13 @@ public abstract class BaseActivity extends AppCompatActivity  {
 
 
     public void showFragment(String tag, boolean show, boolean executeImmediately) {
-        //Trace.beginSection("showFragment - " + tag);
-        final FragmentManager fm = getSupportFragmentManager();
-
+        TraceCompat.beginSection("showFragment - " + tag);
+        FragmentManager fm = getSupportFragmentManager();
         if (fm == null) {
             L.w(TAG, "Fragment manager is null for : " + tag);
             return;
         }
+
 
         Fragment fragment = fm.findFragmentByTag(tag);
         if (!show && fragment == null) {
@@ -148,7 +149,15 @@ public abstract class BaseActivity extends AppCompatActivity  {
         if (executeImmediately) {
             fm.executePendingTransactions();
         }
-        //Trace.endSection();
+        TraceCompat.endSection();
+    }
+
+    private void showOsFragment(String tag, boolean show, boolean executeImmediately){
+
+    }
+
+    public Object getFragmentManagerByTag(String tag){
+       return getSupportFragmentManager();
     }
 
     public int getFragmentContainer(String tag){

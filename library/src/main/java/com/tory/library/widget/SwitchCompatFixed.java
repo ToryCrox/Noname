@@ -1,4 +1,4 @@
-package com.tory.preference.widget;
+package com.tory.library.widget;
 
 import android.content.Context;
 import android.support.v7.widget.SwitchCompat;

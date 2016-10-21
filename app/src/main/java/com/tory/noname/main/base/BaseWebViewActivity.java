@@ -136,7 +136,7 @@ public abstract class BaseWebViewActivity<V extends View> extends BaseActivity{
             context.startActivity(intent);
             return true;
         } catch (Exception e) {
-            L.w(TAG, "open url error:" + url);
+            L.e(TAG, "open url error:" + url);
             return false;
         }
     }

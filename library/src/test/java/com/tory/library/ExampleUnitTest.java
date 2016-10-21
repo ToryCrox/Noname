@@ -1,4 +1,4 @@
-package com.tory.preference;
+package com.tory.library;
 
 import org.junit.Test;
 

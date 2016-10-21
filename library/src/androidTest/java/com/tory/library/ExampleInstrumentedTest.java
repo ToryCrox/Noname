@@ -1,4 +1,4 @@
-package com.tory.preference;
+package com.tory.library;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

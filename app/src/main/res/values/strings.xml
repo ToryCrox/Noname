@@ -28,5 +28,48 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+    <integer-array name="folder_config_5x5" translatable="false">
+        <!-- firest:category
+             second:screenId-Long
+             third:cellX
+             forth:cellY -->
+        <item>10</item><!-- GOOGLE_TOOLS -->
+        <item>0</item>
+        <item>0</item>
+        <item>4</item>
+
+        <!-- firest:category
+             second:screenId-Long
+             third:cellX
+             forth:cellY -->
+        <item>3</item><!-- tools -->
+        <item>1</item>
+        <item>3</item>
+        <item>0</item>
+
+        <!-- firest:category
+            second:screenId-Long
+            third:cellX
+            forth:cellY -->
+        <item>1</item><!-- SOCIAL -->
+        <item>1</item>
+        <item>1</item>
+        <item>0</item>
+
+        <!-- firest:category
+            second:screenId-Long
+            third:cellX
+            forth:cellY -->
+        <item>2</item><!-- MEDIA -->
+        <item>1</item>
+        <item>2</item>
+        <item>0</item>
+
+
+        <item>9</item><!-- XUI_TOOLS -->
+        <item>1</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
 
 </resources>
