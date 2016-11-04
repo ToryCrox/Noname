@@ -22,9 +22,9 @@ import com.tory.noname.recycler.BaseViewHolder;
 import com.tory.noname.recycler.EndlessRecyclerOnScrollListener;
 import com.tory.noname.main.base.BasePageFragment;
 import com.tory.noname.utils.Constance;
-import com.tory.noname.utils.FileUtils;
+import com.tory.library.utils.FileUtils;
 import com.tory.noname.utils.L;
-import com.tory.noname.utils.Md5Util;
+import com.tory.library.utils.Md5Util;
 import com.tory.noname.utils.Utilities;
 import com.tory.noname.utils.http.XOkHttpUtils;
 

@@ -3,7 +3,7 @@ package com.tory.noname.bili;
 import android.content.Context;
 
 import com.tory.noname.MApplication;
-import com.tory.noname.utils.SpHelper;
+import com.tory.library.utils.SpHelper;
 
 /**
  * @Author: Tory

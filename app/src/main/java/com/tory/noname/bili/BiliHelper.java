@@ -12,9 +12,9 @@ import com.tory.noname.MApplication;
 import com.tory.noname.R;
 import com.tory.noname.bili.apis.BiliApis;
 import com.tory.noname.bili.bean.CategoryMeta;
-import com.tory.noname.utils.FileUtils;
+import com.tory.library.utils.FileUtils;
 import com.tory.noname.utils.L;
-import com.tory.noname.utils.Md5Util;
+import com.tory.library.utils.Md5Util;
 
 import java.io.InputStream;
 import java.net.URLEncoder;

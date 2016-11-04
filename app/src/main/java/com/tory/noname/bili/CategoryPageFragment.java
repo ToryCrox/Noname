@@ -27,7 +27,7 @@ import com.tory.noname.recycler.BaseRecyclerAdapter;
 import com.tory.noname.recycler.BaseViewHolder;
 import com.tory.noname.recycler.EndlessRecyclerOnScrollListener;
 import com.tory.noname.utils.L;
-import com.tory.noname.utils.SystemConfigUtils;
+import com.tory.library.utils.SystemConfigUtils;
 import com.tory.noname.utils.Utilities;
 import com.tory.noname.utils.http.XOkHttpUtils;
 

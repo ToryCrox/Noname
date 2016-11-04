@@ -16,7 +16,7 @@ import android.view.View;
 
 import com.tory.noname.R;
 import com.tory.noname.utils.L;
-import com.tory.noname.utils.StatusBarHelper;
+import com.tory.library.utils.StatusBarHelper;
 import com.tory.noname.utils.Utilities;
 
 public abstract class BaseActivity extends AppCompatActivity  {

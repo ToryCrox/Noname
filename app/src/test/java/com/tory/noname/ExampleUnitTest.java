@@ -2,7 +2,7 @@ package com.tory.noname;
 
 import com.tory.noname.bili.apis.BiliApis;
 import com.tory.noname.utils.L;
-import com.tory.noname.utils.Md5Util;
+import com.tory.library.utils.Md5Util;
 
 import org.junit.Test;
 

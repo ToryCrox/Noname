@@ -1,4 +1,4 @@
-package com.tory.noname.utils;
+package com.tory.library.utils;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
+import android.support.annotation.AnyRes;
 import android.support.annotation.AttrRes;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
@@ -45,6 +46,11 @@ public class SystemConfigUtils {
     }
 
 
+    /**
+     * 获取ActionBar的高度
+     * @param context
+     * @return
+     */
     @TargetApi(14)
     public static int getActionBarHeight(Context context) {
         int result = 0;
@@ -56,20 +62,43 @@ public class SystemConfigUtils {
         return result;
     }
 
+    /**
+     * 获取主题中的属性
+     * @param context
+     * @param attrName
+     * @return
+     */
+    @AnyRes
     public static int getThemeAttr(Context context,@AttrRes int attrName){
         TypedValue tv = new TypedValue();
         context.getTheme().resolveAttribute(attrName, tv, true);
         return tv.resourceId;
     }
 
+    /**
+     * 获取主题中的属性的颜色
+     * @param context
+     * @param attrName
+     * @return
+     */
     public static int getThemeColor(Context context, @AttrRes int attrName){
         return ContextCompat.getColor(context, getThemeAttr(context, attrName));
     }
 
+    /**
+     * 获取状态栏的高度
+     * @param context
+     * @return
+     */
     public static int getStatusBarHeight(Context context){
         return getInternalDimensionSize(context.getResources(), STATUS_BAR_HEIGHT_RES_NAME);
     }
 
+    /**
+     * 获取虚拟导航栏的高度
+     * @param context
+     * @return
+     */
     @TargetApi(14)
     public static  int getNavigationBarHeight(Context context) {
         Resources res = context.getResources();
@@ -89,6 +118,11 @@ public class SystemConfigUtils {
         return result;
     }
 
+    /**
+     * 获取虚拟导航栏的宽度
+     * @param context
+     * @return
+     */
     @TargetApi(14)
     public static  int getNavigationBarWidth(Context context) {
         Resources res = context.getResources();
@@ -101,6 +135,11 @@ public class SystemConfigUtils {
         return result;
     }
 
+    /**
+     * 检查是否有虚拟导航栏
+     * @param context
+     * @return
+     */
     @TargetApi(14)
     public static  boolean hasNavBar(Context context) {
         Resources res = context.getResources();
@@ -119,12 +158,15 @@ public class SystemConfigUtils {
         }
     }
 
+    /**
+     * 获取一些系统隐藏的试题值
+     * @param res
+     * @param key
+     * @return
+     */
     public static  int getInternalDimensionSize(Resources res, String key) {
-        int result = 0;
-        int resourceId = res.getIdentifier(key, "dimen", "android");
-        if (resourceId > 0) {
-            result = res.getDimensionPixelSize(resourceId);
-        }
+        int resId = res.getIdentifier(key, "dimen", "android");
+        int result = resId > 0 ? res.getDimensionPixelSize(resId) : 0;
         return result;
     }
 

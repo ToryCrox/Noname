@@ -5,9 +5,9 @@ import android.os.Looper;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.tory.noname.MApplication;
-import com.tory.noname.utils.FileUtils;
+import com.tory.library.utils.FileUtils;
 import com.tory.noname.utils.L;
-import com.tory.noname.utils.NetUtils;
+import com.tory.library.utils.NetUtils;
 
 import java.io.File;
 import java.io.FilterInputStream;

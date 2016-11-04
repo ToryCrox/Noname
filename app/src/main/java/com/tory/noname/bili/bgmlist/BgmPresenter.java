@@ -4,11 +4,11 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tory.noname.MApplication;
-import com.tory.noname.utils.FileUtils;
+import com.tory.library.utils.FileUtils;
 import com.tory.noname.utils.L;
-import com.tory.noname.utils.Md5Util;
-import com.tory.noname.utils.NetUtils;
-import com.tory.noname.utils.SpHelper;
+import com.tory.library.utils.Md5Util;
+import com.tory.library.utils.NetUtils;
+import com.tory.library.utils.SpHelper;
 import com.tory.noname.utils.http.XOkHttpUtils;
 
 import java.io.File;

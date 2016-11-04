@@ -1,4 +1,4 @@
-package com.tory.noname.utils;
+package com.tory.library.utils;
 
 import android.app.Activity;
 import android.content.ComponentName;

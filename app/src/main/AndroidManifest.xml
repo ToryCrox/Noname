@@ -24,7 +24,6 @@
             android:theme="@style/AppTheme.NoActionBar.Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -33,7 +32,6 @@
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="com.tory.action.WEB_VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -42,7 +40,6 @@
         <activity android:name=".main.X5WebViewActivity">
             <intent-filter>
                 <action android:name="com.tory.action.WEB_VIEW_X5" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

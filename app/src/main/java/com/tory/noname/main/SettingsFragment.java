@@ -12,7 +12,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.bumptech.glide.Glide;
 import com.tory.noname.R;
-import com.tory.noname.utils.FileUtils;
+import com.tory.library.utils.FileUtils;
 import com.tory.noname.utils.L;
 import com.tory.noname.utils.SettingHelper;
 import com.tory.noname.utils.Utilities;
