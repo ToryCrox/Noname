@@ -16,15 +16,15 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
+import com.tory.library.recycler.BaseRecyclerAdapter;
+import com.tory.library.recycler.BaseViewHolder;
+import com.tory.library.recycler.EndlessRecyclerOnScrollListener;
+import com.tory.library.utils.FileUtils;
+import com.tory.library.utils.Md5Util;
 import com.tory.noname.R;
-import com.tory.noname.recycler.BaseRecyclerAdapter;
-import com.tory.noname.recycler.BaseViewHolder;
-import com.tory.noname.recycler.EndlessRecyclerOnScrollListener;
 import com.tory.noname.main.base.BasePageFragment;
 import com.tory.noname.utils.Constance;
-import com.tory.library.utils.FileUtils;
 import com.tory.noname.utils.L;
-import com.tory.library.utils.Md5Util;
 import com.tory.noname.utils.Utilities;
 import com.tory.noname.utils.http.XOkHttpUtils;
 
@@ -35,7 +35,9 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 
-public class GankPageFragment extends BasePageFragment implements BaseRecyclerAdapter.OnRecyclerViewItemClickListener, BaseRecyclerAdapter.OnRecyclerViewItemLongClickListener {
+public class GankPageFragment extends BasePageFragment
+        implements BaseRecyclerAdapter.OnRecyclerViewItemClickListener,
+        BaseRecyclerAdapter.OnRecyclerViewItemLongClickListener {
     private static final String TAG = "GankPageFragment";
 
     private static final String ARG_TYPE = "arg_type";
@@ -126,12 +128,19 @@ public class GankPageFragment extends BasePageFragment implements BaseRecyclerAd
     }
 
     private List<Gank> parseData(String result) {
-        List<Gank> list;
+        List<Gank> list = null;
         if (!TextUtils.isEmpty(result)) {
-            JSONObject jsonObj = JSONObject.parseObject(result);
-            list = JSONObject.parseArray(jsonObj.getString("results"), Gank.class);
-            L.d(list + "");
-        } else {
+            try {
+                L.d("parseData result="+result);
+                JSONObject jsonObj = JSONObject.parseObject(result);
+                list = JSONObject.parseArray(jsonObj.getString("results"), Gank.class);
+                L.d(list + "");
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+        if(list == null){
             list = new ArrayList<Gank>();
         }
 

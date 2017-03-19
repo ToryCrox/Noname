@@ -41,7 +41,7 @@
             android:textColor="?android:attr/textColorPrimary" />
 
 
-        <TextView
+        <com.tory.library.widget.TintTextView
             android:id="@+id/tv_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,6 +49,7 @@
             android:layout_marginTop="4dp"
             android:drawablePadding="2dp"
             android:drawableStart="@drawable/ic_category_up"
+            app:drawableTint="?android:attr/textColorSecondary"
             android:textSize="12sp" />
 
         <LinearLayout
@@ -57,7 +58,7 @@
             android:layout_marginTop="3dp"
             android:gravity="center_vertical">
 
-            <TextView
+            <com.tory.library.widget.TintTextView
                 android:id="@+id/tv_play"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -65,9 +66,10 @@
                 android:layout_weight="1"
                 android:drawablePadding="2dp"
                 android:drawableStart="@drawable/ic_info_danmakus"
+                app:drawableTint="?android:attr/textColorSecondary"
                 android:textSize="11sp" />
 
-            <TextView
+            <com.tory.library.widget.TintTextView
                 android:id="@+id/tv_danmakus"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -75,6 +77,7 @@
                 android:layout_weight="1"
                 android:drawablePadding="2dp"
                 android:drawableStart="@drawable/ic_info_views"
+                app:drawableTint="?android:attr/textColorSecondary"
                 android:textSize="11sp" />
         </LinearLayout>
     </LinearLayout>

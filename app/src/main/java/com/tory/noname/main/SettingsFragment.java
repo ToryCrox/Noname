@@ -11,8 +11,9 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.bumptech.glide.Glide;
-import com.tory.noname.R;
 import com.tory.library.utils.FileUtils;
+import com.tory.noname.R;
+import com.tory.noname.dialog.ExpendDialog;
 import com.tory.noname.utils.L;
 import com.tory.noname.utils.SettingHelper;
 import com.tory.noname.utils.Utilities;
@@ -30,7 +31,8 @@ import rx.schedulers.Schedulers;
  * https://developer.android.com/guide/topics/ui/settings.html#Activity
  * https://developer.android.com/reference/android/support/v14/preference/PreferenceFragment.html
  */
-public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsFragment extends PreferenceFragmentCompat
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 
     public static final String FRAGMENT_TAG = "TAG_SETTING_FRAGMENT";
@@ -182,8 +184,16 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
                         }
                     }).show();
+        }else if("test_dialog".equals(preference.getKey())){
+            test_dialog();
         }
         return super.onPreferenceTreeClick(preference);
+    }
+
+    private void test_dialog() {
+        ExpendDialog dialog = new ExpendDialog(getActivity());
+        dialog.show();
+
     }
 
     public static class DialogUtils {

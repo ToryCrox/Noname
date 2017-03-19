@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.tory.library.recycler.BaseViewHolder;
 import com.tory.noname.R;
-import com.tory.noname.recycler.BaseViewHolder;
 
 /**
  * Created by tao.xu2 on 2016/9/26.

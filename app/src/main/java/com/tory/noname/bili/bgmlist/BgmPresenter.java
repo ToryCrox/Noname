@@ -159,6 +159,7 @@ public class BgmPresenter {
             Set<String> keySet = json.keySet();
             for (String key : keySet) {
                 BgmItem item = json.getObject(key, BgmItem.class);
+                item.siteNames = findSite(item.onAirSite);
                 list.add(item);
             }
         } catch (Exception e) {
@@ -168,7 +169,7 @@ public class BgmPresenter {
     }
 
     private String getUrl() {
-        return "http://bgmlist.com/json/bangumi-1610.json";
+        return "https://bgmlist.com/tempapi/bangumi/2017/1/json";
     }
 
 
@@ -178,6 +179,9 @@ public class BgmPresenter {
         public String name;
         public Pattern pattern;
         public String url;
+
+        public Site(String url){
+        }
 
         public Site(String regular, String name) {
             this.regular = regular;
@@ -211,19 +215,19 @@ public class BgmPresenter {
         mSitelist.addAll(sitelist);
     }
 
-    public String[] findSite(List<String> airSites) {
-        if (airSites == null || airSites.isEmpty()) return new String[0];
+    public List<String> findSite(List<String> airSites) {
+        if (airSites == null || airSites.isEmpty()) return  new ArrayList<>();
         initSiteList();
         List<String> siteNames = new ArrayList<>();
         for (String airSite : airSites) {
             for (Site site : mSitelist) {
                 if (site.match(airSite)) {
-                    siteNames.add(site.name);
+                    siteNames.add(site.name);;
                     break;
                 }
             }
         }
-        return siteNames.toArray(new String[siteNames.size()]);
+        return siteNames;
 
     }
 

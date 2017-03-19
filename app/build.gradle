@@ -23,6 +23,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     //支持多个dex文件构建应用程序
     compile files('libs/tbs_sdk_thirdapp_v2.3.0.1048_36801_shareonly_obfs_20160829_200523.jar')
+    //compile files('libs/glide-3.7.0.jar')
     //compile 'com.github.XhinLiang.MDPreference:mdpreference:0.3.2@aar'
     // You should add this because the 'mdpreference' depend on this
     //compile 'com.github.XhinLiang.MDPreference:material:0.3.2@aar'

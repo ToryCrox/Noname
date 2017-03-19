@@ -15,19 +15,26 @@ import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
+import com.tory.library.recycler.BaseRecyclerAdapter;
+import com.tory.library.recycler.BaseViewHolder;
+import com.tory.library.utils.SystemConfigUtils;
 import com.tory.noname.R;
 import com.tory.noname.bili.apis.BiliApis;
-import com.tory.noname.recycler.BaseRecyclerAdapter;
-import com.tory.noname.recycler.BaseViewHolder;
+import com.tory.noname.bili.apis.BiliService;
+import com.tory.noname.bili.apis.ItemsConverterFactory;
 import com.tory.noname.bili.bean.BiliRank;
 import com.tory.noname.main.base.BasePageFragment;
 import com.tory.noname.utils.L;
-import com.tory.library.utils.SystemConfigUtils;
 import com.tory.noname.utils.Utilities;
 import com.tory.noname.utils.http.XOkHttpUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class BiliRankPageFragment extends BasePageFragment implements
         BaseRecyclerAdapter.OnRecyclerViewItemClickListener,
@@ -128,6 +135,33 @@ public class BiliRankPageFragment extends BasePageFragment implements
     @Override
     public void fetchData() {
         final String url = getUrl();
+
+
+        Retrofit retrofit =new Retrofit.Builder()
+                .baseUrl(BiliApis.BASE_URL)
+                .addConverterFactory(ItemsConverterFactory.create(new RankParser(),BiliRank.class))
+                .build();
+        BiliService biliService = retrofit.create(BiliService.class);
+        Call<List<BiliRank>> call = biliService.getRankItems(mRankType, mRankRange,mRankCatelogyId);
+        call.enqueue(new Callback<List<BiliRank>>() {
+            @Override
+            public void onResponse(Call<List<BiliRank>> call,
+                                   Response<List<BiliRank>> response) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                refresData(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<BiliRank>> call, Throwable t) {
+                mSwipeRefreshLayout.setRefreshing(false);
+
+            }
+        });
+
+        if(true){
+            return;
+        }
+
         XOkHttpUtils.get(url)
                 .tag(this)
                 .execute(new XOkHttpUtils.HttpCallBack() {
@@ -275,10 +309,27 @@ public class BiliRankPageFragment extends BasePageFragment implements
                     .setText(R.id.tv_author,item.author)
                     .setText(R.id.tv_play,BiliHelper.formatNumber(item.play))
                     .setText(R.id.tv_danmakus,BiliHelper.formatNumber(item.video_review));
-            BiliViewHelper.tintTextDrawables(holder,textColorSecondary,
-                    R.id.tv_author,R.id.tv_play,R.id.tv_danmakus);
         }
 
+    }
+
+
+    static class RankParser implements ItemsConverterFactory.ItemsParser{
+
+        @Override
+        public String parse(String result) {
+            JSONObject jsonObj = JSONObject.parseObject(result);
+            JSONObject rankObj = jsonObj.getJSONObject("rank");
+            int code = rankObj.getIntValue("code");
+            if(code == 0){
+                String list = rankObj.getString("list");
+                L.d("RankParser="+list + "");
+                return list;
+            }else{
+                L.w(TAG," return code error:"+code);
+            }
+            return null;
+        }
     }
 
 }

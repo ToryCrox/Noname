@@ -1,5 +1,6 @@
 package com.tory.noname.bili.apis;
 
+import com.tory.noname.bili.bean.BiliRank;
 import com.tory.noname.bili.bean.VideoItem;
 
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 
 /**
@@ -17,4 +19,8 @@ public interface BiliService {
 
     @GET("archive_rank/getarchiverankbypartion")
     Call<List<VideoItem>> getVideoByPartion(@QueryMap Map<String,String> params);
+
+
+    @GET("index/rank/{type}-{rang}-{cid}.json")
+    Call<List<BiliRank>> getRankItems(@Path("type") String type,@Path("rang") int rang,@Path("cid") int cid);
 }

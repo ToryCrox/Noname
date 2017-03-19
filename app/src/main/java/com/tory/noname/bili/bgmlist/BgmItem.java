@@ -33,6 +33,8 @@ public class BgmItem {
 
     public int bgmId;
 
+    public List<String> siteNames;
+
 
     @Override
     public String toString() {

@@ -11,9 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tory.library.recycler.BaseRecyclerAdapter;
+import com.tory.library.recycler.BaseViewHolder;
 import com.tory.noname.R;
-import com.tory.noname.recycler.BaseRecyclerAdapter;
-import com.tory.noname.recycler.BaseViewHolder;
 import com.tory.noname.bili.bean.CategoryMeta;
 import com.tory.noname.utils.L;
 

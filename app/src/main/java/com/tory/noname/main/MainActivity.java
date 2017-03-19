@@ -3,6 +3,7 @@ package com.tory.noname.main;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
@@ -13,6 +14,7 @@ import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.MenuItem;
 
+import com.tory.library.base.WeekHandler;
 import com.tory.noname.R;
 import com.tory.noname.bili.PartitionListFragment;
 import com.tory.noname.gank.GankListFragment;
@@ -32,6 +34,20 @@ public class MainActivity extends BaseActivity
     private String mShowingFragmentTag;
 
     private SparseArray<String> mTagMenuIds;
+
+
+    public static final int MSG_WHAT_SHOW_FRAGMENT = 1;
+    private WeekHandler<MainActivity> mHander = new WeekHandler<MainActivity>(this) {
+        @Override
+        public void handleMessage(MainActivity activity, Message msg) {
+            switch (msg.what){
+                case MSG_WHAT_SHOW_FRAGMENT:{
+                    int id = msg.arg1;
+                    activity.showFragmentById(id);
+                }
+            }
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +71,7 @@ public class MainActivity extends BaseActivity
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close);
-        mDrawerLayout.setDrawerListener(toggle);
+        mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -104,12 +120,9 @@ public class MainActivity extends BaseActivity
             case R.id.nav_ganhuo:
             case R.id.nav_bili:
             case R.id.nav_setting:
-                String tag = mTagMenuIds.get(id);
-                showFragmentAndHideOther(tag);
+                Message msg = mHander.obtainMessage(MSG_WHAT_SHOW_FRAGMENT,id,0);
+                mHander.sendMessageDelayed(msg,250);
                 break;
-            /*case R.id.nav_setting:
-                startActivity(SettingActivity.class);
-                break;*/
             case R.id.nav_mode_change:
                 boolean nightMode = mSettingHelper.isNightModeNow();
                 Utilities.setNightMode(this, !nightMode, false);
@@ -152,6 +165,11 @@ public class MainActivity extends BaseActivity
                 showFragment(tag,false,false);
             }
         }
+    }
+
+    public void showFragmentById(int id){
+        String tag = mTagMenuIds.get(id);
+        showFragmentAndHideOther(tag);
     }
 
     public void showFragmentAndHideOther(String tag){

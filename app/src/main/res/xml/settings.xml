@@ -31,5 +31,10 @@
             android:key="@string/pf_web_selete_key"
             android:summary="@string/pf_web_selete_summary"
             android:title="@string/pf_web_selete_title"/>
+
+        <Preference
+            android:defaultValue="false"
+            android:key="test_dialog"
+            android:title="test_dialog"/>
     </PreferenceCategory>
 </PreferenceScreen>

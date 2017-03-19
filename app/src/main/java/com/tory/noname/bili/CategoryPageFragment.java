@@ -16,6 +16,10 @@ import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
+import com.tory.library.recycler.BaseRecyclerAdapter;
+import com.tory.library.recycler.BaseViewHolder;
+import com.tory.library.recycler.EndlessRecyclerOnScrollListener;
+import com.tory.library.utils.SystemConfigUtils;
 import com.tory.noname.R;
 import com.tory.noname.bili.apis.BiliApis;
 import com.tory.noname.bili.apis.BiliService;
@@ -23,11 +27,7 @@ import com.tory.noname.bili.apis.VideoListConverterFactory;
 import com.tory.noname.bili.bean.CategoryMeta;
 import com.tory.noname.bili.bean.VideoItem;
 import com.tory.noname.main.base.BasePageFragment;
-import com.tory.noname.recycler.BaseRecyclerAdapter;
-import com.tory.noname.recycler.BaseViewHolder;
-import com.tory.noname.recycler.EndlessRecyclerOnScrollListener;
 import com.tory.noname.utils.L;
-import com.tory.library.utils.SystemConfigUtils;
 import com.tory.noname.utils.Utilities;
 import com.tory.noname.utils.http.XOkHttpUtils;
 
@@ -268,8 +268,8 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
         return true;
     }
 
-    private class CatePageRecyclerAdapter extends BaseRecyclerAdapter<VideoItem> {
 
+    private class CatePageRecyclerAdapter extends BaseRecyclerAdapter<VideoItem> {
         int textColorSecondary;
         public CatePageRecyclerAdapter(List<VideoItem> data) {
             super(R.layout.item_bili_video, data);
@@ -288,8 +288,8 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
                     .load(item.pic)
                     .placeholder(R.drawable.bili_default_image_tv)
                     .into((ImageView) holder.getView(R.id.iv_pic));
-            BiliViewHelper.tintTextDrawables(holder,textColorSecondary,
-                    R.id.tv_author,R.id.tv_play,R.id.tv_danmakus);
+            //BiliViewHelper.tintTextDrawables(holder,textColorSecondary,
+            //        R.id.tv_author,R.id.tv_play,R.id.tv_danmakus);
         }
 
     }

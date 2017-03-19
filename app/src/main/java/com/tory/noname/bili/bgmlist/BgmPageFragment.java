@@ -12,9 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tory.library.recycler.BaseRecyclerAdapter;
+import com.tory.library.recycler.BaseViewHolder;
 import com.tory.noname.R;
-import com.tory.noname.recycler.BaseRecyclerAdapter;
-import com.tory.noname.recycler.BaseViewHolder;
 import com.tory.noname.bili.BiliHelper;
 import com.tory.noname.main.base.BasePageFragment;
 import com.tory.noname.utils.L;
@@ -128,24 +128,24 @@ public class BgmPageFragment extends BasePageFragment implements BaseRecyclerAda
 
     @Override
     public boolean onLongClick(View v, int position) {
-        BgmItem item = mRecyclerAdpater.getItem(position);
-        for (final String site : item.onAirSite) {
-            if(site.contains("bilibili")){
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                        .setItems(new String[]{"复制链接", "打开BiliBili"}, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if(which == 0){
-                                    Utilities.copyToClipboar(getActivity(),site);
-                                }else if(which == 1){
-                                    BiliHelper.openInBili(getActivity(),site);
-                                }
-                            }
-                        });
-                builder.show();
-                break;
-            }
-        }
+        final BgmItem item = mRecyclerAdpater.getItem(position);
+
+        final List<String> airSite = item.onAirSite;
+        String[] siteNames = item.siteNames.toArray(new String[item.siteNames.size()]);
+        if(airSite == null || airSite.isEmpty()) return true;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                .setItems(siteNames, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String site= airSite.get(which);
+                        if(site.contains("bilibili")){
+                            BiliHelper.openInBili(getActivity(),site);
+                        }else{
+                            Utilities.startWeb(getActivity(),site);
+                        }
+                    }
+                });
+        builder.show();
         
         return true;
     }
@@ -191,6 +191,7 @@ public class BgmPageFragment extends BasePageFragment implements BaseRecyclerAda
     }
 
 
+
     private class BgmPageRecyclerAdapter extends BaseRecyclerAdapter<BgmItem> {
 
         public BgmPageRecyclerAdapter(List<BgmItem> data) {
@@ -203,7 +204,7 @@ public class BgmPageFragment extends BasePageFragment implements BaseRecyclerAda
 
             holder.setText(R.id.tv_title_cn, item.titleCN)
                     .setText(R.id.tv_time_jp, contactTime(item))
-                    .setText(R.id.tv_air_sites, TextUtils.join(",", BgmPresenter.getInstance().findSite(item.onAirSite)));
+                    .setText(R.id.tv_air_sites, TextUtils.join(",", item.siteNames));
         }
 
         public String contactTime(BgmItem item){

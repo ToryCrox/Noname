@@ -66,12 +66,7 @@ public class FileUtils {
      * @throws IOException
      */
     public static String readString(InputStream in) throws IOException {
-        String str = null;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        getInputStream(in, out);
-        str = new String(out.toByteArray());
-        in.close();
-        return str;
+        return readString(in,CHARSETNAME);
     }
 
     /**
