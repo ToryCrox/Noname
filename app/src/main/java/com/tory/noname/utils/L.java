@@ -41,6 +41,10 @@ public class L {
     }
 
     public static void e(String tag,String msg){
-            Log.e(TAG,tag +"  "+msg);
+        Log.e(TAG,tag +"  "+msg);
+    }
+
+    public static void e(String tag,String msg,Exception e){
+        Log.e(TAG,tag +"  "+msg, e);
     }
 }

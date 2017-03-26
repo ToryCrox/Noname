@@ -1,0 +1,432 @@
+{
+  "configs": [
+    {
+      "server": "216.189.150.81",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "01美国亚特兰大节点",
+      "auth": false
+    },
+    {
+      "server": "216.189.157.185",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "02美国华盛顿节点",
+      "auth": false
+    },
+    {
+      "server": "173.254.202.103",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "03美国洛杉矶节点",
+      "auth": false
+    },
+    {
+      "server": "45.58.60.115",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "04美国洛杉矶节点",
+      "auth": false
+    },
+    {
+      "server": "45.58.60.116",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "05美国洛杉矶节点",
+      "auth": false
+    },
+    {
+      "server": "45.58.55.111",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "06美国达拉斯节点",
+      "auth": false
+    },
+    {
+      "server": "45.58.55.17",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "07美国达拉斯节点",
+      "auth": false
+    },
+    {
+      "server": "103.27.77.81",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "08香港节点",
+      "auth": false
+    },
+    {
+      "server": "103.27.78.209",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "09香港节点",
+      "auth": false
+    },
+    {
+      "server": "103.27.79.76",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "10香港节点",
+      "auth": false
+    },
+    {
+      "server": "103.27.79.88",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "11香港节点",
+      "auth": false
+    },
+    {
+      "server": "103.27.79.110",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "12香港节点",
+      "auth": false
+    },
+    {
+      "server": "103.27.79.114",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "13香港节点",
+      "auth": false
+    },
+    {
+      "server": "116.251.211.157",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "14新加坡节点",
+      "auth": false
+    },
+    {
+      "server": "210.16.120.85",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "15新加坡节点",
+      "auth": false
+    },
+    {
+      "server": "210.16.120.125",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "16新加坡节点",
+      "auth": false
+    },
+    {
+      "server": "210.16.120.127",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "17新加坡节点",
+      "auth": false
+    },
+    {
+      "server": "60.251.29.28",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "18台湾节点",
+      "auth": false
+    },
+    {
+      "server": "60.251.29.50",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "19台湾节点",
+      "auth": false
+    },
+    {
+      "server": "104.128.236.92",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "20美国节点",
+      "auth": false
+    },
+    {
+      "server": "104.128.224.103",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "21美国节点",
+      "auth": false
+    },
+    {
+      "server": "45.124.65.171",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "22香港节点",
+      "auth": false
+    },
+    {
+      "server": "116.251.211.233",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "23新加坡节点",
+      "auth": false
+    },
+    {
+      "server": "103.214.68.232",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "24韩国节点",
+      "auth": false
+    },
+    {
+      "server": "60.251.29.53",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "25台湾节点",
+      "auth": false
+    },
+    {
+      "server": "173.254.221.118",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "26VIP洛杉矶节点",
+      "auth": false
+    },
+    {
+      "server": "192.3.246.196",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "27VIP洛杉矶节点",
+      "auth": false
+    },
+    {
+      "server": "89.163.183.142",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "28VIP德国节点",
+      "auth": false
+    },
+    {
+      "server": "106.187.100.105",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "29VIP东京节点",
+      "auth": false
+    },
+    {
+      "server": "210.16.120.86",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "30VIP新加坡节点",
+      "auth": false
+    },
+    {
+      "server": "210.16.120.87",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "31VIP新加坡节点",
+      "auth": false
+    },
+    {
+      "server": "210.16.120.121",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "32VIP新加坡节点",
+      "auth": false
+    },
+    {
+      "server": "210.16.120.126",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "33VIP新加坡节点",
+      "auth": false
+    },
+    {
+      "server": "103.27.77.9",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "34VIP香港节点",
+      "auth": false
+    },
+    {
+      "server": "103.27.77.148",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "35VIP香港节点",
+      "auth": false
+    },
+    {
+      "server": "103.27.78.210",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "36VIP香港节点",
+      "auth": false
+    },
+    {
+      "server": "103.27.79.78",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "37VIP香港节点",
+      "auth": false
+    },
+    {
+      "server": "103.27.79.79",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "38VIP香港节点",
+      "auth": false
+    },
+    {
+      "server": "103.27.79.89",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "39VIP香港节点",
+      "auth": false
+    },
+    {
+      "server": "103.27.79.90",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "40VIP香港节点",
+      "auth": false
+    },
+    {
+      "server": "103.27.79.112",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "41VIP香港节点",
+      "auth": false
+    },
+    {
+      "server": "103.27.79.123",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "42VIP香港节点",
+      "auth": false
+    },
+    {
+      "server": "211.22.145.188",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "43VIP台湾节点",
+      "auth": false
+    },
+    {
+      "server": "211.22.145.139",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "44VIP台湾节点",
+      "auth": false
+    },
+    {
+      "server": "60.251.29.48",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "45VIP台湾节点",
+      "auth": false
+    },
+    {
+      "server": "60.251.29.49",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "46VIP台湾网页专线",
+      "auth": false
+    },
+    {
+      "server": "45.124.64.142",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "47VIP香港网页专线",
+      "auth": false
+    },
+    {
+      "server": "27.100.36.125",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "48VIP悉尼节点",
+      "auth": false
+    },
+    {
+      "server": "45.76.210.19",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "49VIP东京节点",
+      "auth": false
+    },
+    {
+      "server": "103.214.68.231",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "52VIP韩国节点",
+      "auth": false
+    },
+    {
+      "server": "103.214.68.230",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "53VIP韩国节点",
+      "auth": false
+    },
+    {
+      "server": "211.22.145.142",
+      "server_port": 13410,
+      "password": "LF3VYgPYcsdY",
+      "method": "rc4-md5",
+      "remarks": "54VIP台湾节点",
+      "auth": false
+    }
+  ],
+  "strategy": null,
+  "index": 48,
+  "global": false,
+  "enabled": false,
+  "shareOverLan": false,
+  "isDefault": false,
+  "localPort": 1080,
+  "pacUrl": null,
+  "useOnlinePac": false,
+  "availabilityStatistics": false,
+  "autoCheckUpdate": true,
+  "logViewer": null
+}

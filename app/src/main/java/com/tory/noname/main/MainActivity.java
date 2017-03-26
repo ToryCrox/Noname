@@ -19,6 +19,7 @@ import com.tory.noname.R;
 import com.tory.noname.bili.PartitionListFragment;
 import com.tory.noname.gank.GankListFragment;
 import com.tory.noname.main.base.BaseActivity;
+import com.tory.noname.ss.SsListFragment;
 import com.tory.noname.utils.L;
 import com.tory.noname.utils.SettingHelper;
 import com.tory.noname.utils.Utilities;
@@ -120,6 +121,7 @@ public class MainActivity extends BaseActivity
             case R.id.nav_ganhuo:
             case R.id.nav_bili:
             case R.id.nav_setting:
+            case R.id.nav_gallery:
                 Message msg = mHander.obtainMessage(MSG_WHAT_SHOW_FRAGMENT,id,0);
                 mHander.sendMessageDelayed(msg,250);
                 break;
@@ -147,6 +149,7 @@ public class MainActivity extends BaseActivity
         mTagMenuIds.put(R.id.nav_ganhuo,GankListFragment.FRAGMENT_TAG);
         mTagMenuIds.put(R.id.nav_bili,PartitionListFragment.FRAGMENT_TAG);
         mTagMenuIds.put(R.id.nav_setting,SettingsFragment.FRAGMENT_TAG);
+        mTagMenuIds.put(R.id.nav_gallery, SsListFragment.FRAGMENT_TAG);
     }
 
     private void initDefalutFragment(){
@@ -196,6 +199,8 @@ public class MainActivity extends BaseActivity
             return SettingsFragment.newInstance();
         }else if(PartitionListFragment.FRAGMENT_TAG.equals(tag)){
             return new PartitionListFragment();
+        }else if(SsListFragment.FRAGMENT_TAG.equals(tag)){
+            return new SsListFragment();
         }
         throw new IllegalStateException("Unexpected fragment: " + tag);
     }

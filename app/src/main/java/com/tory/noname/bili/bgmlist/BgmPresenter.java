@@ -1,14 +1,11 @@
 package com.tory.noname.bili.bgmlist;
 
-import android.text.TextUtils;
-
 import com.alibaba.fastjson.JSONObject;
-import com.tory.noname.MApplication;
 import com.tory.library.utils.FileUtils;
-import com.tory.noname.utils.L;
 import com.tory.library.utils.Md5Util;
-import com.tory.library.utils.NetUtils;
 import com.tory.library.utils.SpHelper;
+import com.tory.noname.MApplication;
+import com.tory.noname.utils.L;
 import com.tory.noname.utils.http.XOkHttpUtils;
 
 import java.io.File;
@@ -18,6 +15,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * @Author: Tory
@@ -73,7 +76,7 @@ public class BgmPresenter {
     }
 
     public void loadData(boolean foreceLoad) {
-        if (!foreceLoad || !NetUtils.isNetworkAvailable(MApplication.getInstance())) {
+        /*if (!foreceLoad || !NetUtils.isNetworkAvailable(MApplication.getInstance())) {
             if (mList == null) {
                 L.d("onLoadComplete: hasload!");
                 onLoadComplete();
@@ -87,6 +90,45 @@ public class BgmPresenter {
                 return;
             }
 
+        }*/
+
+        L.d("loadData start");
+        BgmService.Apis.createArchivesObservalbe()
+                .getArchives()
+                .flatMap(new Func1<List<Archive>, Observable<List<BgmItem>>>() {
+                    @Override
+                    public Observable<List<BgmItem>> call(List<Archive> archives) {
+                        String url = archives.get(archives.size() - 1).path;
+                        L.d("loadData url="+url);
+                        return BgmService.Apis
+                                .createArchivesObservalbe(url)
+                                .getBgmItems(url);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<BgmItem>>() {
+                    @Override
+                    public void onNext(List<BgmItem> list) {
+                        mList.clear();
+                        mList.addAll(list);
+                        onLoadComplete();
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        L.d("loadData onCompleted=");
+                    }
+
+                    @Override
+                    public void onError(Throwable error) {
+                        L.e("loadData"," onError "+error);
+                    }
+                });
+
+
+        if(true){
+            return;
         }
 
         XOkHttpUtils.get(getUrl())

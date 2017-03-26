@@ -115,6 +115,11 @@ public class FileUtils {
         return readString(new File(file), CHARSETNAME);
     }
 
+
+    public static String readAssets(Context context, String filePath) throws IOException {
+        return readString(context.getAssets().open(filePath));
+    }
+
     /**
      * 判断目录是否存在
      * 

@@ -139,7 +139,8 @@ public class BiliRankPageFragment extends BasePageFragment implements
 
         Retrofit retrofit =new Retrofit.Builder()
                 .baseUrl(BiliApis.BASE_URL)
-                .addConverterFactory(ItemsConverterFactory.create(new RankParser(),BiliRank.class))
+                .addConverterFactory(ItemsConverterFactory.create(new RankParser()))
+                .client(XOkHttpUtils.getInstance().getOkHttpClient())
                 .build();
         BiliService biliService = retrofit.create(BiliService.class);
         Call<List<BiliRank>> call = biliService.getRankItems(mRankType, mRankRange,mRankCatelogyId);

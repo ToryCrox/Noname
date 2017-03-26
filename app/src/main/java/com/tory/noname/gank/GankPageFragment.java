@@ -68,7 +68,7 @@ public class GankPageFragment extends BasePageFragment
         if (getArguments() != null) {
             mTag = getArguments().getString(ARG_TYPE);
         }
-        List<Gank> list = parseData(obtainOfflineData(getUrl()));
+        List<Gank> list = null;//parseData(obtainOfflineData(getUrl()));
         mRecyclerAdpater = new GankRecyclerAdapter(list);
         mRecyclerAdpater.setOnRecyclerViewItemClickListener(this);
         mRecyclerAdpater.setOnRecyclerViewItemLongClickListener(this);

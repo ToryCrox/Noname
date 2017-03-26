@@ -23,7 +23,7 @@ import com.tory.library.utils.SystemConfigUtils;
 import com.tory.noname.R;
 import com.tory.noname.bili.apis.BiliApis;
 import com.tory.noname.bili.apis.BiliService;
-import com.tory.noname.bili.apis.VideoListConverterFactory;
+import com.tory.noname.bili.apis.ItemsConverterFactory;
 import com.tory.noname.bili.bean.CategoryMeta;
 import com.tory.noname.bili.bean.VideoItem;
 import com.tory.noname.main.base.BasePageFragment;
@@ -147,11 +147,14 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
     public void fetchData() {
         Retrofit retrofit =new Retrofit.Builder()
                 .baseUrl(BiliApis.BASE_URL_API)
-                .addConverterFactory(VideoListConverterFactory.create())
+                .addConverterFactory(ItemsConverterFactory.create(new VideoItemParser()))
+                .client(XOkHttpUtils.getInstance().getOkHttpClient())
                 .build();
         BiliService biliService = retrofit.create(BiliService.class);
         Call<List<VideoItem>> call = biliService.getVideoByPartion(getParams());
+        
         call.enqueue(new Callback<List<VideoItem>>() {
+
             @Override
             public void onResponse(Call<List<VideoItem>> call,
                                    Response<List<VideoItem>> response) {
@@ -294,5 +297,22 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
 
     }
 
+
+    static class VideoItemParser implements ItemsConverterFactory.ItemsParser{
+
+        @Override
+        public String parse(String result) {
+            JSONObject jsonObj = JSONObject.parseObject(result);
+            int code = jsonObj.getIntValue("code");
+            if(code == 0){
+                String list = jsonObj.getJSONObject("data").getString("archives");
+                L.d("VideoItemParser="+list + "");
+                return list;
+            }else{
+                L.w(TAG," return code error:"+code);
+            }
+            return null;
+        }
+    }
 
 }

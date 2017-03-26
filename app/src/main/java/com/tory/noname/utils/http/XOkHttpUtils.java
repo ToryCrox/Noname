@@ -69,6 +69,10 @@ public class XOkHttpUtils {
                 .build();
     }
 
+    public OkHttpClient getOkHttpClient(){
+        return mOkHttpClient;
+    }
+
     public static XOkHttpUtils getInstance() {
         if (mInstance == null)
             synchronized (XOkHttpUtils.class) {
