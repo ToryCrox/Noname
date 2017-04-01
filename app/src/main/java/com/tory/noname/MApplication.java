@@ -1,8 +1,10 @@
 package com.tory.noname;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.facebook.stetho.Stetho;
+import com.tory.noname.utils.L;
 import com.tory.noname.utils.SettingHelper;
 import com.tory.noname.utils.Utilities;
 
@@ -24,5 +26,7 @@ public class MApplication extends Application {
         //chrome://inspect
         Stetho.initializeWithDefaults(this);
         Utilities.setNightMode(this, SettingHelper.getInstance(this).isNightMode());
+
+        L.d("StethoReflection sourceDir="+getApplicationInfo().sourceDir);
     }
 }
