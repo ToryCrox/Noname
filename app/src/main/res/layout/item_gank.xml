@@ -42,7 +42,7 @@
                 android:id="@+id/iv_source"
                 android:layout_width="14dp"
                 android:layout_height="14dp"
-                android:src="@drawable/ic_layers" />
+                app:srcCompat="@drawable/ic_layers" />
 
             <TextView
                 android:id="@+id/tv_source"
@@ -57,7 +57,7 @@
                 android:id="@+id/iv_people"
                 android:layout_width="14dp"
                 android:layout_height="14dp"
-                android:src="@drawable/ic_person" />
+                app:srcCompat="@drawable/ic_person" />
 
             <TextView
                 android:id="@+id/tv_people"
@@ -72,7 +72,7 @@
                 android:id="@+id/iv_time"
                 android:layout_width="14dp"
                 android:layout_height="14dp"
-                android:src="@drawable/ic_time" />
+                app:srcCompat="@drawable/ic_time" />
 
             <TextView
                 android:id="@+id/tv_time"
@@ -91,7 +91,7 @@
                 android:id="@+id/iv_tag"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:src="@drawable/ic_label" />
+                app:srcCompat="@drawable/ic_label" />
 
             <TextView
                 android:id="@+id/tv_tag"

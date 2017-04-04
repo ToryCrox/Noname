@@ -3,11 +3,10 @@ package com.tory.noname.utils.http;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.facebook.stetho.okhttp3.StethoInterceptor;
-import com.tory.noname.MApplication;
 import com.tory.library.utils.FileUtils;
-import com.tory.noname.utils.L;
 import com.tory.library.utils.NetUtils;
+import com.tory.noname.MApplication;
+import com.tory.noname.utils.L;
 
 import java.io.File;
 import java.io.FilterInputStream;
@@ -58,15 +57,15 @@ public class XOkHttpUtils {
 
     private XOkHttpUtils() {
         mHandler = new Handler(Looper.getMainLooper());
-        mOkHttpClient = new OkHttpClient().newBuilder()
+        OkHttpClient.Builder builder = new OkHttpClient().newBuilder()
                 .connectTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
                 .writeTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
                 .readTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
                 .cache(provideCache()) //设置缓存
                 //.addNetworkInterceptor(new CacheInterceptor())
-                .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
-                .addNetworkInterceptor(new StethoInterceptor())
-                .build();
+                .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR);
+                //.build();
+        mOkHttpClient = builder.build();
     }
 
     public OkHttpClient getOkHttpClient(){
