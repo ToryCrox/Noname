@@ -1,0 +1,198 @@
+import java.text.SimpleDateFormat
+
+def sdkDir = null
+Properties properties=new Properties();
+File proFile=new File(rootDir.getAbsolutePath()+"/local.properties")
+if(proFile.exists()){
+    properties.load(proFile.newDataInputStream())
+    sdkDir = properties.getProperty("sdk.dir")
+}
+def guardJarPath = "./AndResGuard/AndResGuard-cli-1.1.13.jar"
+def guardConfigPath = "./AndResGuard/config.xml"
+def originOutPath = "./"
+//def originOutPath = "./build/outputs/apk"
+def oraginApkMappingPath = "./build/outputs/mapping/release/mapping.txt"
+def outputPath = "./outApk"
+
+//7z的安装路径，这里要根据自己电脑的安装路径来算
+//linux : def _7zipPath = '7za'
+def _7zipPath = 'C:/Program Files/7-Zip/7z.exe'
+
+def tempDir = "./argOutApk"
+def clearDir = true
+def deleteOrige = true
+
+//for linux conifg
+def isLinux = System.getProperty("os.name").toLowerCase().contains("linux")
+if(isLinux){
+    _7zipPath = '/usr/bin/7z'
+    originOutPath = "./build/outputs/apk"
+    deleteOrige = false
+}
+if(sdkDir == null || sdkDir.equals("")){
+    sdkDir = System.getenv("ANDROID_HOME")
+}
+
+def keyAlias=android.signingConfigs.config.keyAlias
+def keyPassword=android.signingConfigs.config.keyPassword
+def storeFile=android.signingConfigs.config.storeFile
+def storePassword=android.signingConfigs.config.storePassword
+
+//获取apk版本号
+def getVersionNameAdvanced(){
+    def xmlFile = project.file("./src/main/AndroidManifest.xml")
+    def rootManifest = new XmlSlurper().parse(xmlFile)
+    return rootManifest['@android:versionName']
+}
+
+/**
+ *组合最终需要的apk名称
+ *若要定制最终输出的文件名，请修改该方法
+ */
+def getTargetApkName(){
+    SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+    def today = format.format(new Date());
+    def versionName =getVersionNameAdvanced()
+    return "XOSLauncher_v${versionName}_${today}.apk"
+}
+
+/**
+ * 复制文件
+ */
+def copyFile = {
+    srcFile, destFile ->
+        def inFile = file(srcFile)
+        def outFile = new File(destFile)//输出的文件
+        outFile.withOutputStream { os -> inFile.withInputStream { ins -> os << ins } }
+
+}
+
+/**
+ * 从压缩完的目录中拷贝将需要的apk和mapping文件拷贝出来
+ */
+def copyFromArg = {
+    originApkFile , tmpOutputDir->
+        def outApkDir = file(outputPath).getAbsoluteFile()
+        if(!outApkDir.exists()){
+            outApkDir.mkdir()
+        }
+        tmpOutputDir.eachFile {
+            if (it.name.contains("7zip_aligned")) {//拷贝压缩后的apk
+                def preApk = Math.round(originApkFile.length() / 1024*100)/100
+                println "压缩前：${preApk}K"
+                def afterApk = Math.round(it.length() / 1024*100)/100
+                println "压缩后：${afterApk}K"
+                def targetFile = new File(outApkDir,getTargetApkName())
+                copyFile.call(it.getAbsolutePath(), targetFile.getAbsolutePath())
+            }else if(it.name.contains("resource_mapping")){//拷贝res的mapping文件
+                def targetFile = new File(outApkDir,"resource_mapping.txt")
+                println "copy ${it.name} to ${targetFile.getAbsolutePath()}"
+                copyFile.call(it.getAbsolutePath(), targetFile.getAbsolutePath())
+            }
+        }
+        //拷贝原始文件
+        println "copy orgin file to ${outApkDir.getAbsolutePath()}"
+        copyFile.call(originApkFile.getAbsolutePath(), new File(outApkDir,originApkFile.name).getAbsolutePath())
+
+        //拷贝文件的apk的mapping文件
+        println "copy orgin mapping file to ${outApkDir.getAbsolutePath()}"
+        if(file(oraginApkMappingPath).exists()){
+            copyFile.call(file(oraginApkMappingPath).getAbsolutePath(),
+                    new File(outApkDir,file(oraginApkMappingPath).name).getAbsolutePath())
+        }
+
+        if(clearDir){
+            delete tmpOutputDir
+            println "删除临时目录${tmpOutputDir.name}"
+        }
+        if(deleteOrige){
+            delete originApkFile
+        }
+}
+
+/**
+ * 压缩APK
+ */
+def compress = {
+    originApkFile ->
+        //减去.apk
+        //def name = originApkFile.name
+        //def path = name.substring(0, name.length() - 4)
+        def guardJarFile = file(guardJarPath)
+        def guardConfigFile = file(guardConfigPath)
+        //def originApkFile = file("${originOutPath}/${name}")
+        def outputDir = file(tempDir)
+        outputDir.mkdir()
+        def __7zipPath = isLinux ? file(_7zipPath) : '"'+file(_7zipPath)+'"'
+        // 开始执行压缩命令
+        def proc = """java -jar ${guardJarFile} ${originApkFile} -config ${guardConfigFile}
+                    -out ${outputDir} -7zip ${__7zipPath}
+                    -signature ${storeFile} ${storePassword} ${keyPassword} ${keyAlias}
+                    -zipalign  ${sdkDir}/build-tools/${android.buildToolsVersion}/zipalign""".execute()
+        proc.waitFor()
+        if (proc.exitValue() == 0) {
+            println "压缩开始:\t\n${proc.in.text}"
+            copyFromArg.call(originApkFile,outputDir)
+        } else {
+            println "错误日志：\n${proc.err.text}"
+        }
+}
+
+def compressApp = {
+    //清理build目录，可不加
+    //delete rootProject.buildDir
+    //遍历apk文件
+    if(!file(originOutPath).exists()){
+        println "please complie the project first"
+        return
+    }
+    if(!file(_7zipPath).exists()){
+        println "please install 7zip first _7zipPath="+_7zipPath
+        return
+    }
+    def containApk = false
+    file(originOutPath).eachFile {
+        if (it.name.endsWith("release.apk")) {
+            containApk = true
+            println "**************${it.name}******************"
+            compress.call(it)
+            println "********${it.name}压缩完成***********"
+        }
+    }
+    if(containApk){
+        println "压缩完成"
+    }else{
+        println "此目录下没有apk文件"
+    }
+}
+
+/**
+ * gradlew  compressApp
+ * 对包进行微信资源压缩
+ * gradlew assembleRelease && gradlew compressAppX
+ * 先编译再打包
+ */
+task compressAppX << {
+    //清理build目录，可不加
+    //delete rootProject.buildDir
+    //遍历apk文件
+    compressApp()
+    println "file 7za:"+isLinux
+    println "ANDROID_HOME="+System.getenv("ANDROID_HOME")
+    println "sdk="+sdkDir
+}
+
+//添加编译完自动压缩拷贝文件任务
+project.afterEvaluate {
+    if(tasks.findByName("assembleRelease") != null){
+        println "$project.name: find task assembleRelease success"
+        tasks.getByName("assembleRelease") {
+            it.doLast {
+                println "$project.name: After assemble, compressApp "
+                compressApp()
+            }
+        }
+    }else{
+        println "$project.name: can not find task assembleRelease "
+    }
+}

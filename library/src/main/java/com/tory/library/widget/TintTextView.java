@@ -19,7 +19,7 @@ import com.tory.library.R;
  */
 public class TintTextView extends AppCompatTextView {
 
-    ColorStateList mColorTint;
+    ColorStateList mColorStateTint;
 
     public TintTextView(Context context) {
         super(context);
@@ -40,18 +40,22 @@ public class TintTextView extends AppCompatTextView {
     private void init(Context context, AttributeSet attrs, int defStyleAttr){
         TypedArray a = getContext().obtainStyledAttributes(attrs,
                 R.styleable.TintViewDrawable, defStyleAttr, 0);
-        int color = a.getColor(R.styleable.TintViewDrawable_drawableTint, Color.TRANSPARENT);
-        mColorTint = ColorStateList.valueOf(color);
+        if(a.hasValue(R.styleable.TintViewDrawable_drawableTint)){
+            mColorStateTint = a.getColorStateList(R.styleable.TintViewDrawable_drawableTint);
+        }
         a.recycle();
         tintCompoundDrawables();
     }
 
     public void setDrawableColorTint(int color){
-        mColorTint = ColorStateList.valueOf(color);
+        mColorStateTint = ColorStateList.valueOf(color);
         tintCompoundDrawables();
     }
 
     private void tintCompoundDrawables() {
+        if(mColorStateTint == null){
+            return;
+        }
         Drawable[] drawables = getCompoundDrawablesRelative();
         if(drawables == null ) return;
         for (int i = 0; i < drawables.length; i++) {
@@ -60,7 +64,7 @@ public class TintTextView extends AppCompatTextView {
                 Drawable.ConstantState state = icon.getConstantState();
                 icon = DrawableCompat.wrap(state == null ? icon : state.newDrawable()).mutate();
                 icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
-                DrawableCompat.setTintList(icon, mColorTint);
+                DrawableCompat.setTintList(icon, mColorStateTint);
                 drawables[i] = icon;
             }
         }

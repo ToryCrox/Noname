@@ -19,7 +19,7 @@ public class ReflectDebugUtil {
     public static final String DEBUG_STETHO_CLASS_NAME = "com.tory.debug.StethoReflection";
 
     /**
-     * //chrome://inspect
+     * chrome://inspect
      * @param context
      */
     public static void reflectInitStetho(Context context){

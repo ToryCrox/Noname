@@ -426,6 +426,10 @@ public class DeviceUtils {
         }
     }
 
+    public static int getCpuCount(){
+        return Runtime.getRuntime().availableProcessors();
+    }
+
     /**
      *获取cpu型号
      * @return

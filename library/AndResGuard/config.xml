@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resproguard>
+    <!--defaut property to set  -->
+    <issue id="property">
+        <!--whether use 7zip to repackage the signed apk, you must install the 7z command line version in window -->
+        <!--sudo apt-get install p7zip-full in linux -->
+        <!--and you must write the sign data fist, and i found that if we use linux, we can get a better result -->
+        <seventzip value="true"/>
+        <!--the sign data file name in your apk, default must be META-INF-->
+        <!--generally, you do not need to change it if you dont change the meta file name in your apk-->
+        <metaname value="META-INF"/>
+        <!--if keep root, res/drawable will be kept, it won't be changed to such as r/s-->
+        <keeproot value="false"/>
+    </issue>
+
+    <!--whitelist, some resource id you can not proguard, such as getIdentifier-->
+    <!--isactive, whether to use whitelist, you can set false to close it simply-->
+    <issue id="whitelist" isactive="true">
+        <!--you must write the full package name, such as com.tencent.mm.R -->
+        <!--for some reason, we should keep our icon better-->
+        <!--and it support *, ?, such as com.tencent.mm.R.drawable.emoji_*, com.tencent.mm.R.drawable.emoji_?-->
+        <!--<path value="<your_package_name>.R.drawable.icon"/>-->
+        <!--<path value="<your_package_name>.R.string.com.crashlytics.*"/>-->
+        <!--<path value="<your_package_name>.R.string.umeng*"/>-->
+        <!--<path value="<your_package_name>.R.layout.umeng*"/>-->
+        <!--<path value="<your_package_name>.R.drawable.umeng*"/>-->
+        <!--<path value="<your_package_name>.R.anim.umeng*"/>-->
+        <!--<path value="<your_package_name>.R.color.umeng*"/>-->
+        <!--<path value="<your_package_name>.R.style.*UM*"/>-->
+        <!--<path value="<your_package_name>.R.style.umeng*"/>-->
+        <!--<path value="<your_package_name>.R.id.umeng*"/>-->
+        <!--<path value="<your_package_name>.R.string.UM*"/>-->
+        <!--<path value="<your_package_name>.R.string.tb_*"/>-->
+        <!--<path value="<your_package_name>.R.layout.tb_*"/>-->
+        <!--<path value="<your_package_name>.R.drawable.tb_*"/>-->
+        <!--<path value="<your_package_name>.R.color.tb_*"/>-->
+        <path value="com.transsion.XOSLauncher.R.drawable.tecno_calendar*"/>
+        <path value="com.transsion.XOSLauncher.R.drawable.effect_*"/>
+        <path value="com.transsion.XOSLauncher.R.drawable.ic_launcher"/>
+        <path value="com.transsion.XOSLauncher.R.drawable.ic_launcher_home"/>
+        <path value="com.transsion.XOSLauncher.R.drawable.online_theme_bg"/>
+        <path value="com.transsion.XOSLauncher.R.drawable.online_theme_top"/>
+        <path value="com.transsion.XOSLauncher.R.drawable.tecno_icon_sharped_bg"/>
+        <path value="com.transsion.XOSLauncher.R.drawable.tecno_calendarbg"/>
+        <path value="com.transsion.XOSLauncher.R.drawable.default_wallpaper"/>
+        <path value="com.transsion.XOSLauncher.R.mipmap.ic_launcher_home"/>
+        <path value="com.transsion.XOSLauncher.R.array.theme_apps_*"/>
+        <path value="com.transsion.XOSLauncher.R.array.special_apps_*"/>
+        <path value="com.transsion.XOSLauncher.R.array.xos_launcher_effect"/>
+        <path value="com.transsion.XOSLauncher.R.array.online_theme_calendar_offsets"/>
+        <path value="com.transsion.XOSLauncher.R.array.theme_online_system_apps"/>
+        <path value="com.transsion.XOSLauncher.R.string.effect_*"/>
+        <path value="com.transsion.XOSLauncher.R.string.system_wallpaper_directory"/>
+        <path value="com.transsion.XOSLauncher.R.bool.online_theme_custom_calendar"/>
+        <path value="com.transsion.XOSLauncher.R.bool.default_wallpapper_hidden"/>
+        <path value="com.transsion.XOSLauncher.R.bool.requires_first_run_flow"/>
+        <path value="com.transsion.XOSLauncher.R.xml.default_layout_*"/>
+        <path value="com.transsion.XOSLauncher.R.xml.partner_folder"/>
+        <path value="com.transsion.XOSLauncher.R.xml.partner_default_layout"/>
+        <path value="com.transsion.XOSLauncher.R.integer.grid_num_rows"/>
+        <path value="com.transsion.XOSLauncher.R.integer.grid_num_columns"/>
+        <path value="com.transsion.XOSLauncher.R.dimen.grid_icon_size_dp"/>
+
+        <path value="com.transsion.XOSLauncher.R.string.ga_trackingId"/>
+        <path value="com.transsion.XOSLauncher.R.string.gcm_defaultSenderId"/>
+        <path value="com.transsion.XOSLauncher.R.string.google_api_key"/>
+        <path value="com.transsion.XOSLauncher.R.string.google_app_id"/>
+        <path value="com.transsion.XOSLauncher.R.string.google_crash_reporting_api_key"/>
+        <path value="com.transsion.XOSLauncher.R.integer.google_play_services_version"/>
+        <path value="com.transsion.XOSLauncher.R.raw.gtm_analytics"/>
+    </issue>
+
+    <!--keepmapping, sometimes if we need to support incremental upgrade, we should keep the old mapping-->
+    <!--isactive, whether to use keepmapping, you can set false to close it simply-->
+    <!--if you use -mapping to set keepmapping property in cammand line, these setting will be overlayed-->
+    <issue id="keepmapping" isactive="false">
+        <!--the old mapping path, in window use \, in linux use /, and the default path is the running location-->
+        <path value="mapping.txt"/>
+    </issue>
+
+    <!--compress, if you want to compress the file, the name is relative path, such as resources.arsc, res/drawable-hdpi/welcome.png-->
+    <!--what can you compress? generally, if your resources.arsc less than 1m, you can compress it. and i think compress .png, .jpg is ok-->
+    <!--isactive, whether to use compress, you can set false to close it simply-->
+    <issue id="compress" isactive="true">
+        <!--you must use / separation, and it support *, ?, such as *.png, *.jpg, res/drawable-hdpi/welcome_?.png-->
+        <path value="*.png"/>
+        <path value="*.jpg"/>
+        <path value="*.jpeg"/>
+        <path value="*.gif"/>
+        <path value="resources.arsc"/>
+        <path value="*.webp"/>
+        <path value="assets/folder.db"/>
+        <path value="assets/theme/Xtheme.apk"/>
+        <path value="assets/html/*.html"/>
+    </issue>
+
+    <!--sign, if you want to sign the apk, and if you want to use 7zip, you must fill in the following data-->
+    <!--isactive, whether to use sign, you can set false to close it simply-->
+    <!--if you use -signature to set sign property in cammand line, these setting will be overlayed-->
+    <issue id="sign" isactive="false">
+        <!--the signature file path, in window use \, in linux use /, and the default path is the running location-->
+        <!--这里的路径是从整个项目的要路径开始算的 -->
+        <path value="./xLauncher/keyStore_xlauncher.jks"/>
+        <!--storepass-->
+        <storepass value="123456"/>
+        <!--keypass-->
+        <keypass value="123456"/>
+        <!--alias-->
+        <alias value="com.transsion.XOSLauncher"/>
+    </issue>
+
+</resproguard>
