@@ -1,6 +1,7 @@
 package com.tory.library.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 
@@ -8,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -336,6 +338,16 @@ public class FileUtils {
         return cacheDir;
     }
 
+    public static String getSDPath(){
+        File sdDir = null;
+        boolean sdCardExist = Environment.getExternalStorageState()
+                .equals(android.os.Environment.MEDIA_MOUNTED); //判断sd卡是否存在
+        if (sdCardExist) {
+            sdDir = Environment.getExternalStorageDirectory();//获取跟目录
+        }
+        return sdDir != null ? sdDir.toString() : null;
+    }
+
     /**
      * 清除缓存
      * @param context
@@ -360,6 +372,25 @@ public class FileUtils {
         return getFileSizeFormat(httpSize);
     }
 
+
+    public static boolean saveBitmap(Bitmap bitmap, String filePath){
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(filePath);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            return true;
+        } catch (FileNotFoundException e) {
+            return false;
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.flush();
+                    fos.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+    }
 
 
 }

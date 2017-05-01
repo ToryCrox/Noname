@@ -21,10 +21,9 @@ import com.tory.library.recycler.BaseViewHolder;
 import com.tory.library.recycler.EndlessRecyclerOnScrollListener;
 import com.tory.library.utils.SystemConfigUtils;
 import com.tory.noname.R;
-import com.tory.noname.bili.apis.BiliApis;
-import com.tory.noname.bili.apis.BiliService;
-import com.tory.noname.bili.apis.ItemsConverterFactory;
 import com.tory.noname.bili.bean.CategoryMeta;
+import com.tory.noname.bili.bean.HotVideoInfo;
+import com.tory.noname.bili.bean.PartitionVideoInfo;
 import com.tory.noname.bili.bean.VideoItem;
 import com.tory.noname.main.base.BasePageFragment;
 import com.tory.noname.utils.L;
@@ -36,10 +35,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 
 /**
@@ -145,49 +145,34 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
 
     @Override
     public void fetchData() {
-        Retrofit retrofit =new Retrofit.Builder()
-                .baseUrl(BiliApis.BASE_URL_API)
-                .addConverterFactory(ItemsConverterFactory.create(new VideoItemParser()))
-                .client(XOkHttpUtils.getInstance().getOkHttpClient())
-                .build();
-        BiliService biliService = retrofit.create(BiliService.class);
-        Call<List<VideoItem>> call = biliService.getVideoByPartion(getParams());
-        
-        call.enqueue(new Callback<List<VideoItem>>() {
-
-            @Override
-            public void onResponse(Call<List<VideoItem>> call,
-                                   Response<List<VideoItem>> response) {
-                mSwipeRefreshLayout.setRefreshing(false);
-                refresData(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<List<VideoItem>> call, Throwable t) {
-                mSwipeRefreshLayout.setRefreshing(false);
-
-            }
-        });
-
-        if(true) return;
-        XOkHttpUtils.get(getBaseUrl())
-                .params(getParams())
-                .tag(this)
-                .execute(new XOkHttpUtils.HttpCallBack() {
+        RetrofitHelper
+                .createBangumiService()
+                .get3DayHotVideoInfos(mCate.tid)
+                .flatMap(new Func1<HotVideoInfo, Observable<PartitionVideoInfo>>() {
                     @Override
-                    public void onLoadStart() {
-                        mSwipeRefreshLayout.setRefreshing(true);
+                    public Observable<PartitionVideoInfo> call(HotVideoInfo hotVideoInfo) {
+                        L.d("fetchData="+hotVideoInfo);
+                        return RetrofitHelper.createBiliApiService().getVideoByPartion(getParams());
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<PartitionVideoInfo>() {
+                    @Override
+                    public void onCompleted() {
+                        L.d(TAG,"onCompleted");
+                        mSwipeRefreshLayout.setRefreshing(false);
                     }
 
                     @Override
-                    public void onSuccess(String result) {
-                        mSwipeRefreshLayout.setRefreshing(false);
-                        refresData(result);
+                    public void onError(Throwable e) {
+                        L.e(TAG,"onError",e);
                     }
 
                     @Override
-                    public void onError(Exception e) {
-                        mSwipeRefreshLayout.setRefreshing(false);
+                    public void onNext(PartitionVideoInfo partitionVideoInfo) {
+                        L.d(TAG,"onNext");
+                        refresData(partitionVideoInfo.data.archives);
                     }
                 });
 
@@ -295,24 +280,6 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
             //        R.id.tv_author,R.id.tv_play,R.id.tv_danmakus);
         }
 
-    }
-
-
-    static class VideoItemParser implements ItemsConverterFactory.ItemsParser{
-
-        @Override
-        public String parse(String result) {
-            JSONObject jsonObj = JSONObject.parseObject(result);
-            int code = jsonObj.getIntValue("code");
-            if(code == 0){
-                String list = jsonObj.getJSONObject("data").getString("archives");
-                L.d("VideoItemParser="+list + "");
-                return list;
-            }else{
-                L.w(TAG," return code error:"+code);
-            }
-            return null;
-        }
     }
 
 }

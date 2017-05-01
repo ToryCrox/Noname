@@ -127,7 +127,7 @@ public class ColorUtils {
      */
     public static boolean isDark(@NonNull Bitmap bitmap, int backupPixelX, int backupPixelY) {
         // first try palette with a small color quant size
-        Palette palette = Palette.from(bitmap).maximumColorCount(3).generate();
+        Palette palette = Palette.from(bitmap).generate();
         if (palette != null && palette.getSwatches().size() > 0) {
             return isDark(palette) == Lightness.DARK;
         } else {

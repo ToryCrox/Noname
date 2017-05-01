@@ -7,34 +7,29 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 import com.tory.library.recycler.BaseRecyclerAdapter;
 import com.tory.library.recycler.BaseViewHolder;
 import com.tory.library.utils.SystemConfigUtils;
 import com.tory.noname.R;
 import com.tory.noname.bili.apis.BiliApis;
-import com.tory.noname.bili.apis.BiliService;
-import com.tory.noname.bili.apis.ItemsConverterFactory;
-import com.tory.noname.bili.bean.BiliRank;
+import com.tory.noname.bili.bean.RankVideoInfo;
+import com.tory.noname.bili.bean.RankVideoItem;
 import com.tory.noname.main.base.BasePageFragment;
 import com.tory.noname.utils.L;
 import com.tory.noname.utils.Utilities;
 import com.tory.noname.utils.http.XOkHttpUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class BiliRankPageFragment extends BasePageFragment implements
         BaseRecyclerAdapter.OnRecyclerViewItemClickListener,
@@ -54,7 +49,7 @@ public class BiliRankPageFragment extends BasePageFragment implements
 
     private String mTitle;
     private RecyclerView mRecyclerView;
-    private BaseRecyclerAdapter<BiliRank> mRecyclerAdpater;
+    private BaseRecyclerAdapter<RankVideoItem> mRecyclerAdpater;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     public BiliRankPageFragment() {
         // Required empty public constructor
@@ -134,54 +129,26 @@ public class BiliRankPageFragment extends BasePageFragment implements
 
     @Override
     public void fetchData() {
-        final String url = getUrl();
-
-
-        Retrofit retrofit =new Retrofit.Builder()
-                .baseUrl(BiliApis.BASE_URL)
-                .addConverterFactory(ItemsConverterFactory.create(new RankParser()))
-                .client(XOkHttpUtils.getInstance().getOkHttpClient())
-                .build();
-        BiliService biliService = retrofit.create(BiliService.class);
-        Call<List<BiliRank>> call = biliService.getRankItems(mRankType, mRankRange,mRankCatelogyId);
-        call.enqueue(new Callback<List<BiliRank>>() {
-            @Override
-            public void onResponse(Call<List<BiliRank>> call,
-                                   Response<List<BiliRank>> response) {
-                mSwipeRefreshLayout.setRefreshing(false);
-                refresData(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<List<BiliRank>> call, Throwable t) {
-                mSwipeRefreshLayout.setRefreshing(false);
-
-            }
-        });
-
-        if(true){
-            return;
-        }
-
-        XOkHttpUtils.get(url)
-                .tag(this)
-                .execute(new XOkHttpUtils.HttpCallBack() {
+        RetrofitHelper
+                .createBiliRankService()
+                .getRankItems(mRankType,mRankRange,mRankCatelogyId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<RankVideoInfo>() {
                     @Override
-                    public void onLoadStart() {
-                        if(!isRecreated){
-                            mSwipeRefreshLayout.setRefreshing(true);
-                        }
+                    public void onCompleted() {
+                        L.d(TAG,"onCompleted");
                     }
 
                     @Override
-                    public void onSuccess(String result) {
-                        mSwipeRefreshLayout.setRefreshing(false);
-                        refresData(result);
+                    public void onError(Throwable e) {
+                        L.e(TAG,"onError",e);
                     }
 
                     @Override
-                    public void onError(Exception e) {
-                        mSwipeRefreshLayout.setRefreshing(false);
+                    public void onNext(RankVideoInfo rankVideoInfo) {
+                        L.d(TAG,"onNext");
+                        refresData(rankVideoInfo.rank.list);
                     }
                 });
 
@@ -195,49 +162,21 @@ public class BiliRankPageFragment extends BasePageFragment implements
         return url;
     }
 
-    private void refresData(List<BiliRank> list) {
+    private void refresData(List<RankVideoItem> list) {
         mRecyclerAdpater.clear();
         mRecyclerAdpater.addAll(list);
     }
 
-    private void refresData(String result) {
-        refresData(parseData(result));
-    }
-
-    private List<BiliRank> parseData(String result) {
-        List<BiliRank> list = null;
-        if (!TextUtils.isEmpty(result)) {
-            try {
-                JSONObject jsonObj = JSONObject.parseObject(result);
-                JSONObject rankObj = jsonObj.getJSONObject("rank");
-                int code = rankObj.getIntValue("code");
-                if(code == 0){
-                    list = JSONObject.parseArray(rankObj.getString("list"), BiliRank.class);
-                    L.d(list + "");
-                }else{
-                    L.w(TAG," return code error:"+code);
-                }
-            } catch (Exception e) {
-                L.d(TAG,"parseData error url:"+getUrl()+"\n"+result);
-                e.printStackTrace();
-            }
-
-        } else {
-            list = new ArrayList<BiliRank>();
-        }
-        return list;
-    }
-
     @Override
     public void onItemClick(View v, int position) {
-        BiliRank biliRank = mRecyclerAdpater.getItem(position);
+        RankVideoItem biliRank = mRecyclerAdpater.getItem(position);
         String url = BiliHelper.getUrlFromAid(biliRank.aid);
         Utilities.startWeb(getActivity(),url);
     }
 
     @Override
     public boolean onLongClick(View v, int position) {
-        BiliRank biliRank = mRecyclerAdpater.getItem(position);
+        RankVideoItem biliRank = mRecyclerAdpater.getItem(position);
         final String url = BiliHelper.getUrlFromAid(biliRank.aid);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setItems(new String[]{"复制链接", "打开BiliBili"}, new DialogInterface.OnClickListener() {
@@ -274,11 +213,10 @@ public class BiliRankPageFragment extends BasePageFragment implements
         }else if(value instanceof Integer){
             bundle.putInt(key,(int)value);
         }
-        //setArguments(bundle);
     }
 
 
-    private class BiliRankRecyclerAdapter extends BaseRecyclerAdapter<BiliRank>{
+    private class BiliRankRecyclerAdapter extends BaseRecyclerAdapter<RankVideoItem>{
 
         int colorAccent;
         int textColorPrimary;
@@ -292,7 +230,7 @@ public class BiliRankPageFragment extends BasePageFragment implements
         }
 
         @Override
-        protected void convert(BaseViewHolder holder, BiliRank item) {
+        protected void convert(BaseViewHolder holder, RankVideoItem item) {
             int rankNum = holder.getLayoutPosition();
             holder.setText(R.id.tv_rank_num,String.valueOf(rankNum+1));
             if(rankNum < 3){
@@ -312,25 +250,6 @@ public class BiliRankPageFragment extends BasePageFragment implements
                     .setText(R.id.tv_danmakus,BiliHelper.formatNumber(item.video_review));
         }
 
-    }
-
-
-    static class RankParser implements ItemsConverterFactory.ItemsParser{
-
-        @Override
-        public String parse(String result) {
-            JSONObject jsonObj = JSONObject.parseObject(result);
-            JSONObject rankObj = jsonObj.getJSONObject("rank");
-            int code = rankObj.getIntValue("code");
-            if(code == 0){
-                String list = rankObj.getString("list");
-                L.d("RankParser="+list + "");
-                return list;
-            }else{
-                L.w(TAG," return code error:"+code);
-            }
-            return null;
-        }
     }
 
 }

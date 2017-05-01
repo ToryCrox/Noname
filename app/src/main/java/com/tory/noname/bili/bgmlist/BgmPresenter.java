@@ -76,21 +76,6 @@ public class BgmPresenter {
     }
 
     public void loadData(boolean foreceLoad) {
-        /*if (!foreceLoad || !NetUtils.isNetworkAvailable(MApplication.getInstance())) {
-            if (mList == null) {
-                L.d("onLoadComplete: hasload!");
-                onLoadComplete();
-                return;
-            }
-            String result = obtainFromCache();//XOkHttpUtils.getInstance().getStringFromCatch(getUrl());
-            if (!TextUtils.isEmpty(result)) {
-                L.d("onLoadComplete: load from catach!");
-                mList.addAll(parseResult(result));
-                onLoadComplete();
-                return;
-            }
-
-        }*/
 
         L.d("loadData start");
         BgmService.Apis.createArchivesObservalbe()

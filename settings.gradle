@@ -1,1 +1,1 @@
-include ':app', ':library', ':debug'
+include ':app', ':library', ':debug', ':lightphoto'

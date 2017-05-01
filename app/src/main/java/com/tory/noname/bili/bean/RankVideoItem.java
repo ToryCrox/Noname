@@ -5,7 +5,7 @@ package com.tory.noname.bili.bean;
  * Create: 2016/9/16
  * Update: 2016/9/16
  */
-public class BiliRank {
+public class RankVideoItem {
 
     public int aid;
     public String author;

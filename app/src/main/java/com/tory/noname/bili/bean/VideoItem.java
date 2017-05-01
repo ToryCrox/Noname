@@ -49,4 +49,30 @@ public class VideoItem {
     public int comment;
 
     public boolean badgepay;
+
+    @Override
+    public String toString() {
+        return "VideoItem{" +
+                "aid=" + aid +
+                ", copyright='" + copyright + '\'' +
+                ", typeid=" + typeid +
+                ", typename='" + typename + '\'' +
+                ", title='" + title + '\'' +
+                ", subtitle='" + subtitle + '\'' +
+                ", play='" + play + '\'' +
+                ", review=" + review +
+                ", video_review=" + video_review +
+                ", favorites=" + favorites +
+                ", mid=" + mid +
+                ", author='" + author + '\'' +
+                ", description='" + description + '\'' +
+                ", create='" + create + '\'' +
+                ", pic='" + pic + '\'' +
+                ", credit=" + credit +
+                ", coins=" + coins +
+                ", duration='" + duration + '\'' +
+                ", comment=" + comment +
+                ", badgepay=" + badgepay +
+                '}';
+    }
 }

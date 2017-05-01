@@ -3,6 +3,7 @@ package com.tory.noname.utils.http;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.tory.library.utils.FileUtils;
 import com.tory.library.utils.NetUtils;
 import com.tory.noname.MApplication;
@@ -63,6 +64,7 @@ public class XOkHttpUtils {
                 .readTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
                 .cache(provideCache()) //设置缓存
                 //.addNetworkInterceptor(new CacheInterceptor())
+                .addNetworkInterceptor(new StethoInterceptor())
                 .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR);
                 //.build();
         mOkHttpClient = builder.build();
