@@ -39,8 +39,6 @@
         <item name="overlapAnchor">false</item>  <!--把该属性改为false即可使menu位置位于toolbar之下-->
         <item name="android:dropDownHorizontalOffset">0dp</item>  <!--指定下拉菜单与文本之间的水平间距;-->
         <item name="android:dropDownVerticalOffset">0dp</item>  <!--同上,不过这个是竖直方向的偏移,这里的话我们设置为4dp，默认值这里是-4dp;-->
-        <item name="android:dropDownSelector">@drawable/abc_ic_menu_moreoverflow_mtrl_alpha</item><!--右边三个点的图标 -->
-        <item name="android:src">@drawable/abc_ic_menu_moreoverflow_mtrl_alpha</item>
     </style>
 
     <style name="ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
