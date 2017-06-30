@@ -63,11 +63,11 @@ public abstract class BaseWebViewActivity<V extends View> extends BaseActivity{
     protected abstract void initWebViewSetting(V webView) ;
 
     protected void initNavIcon() {
-        if (canGoBanck()) {
+        /*if (canGoBanck()) {
             mToolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         } else {
-            mToolbar.setNavigationIcon(R.drawable.abc_ic_clear_mtrl_alpha);
-        }
+            mToolbar.setNavigationIcon(R.drawable.abc_);
+        }*/
     }
 
     protected void progressChanged(int newProgress){

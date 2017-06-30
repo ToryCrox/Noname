@@ -31,9 +31,6 @@ import okhttp3.internal.Util;
 import okhttp3.internal.io.FileSystem;
 import okio.BufferedSource;
 import okio.Okio;
-
-import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
-
 /**
  * Author: XT
  *http://www.jianshu.com/p/4c17956fe3b4
@@ -44,6 +41,7 @@ public class XOkHttpUtils {
     public static final long SIZE_OF_CACHE =  10*10240*1024;//缓存10M
 
     public static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
+    private static final String TAG = "XOkHttpUtils";
     private Handler mHandler;
     private static volatile XOkHttpUtils mInstance;
     private OkHttpClient mOkHttpClient;

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- for colorpicker  start-->
+    <color name="preference_divider_color">#19000000</color>
+    <array name="preview_colors">
+        <item>#75c725</item>
+        <item>#f9a524</item>
+        <item>#f2662a</item>
+        <item>#f02718</item>
+        <item>#bd2bf4</item>
+        <item>#7850dc</item>
+        <item>#3386f8</item>
+        <item>#18cfec</item>
+    </array>
+    <!-- for colorpicker end-->
+</resources>

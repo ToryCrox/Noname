@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="#fff"
     tools:context="com.tory.lightphoto.WallpaperActivity">
 
 
@@ -19,15 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="测试文字"/>
+        android:text="测试文字1"/>
 
-    <TextView
-        android:id="@+id/text2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:text="测试文字"/>
 
 
     <Button
@@ -43,5 +36,18 @@
         android:layout_gravity="end"
         android:text="保存壁纸"/>
 
+    <Button
+        android:id="@+id/turn_to_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:text="跳转"/>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="30dp"
+        android:layout_marginStart="30dp"
+        android:src="@drawable/ic_menu"/>
 </FrameLayout>
