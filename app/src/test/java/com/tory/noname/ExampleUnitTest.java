@@ -73,4 +73,18 @@ public class ExampleUnitTest {
         System.out.println("sb: "+sb.toString());
         return Md5Util.digest(sb.append(appkey).toString());
     }
+
+
+    @Test
+    public void testA(){
+        System.out.println(""+"ਦੇਸ਼ ਨੂੰ ਚੁਣੋ".toLowerCase().replace("ਦੇਸ਼".toLowerCase(),"a"));
+        System.out.println(""+"ਹੋਰ ਦੇਸ਼".toLowerCase().contains("ਦੇਸ਼".toLowerCase()));
+        System.out.println(""+"??? ??? ????".toLowerCase().contains("ਦੇਸ਼".toLowerCase()));
+    }
+
+    @Test
+    public void testClass(){
+        Parent p=new Child();
+        System.out.println(p.x);
+    }
 }
