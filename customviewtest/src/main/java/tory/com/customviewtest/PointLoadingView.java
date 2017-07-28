@@ -4,25 +4,21 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.view.animation.Transformation;
 
 import java.util.ArrayList;
 
-/**
- * TODO: document your custom view class.
- */
 public class PointLoadingView extends View {
 
     private static final String TAG = "PointLoadingView";
@@ -42,7 +38,9 @@ public class PointLoadingView extends View {
     private ArrayList<CirclePoint> mHideCircles;
     private ArrayList<CirclePoint> mShowCircles;
 
-    private ValueAnimator mAnim;
+    private Animation mAnim;
+    private float mPrefraction;
+    private boolean mAggregatedIsVisible;
 
     public PointLoadingView(Context context) {
         super(context);
@@ -60,7 +58,7 @@ public class PointLoadingView extends View {
     }
 
     private void init(AttributeSet attrs, int defStyle) {
-
+        mAggregatedIsVisible = false;
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.FILL);
@@ -124,13 +122,9 @@ public class PointLoadingView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-
-        int color = mCircleColors[0];
-        Point point = mActivePoint;
-        int raduis = mPointRaduis;
-
-        mPaint.setColor(color);
-        canvas.drawCircle(point.x, point.y, raduis, mPaint);
+        final int raduis = mPointRaduis;
+        int color;
+        Point point;
         for (CirclePoint cp : mShowCircles) {
             color = mCircleColors[cp.colorIndex];
             point = mVertexPoint[cp.index];
@@ -139,95 +133,86 @@ public class PointLoadingView extends View {
         }
         color = mCircleColors[0];
         point = mActivePoint;
-        raduis = mPointRaduis;
-
         mPaint.setColor(color);
         canvas.drawCircle(point.x, point.y, raduis, mPaint);
     }
 
 
-    private void easureAnimator(){
+    private void initAnimator(){
         if(mAnim != null){
             return;
         }
-        ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        Animation animation = new Animation() {
             @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float fraction = animation.getAnimatedFraction();
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                super.applyTransformation(interpolatedTime, t);
+
+                float fraction = interpolatedTime;
+                if(mPrefraction > fraction + 0.5f){
+                    mIndex = (mIndex + 1) % mPointSize;
+                    CirclePoint cp = mShowCircles.get(0);
+                    if(cp.index == mIndex){
+                        mShowCircles.remove(0);
+                        mHideCircles.add(cp);
+                        if(mShowCircles.isEmpty()){
+                            cp  = mHideCircles.remove(0);
+                            cp.index = mIndex;
+                            mShowCircles.add(cp);
+                        }
+                    }else if(!mHideCircles.isEmpty()){
+                        cp  = mHideCircles.remove(0);
+                        cp.index = mIndex;
+                        mShowCircles.add(cp);
+                    }
+                }
+
                 Point start = mVertexPoint[mIndex];
                 Point end = mVertexPoint[(mIndex+1) % mPointSize];
                 int x = (int) (start.x + (end.x - start.x) * fraction);
                 int y = (int) (start.y + (end.y - start.y) * fraction);
                 mActivePoint.set(x, y);
 
-                Log.d(TAG, "fraction="+fraction+", mActivePoint="+mActivePoint);
-                if(fraction >= 1){
-
-                }
+                mPrefraction = fraction;
                 postInvalidate();
             }
-        });
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-                super.onAnimationRepeat(animation);
-                mIndex = (mIndex + 1) % mPointSize;
-                //CirclePoint cp = mShowCircles.remove(0);
-                CirclePoint cp = mShowCircles.get(0);
-                if(cp.index == mIndex){
-                    mShowCircles.remove(0);
-                    mHideCircles.add(cp);
-                    if(mShowCircles.isEmpty()){
-                        cp  = mHideCircles.remove(0);
-                        cp.index = mIndex;
-                        mShowCircles.add(cp);
-                    }
-                }else if(!mHideCircles.isEmpty()){
-                    cp  = mHideCircles.remove(0);
-                    cp.index = mIndex;
-                    mShowCircles.add(cp);
-                }else if(mHideCircles.isEmpty()){
-                    Log.e(TAG, "repeat mHideCircles.isEmpty() mIndex="+mIndex );
-                }
-                Log.d(TAG, "repeat mIndex="+mIndex + ", mShowCircles="+mShowCircles);
+        };
 
-            }
-        });
-        animator.setDuration(mEachDauration);
-        animator.setInterpolator(new LinearInterpolator());
-        animator.setRepeatMode(ValueAnimator.RESTART);
-        animator.setRepeatCount(ValueAnimator.INFINITE);
-        mAnim = animator;
+        animation.setDuration(mEachDauration);
+        animation.setInterpolator(new LinearInterpolator());
+        animation.setRepeatMode(ValueAnimator.RESTART);
+        animation.setRepeatCount(ValueAnimator.INFINITE);
+        mAnim = animation;
     }
 
     void startAnimation() {
-        if (getVisibility() != VISIBLE || getWindowVisibility() != VISIBLE) {
-            return;
+        Log.d(TAG, "startAnimation ");
+        if(mAnim == null){
+            initAnimator();
         }
-        //resetPointLocation();
-        easureAnimator();
-        //mAnim.cancel();
-        mAnim.start();
+        mAnim.setStartTime(-1);
+        startAnimation(mAnim);
         postInvalidate();
     }
 
     void stopAnimation() {
         if(mAnim != null){
-            mAnim.end();
+            mAnim.cancel();
         }
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        Log.d(TAG, "onAttachedToWindow ");
         startAnimation();
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        Log.d(TAG, "onDetachedFromWindow ");
         stopAnimation();
+        resetPointLocation();
     }
 
     /**

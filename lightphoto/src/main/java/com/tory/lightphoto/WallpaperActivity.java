@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -35,6 +36,7 @@ import com.tory.library.lightness.Lightness;
 import com.tory.library.utils.FileUtils;
 import com.tory.library.utils.GrayImageUtil;
 import com.tory.library.utils.ImageUtils;
+import com.tory.library.utils.SimilarImageUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -71,6 +73,9 @@ public class WallpaperActivity extends AppCompatActivity {
     @BindView(R.id.text)
     TextView mTextView;
 
+    @BindView(R.id.image_test)
+    ImageView mImageTest;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,9 +83,20 @@ public class WallpaperActivity extends AppCompatActivity {
         setContentView(R.layout.activity_wallpaper);
         ButterKnife.bind(this);
 
-        setWallapers();
+        //setWallapers();
         
         requestPermissions();
+        
+        testWallapeper();
+    }
+
+    private void testWallapeper() {
+        Bitmap ab = BitmapFactory.decodeResource(getResources(), R.drawable.a);
+        Bitmap bb = BitmapFactory.decodeResource(getResources(), R.drawable.b);
+
+        String ahash = SimilarImageUtil.computImageHash(ab);
+        String bhash = SimilarImageUtil.computImageHash(bb);
+        mTextView.setText("aHash="+ahash+"\nbHash="+bhash);
     }
 
     private void setWallapers() {

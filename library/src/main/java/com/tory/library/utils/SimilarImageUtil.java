@@ -1,6 +1,7 @@
 package com.tory.library.utils;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.os.SystemClock;
@@ -143,7 +144,27 @@ public class SimilarImageUtil {
         }
         Bitmap bitmap8 = ThumbnailUtils.extractThumbnail(bitmap, 8, 8); // 缩小
         Bitmap bitmapG = convertGreyImg(bitmap8); // 灰度图像
-        return bs2hex2(getBinary(bitmapG, getAvg(bitmapG)));
+        int avgColor = getAvg(bitmapG);
+        return bs2hex2(getBinary(bitmapG, avgColor)) + Integer.toHexString((avgColor & 0xFF));
+    }
+
+    private static String computAvgColor(Bitmap bitmap){
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int c1 = getGreyColor(bitmap.getPixel(width/4, height/4));
+        int c2 = getGreyColor(bitmap.getPixel(width/4 * 3, height/4));
+        int c3 = getGreyColor(bitmap.getPixel(width/4, height/4 * 3));
+        int c4 = getGreyColor(bitmap.getPixel(width/4 * 3, height/4 * 3));
+        int vc = (c1 + c2 + c3 + c4) / 4;
+        return Integer.toHexString((vc & 0xFF));
+    }
+
+    private static int getGreyColor(int color){
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        int alpha = Color.alpha(color);
+        return (int) (alpha * 0.09f + red * 0.3f + green * 0.50f + blue * 0.11f);
     }
 
     public static int diffImageHash(String s1, String s2) {
