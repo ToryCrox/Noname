@@ -1,16 +1,16 @@
 apply plugin: 'com.android.application'
 
-def config = rootProject.ext.android
+def configs = rootProject.ext.android
 def librarys = rootProject.ext.dependences
 
 android {
-    compileSdkVersion config.compileSdkVersion
-    buildToolsVersion config.buildToolsVersion
+    compileSdkVersion configs.compileSdkVersion
+    buildToolsVersion configs.buildToolsVersion
 
     defaultConfig {
         applicationId "com.tory.noname"
-        minSdkVersion config.miniSdkVersion
-        targetSdkVersion config.targetSdkVersion
+        minSdkVersion configs.miniSdkVersion
+        targetSdkVersion configs.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -35,22 +35,41 @@ dependencies {
     // You should add these because the 'material' depend on them
     compile project(':library')
 
+    //support相关包
     compile librarys.appcompat
     compile librarys.design
     compile librarys.cardview
     compile librarys.recyclerview
     compile librarys.preference
-    compile librarys.okhttp3
-    compile librarys.retrofit
-    compile librarys.glide
+    compile librarys.constraintLayout
+
+    //rx
     compile librarys.rxjava
     compile librarys.rxandroid
-    compile librarys.adapterRxjava
+
+    //okhttp
+    compile librarys.okhttp3
+
+    //retrofit
+    compile librarys.retrofit
+    compile librarys.retrofitRxjava
+
+    //gson
+    compile librarys.gson
+    compile librarys.converterGson
+    //glide
+    compile librarys.glide
+
     compile librarys.fastjson
 
+    //stetho调试时使用
     compile librarys.stetho
     compile librarys.stethoOkhttp3
-    compile librarys.constraintLayout
+
+
+    //butterknife引用
+    compile librarys.butterknife
+    annotationProcessor librarys.butterknifeCompiler
 
     testCompile 'junit:junit:4.12'
 }

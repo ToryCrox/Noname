@@ -3,8 +3,8 @@ package com.tory.library.springview;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.support.annotation.FloatRange;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
-import android.support.v4.os.BuildCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
@@ -21,6 +21,10 @@ import android.view.animation.Transformation;
 
 import com.tory.library.BuildConfig;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+
 /**
  * Created by tao.xu2 on 2017/6/13.
  */
@@ -35,11 +39,20 @@ public class SpringViewHelper {
 
     protected static final float DEFAULT_MAX_SCALE = 1.10f;
 
+    @IntDef({STATE_NORMAL,
+            STATE_DRAG_TOP_OR_LEFT,
+            STATE_DRAG_BOTTOM_OR_RIGHT,
+            STATE_SPRING_BACK,
+            STATE_FLING})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface State{
+    }
     protected static final int STATE_NORMAL = 0;
     protected static final int STATE_DRAG_TOP_OR_LEFT = 1;
     protected static final int STATE_DRAG_BOTTOM_OR_RIGHT = 2;
     protected static final int STATE_SPRING_BACK = 3;
     protected static final int STATE_FLING = 4;
+    @State
     protected int mState = STATE_NORMAL;
 
     protected static final int DEF_RELEASE_BACK_ANIM_DURATION = 250; // ms
@@ -152,8 +165,7 @@ public class SpringViewHelper {
     }
 
 
-
-    protected void setState(int newState) {
+    protected void setState(@State int newState) {
         if (mState != newState) {
             mState = newState;
         }
@@ -416,6 +428,19 @@ public class SpringViewHelper {
             }
         }
         return false;
+    }
+
+    /**
+     * 当view被移除时需要把动画还原
+     * 在与viewpaper一起使用时会遇到这种情况
+     */
+    public void onDetachedFromWindow() {
+        if(mState != STATE_NORMAL){
+            mOffset = 0;
+            mFrom = 0;
+            mView.clearAnimation();
+            setState(STATE_NORMAL);
+        }
     }
 
     /**

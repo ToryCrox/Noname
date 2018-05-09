@@ -22,6 +22,9 @@ import com.tory.library.recycler.EndlessRecyclerOnScrollListener;
 import com.tory.library.utils.FileUtils;
 import com.tory.library.utils.Md5Util;
 import com.tory.noname.R;
+import com.tory.noname.bili.RetrofitHelper;
+import com.tory.noname.gank.bean.GankApiResult;
+import com.tory.noname.gank.bean.GankItem;
 import com.tory.noname.main.base.BasePageFragment;
 import com.tory.noname.utils.Constance;
 import com.tory.noname.utils.L;
@@ -34,6 +37,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import retrofit2.Retrofit;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+
 
 public class GankPageFragment extends BasePageFragment
         implements BaseRecyclerAdapter.OnRecyclerViewItemClickListener,
@@ -44,7 +53,7 @@ public class GankPageFragment extends BasePageFragment
 
     private String mTag;
     private RecyclerView mRecyclerView;
-    private BaseRecyclerAdapter<Gank> mRecyclerAdpater;
+    private BaseRecyclerAdapter<GankItem> mRecyclerAdpater;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private int mPageCount = 15;
@@ -68,8 +77,7 @@ public class GankPageFragment extends BasePageFragment
         if (getArguments() != null) {
             mTag = getArguments().getString(ARG_TYPE);
         }
-        List<Gank> list = null;//parseData(obtainOfflineData(getUrl()));
-        mRecyclerAdpater = new GankRecyclerAdapter(list);
+        mRecyclerAdpater = new GankRecyclerAdapter();
         mRecyclerAdpater.setOnRecyclerViewItemClickListener(this);
         mRecyclerAdpater.setOnRecyclerViewItemLongClickListener(this);
     }
@@ -127,51 +135,35 @@ public class GankPageFragment extends BasePageFragment
         return url;
     }
 
-    private List<Gank> parseData(String result) {
-        List<Gank> list = null;
-        if (!TextUtils.isEmpty(result)) {
-            try {
-                L.d("parseData result="+result);
-                JSONObject jsonObj = JSONObject.parseObject(result);
-                list = JSONObject.parseArray(jsonObj.getString("results"), Gank.class);
-                L.d(list + "");
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-        }
-        if(list == null){
-            list = new ArrayList<Gank>();
-        }
-
-        return list;
-    }
-
     @Override
     public void fetchData() {
-        final String url = getUrl();
-        XOkHttpUtils
-                .get(url)
-                .tag(this)
-                .execute(new XOkHttpUtils.HttpCallBack() {
+        RetrofitHelper.createGankApiService()
+                .getGankApiResult(mTag, mPageCount, mPageIndex)
+                .subscribeOn(Schedulers.io())
+                .map(new Func1<GankApiResult, List<GankItem>>() {
                     @Override
-                    public void onLoadStart() {
-                        //mSwipeRefreshLayout.setRefreshing(true);
+                    public List<GankItem> call(GankApiResult gankApiResult) {
+                        return gankApiResult.getResults();
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<GankItem>>() {
+                    @Override
+                    public void onCompleted() {
+                        mSwipeRefreshLayout.setRefreshing(false);
                     }
 
                     @Override
-                    public void onSuccess(String result) {
-                        mSwipeRefreshLayout.setRefreshing(false);
+                    public void onError(Throwable e) {
+                        Toast.makeText(getContext(), "加载" + mTag + "失败", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(List<GankItem> gankItems) {
                         if (mPageIndex == 1) {
                             mRecyclerAdpater.clear();
                         }
-                        mRecyclerAdpater.addAll(parseData(result));
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        Toast.makeText(getContext(), "加载" + mTag + "失败", Toast.LENGTH_SHORT).show();
-                        mSwipeRefreshLayout.setRefreshing(false);
+                        mRecyclerAdpater.addAll(gankItems);
                     }
                 });
 
@@ -181,38 +173,6 @@ public class GankPageFragment extends BasePageFragment
     public void onDestroy() {
         XOkHttpUtils.getInstance().cancelTag(this);
         super.onDestroy();
-    }
-
-    /**
-     * 获取离线json数据
-     *
-     * @param url
-     * @return
-     */
-    private String obtainOfflineData(String url) {
-        String result = null;
-        try {
-            //result = FileUtils.readString(getOfflineDir(url));
-            result = XOkHttpUtils.getInstance().getStringFromCatch(getUrl());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-
-    }
-
-    /**
-     * 保存离线数据
-     *
-     * @param url
-     * @param result
-     */
-    private void saveOfficeLineData(String url, String result) {
-        try {
-            FileUtils.writeString(result, getOfflineDir(url));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 
@@ -233,15 +193,15 @@ public class GankPageFragment extends BasePageFragment
 
     @Override
     public void onItemClick(View v, int position) {
-        Gank bean = mRecyclerAdpater.getItem(position);
-        Utilities.startWeb(getContext(), bean.url);
+        GankItem bean = mRecyclerAdpater.getItem(position);
+        Utilities.startWeb(getContext(), bean.getUrl());
 
     }
 
     @Override
     public boolean onLongClick(View v, int position) {
-        Gank gank = mRecyclerAdpater.getItem(position);
-        final String url = gank.url;
+        GankItem gank = mRecyclerAdpater.getItem(position);
+        final String url = gank.getUrl();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setItems(new String[]{"复制链接", "浏览器打开"}, new DialogInterface.OnClickListener() {
                     @Override
@@ -258,34 +218,34 @@ public class GankPageFragment extends BasePageFragment
     }
 
 
-    public class GankRecyclerAdapter extends BaseRecyclerAdapter<Gank> {
+    public class GankRecyclerAdapter extends BaseRecyclerAdapter<GankItem> {
 
-        public GankRecyclerAdapter(List<Gank> data) {
-            super(R.layout.item_gank, data);
+        public GankRecyclerAdapter( ){
+            super(R.layout.item_gank, null);
             addFooterView();
         }
 
         @Override
-        protected void convert(BaseViewHolder holder, Gank item) {
+        protected void convert(BaseViewHolder holder, GankItem item) {
             holder.getView(R.id.tv_desc).setVisibility(View.GONE);
             holder.getView(R.id.iv_img).setVisibility(View.GONE);
 
-            if (item.url.endsWith(".jpg")) {
+            if (item.getUrl().endsWith(".jpg")) {
                 holder.getView(R.id.iv_img).setVisibility(View.VISIBLE);
                 ImageView imageView = holder.getView(R.id.iv_img);
                 Glide.with(GankPageFragment.this)
-                        .load(item.url)
+                        .load(item.getUrl())
                         .placeholder(R.drawable.ic_default)
                         .error(R.drawable.neterror)
                         .into(imageView);
             } else {
                 holder.getView(R.id.tv_desc).setVisibility(View.VISIBLE);
-                holder.setText(R.id.tv_desc, item.desc);
+                holder.setText(R.id.tv_desc, item.getDesc());
             }
-            holder.setText(R.id.tv_source, item.source);
-            holder.setText(R.id.tv_people, item.who+ matchGithub(item.url));
-            holder.setText(R.id.tv_time, item.publishedAt.substring(0, 10));
-            holder.setText(R.id.tv_tag, item.type);
+            holder.setText(R.id.tv_source, item.getSource());
+            holder.setText(R.id.tv_people, item.getWho()+ matchGithub(item.getUrl()));
+            holder.setText(R.id.tv_time, item.getPublishedAt().substring(0, 10));
+            holder.setText(R.id.tv_tag, item.getType());
         }
     }
 

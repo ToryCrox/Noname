@@ -1,0 +1,31 @@
+apply plugin: 'groovy'
+
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+}
+
+
+apply plugin: 'maven' // 引入maven插件
+
+sourceCompatibility = 1.8
+
+
+// 指定上传的路径
+def localMavenRepo = 'file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
+
+// 上传Task，Gradle会生成并上传pom.xml文件。
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: localMavenRepo)
+
+            //构造项目的Pom文件
+            pom.groupId = 'com.aleaf.plugin'
+            pom.artifactId = 'aleaf'
+            pom.version = '1.0.0'
+        }
+
+    }
+}

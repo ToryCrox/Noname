@@ -29,7 +29,6 @@ public abstract class BaseActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         int layoutId = bindLayout();
         if(layoutId>0){
             setContentView(layoutId);
@@ -105,7 +104,7 @@ public abstract class BaseActivity extends AppCompatActivity  {
     }
 
     protected void setStatusBar(){
-        if(Utilities.ATLEAST_LOLLIPOP) return;
+        //if(Utilities.ATLEAST_LOLLIPOP) return;
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         int statusbarColor = ContextCompat.getColor(this,R.color.statusbarColor);
         if(drawerLayout == null){

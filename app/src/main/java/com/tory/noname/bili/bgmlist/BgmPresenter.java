@@ -80,10 +80,10 @@ public class BgmPresenter {
         L.d("loadData start");
         BgmService.Apis.createArchivesObservalbe()
                 .getArchives()
-                .flatMap(new Func1<List<Archive>, Observable<List<BgmItem>>>() {
+                .flatMap(new Func1<ArchiveResult, Observable<List<BgmItem>>>() {
                     @Override
-                    public Observable<List<BgmItem>> call(List<Archive> archives) {
-                        String url = archives.get(archives.size() - 1).path;
+                    public Observable<List<BgmItem>> call(ArchiveResult archives) {
+                        String url = archives.resoveLatestArchive().path;
                         L.d("loadData url="+url);
                         return BgmService.Apis
                                 .createArchivesObservalbe(url)
@@ -108,33 +108,6 @@ public class BgmPresenter {
                     @Override
                     public void onError(Throwable error) {
                         L.e("loadData"," onError "+error);
-                    }
-                });
-
-
-        if(true){
-            return;
-        }
-
-        XOkHttpUtils.get(getUrl())
-                .tag(this)
-                .execute(new XOkHttpUtils.HttpCallBack() {
-                    @Override
-                    public void onLoadStart() {
-
-                    }
-
-                    @Override
-                    public void onSuccess(String result) {
-                        mList.clear();
-                        writeToCache(result);
-                        mList.addAll(parseResult(result));
-                        onLoadComplete();
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-
                     }
                 });
     }

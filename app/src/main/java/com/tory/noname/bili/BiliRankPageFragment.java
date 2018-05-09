@@ -123,7 +123,6 @@ public class BiliRankPageFragment extends BasePageFragment implements
 
     @Override
     public void onDestroy() {
-        XOkHttpUtils.getInstance().cancelTag(this);
         super.onDestroy();
     }
 
@@ -152,14 +151,6 @@ public class BiliRankPageFragment extends BasePageFragment implements
                     }
                 });
 
-    }
-
-
-    private String getUrl(){
-        String url = BiliApis.BASE_RANK_URL +
-                String.format("%s-%d-%d.json", mRankType, mRankRange,mRankCatelogyId);
-        L.d(TAG,url);
-        return url;
     }
 
     private void refresData(List<RankVideoItem> list) {

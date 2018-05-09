@@ -3,6 +3,7 @@ package com.tory.noname.main;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -38,7 +39,13 @@ public class MainActivity extends BaseActivity
 
 
     public static final int MSG_WHAT_SHOW_FRAGMENT = 1;
-    private WeekHandler<MainActivity> mHander = new WeekHandler<MainActivity>(this) {
+
+    private static class MainActivityHandler extends WeekHandler<MainActivity>{
+
+        public MainActivityHandler(MainActivity activity) {
+            super(activity);
+        }
+
         @Override
         public void handleMessage(MainActivity activity, Message msg) {
             switch (msg.what){
@@ -48,7 +55,9 @@ public class MainActivity extends BaseActivity
                 }
             }
         }
-    };
+    }
+
+    private Handler mHandler = new MainActivityHandler(this);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -122,8 +131,8 @@ public class MainActivity extends BaseActivity
             case R.id.nav_bili:
             case R.id.nav_setting:
             case R.id.nav_gallery:
-                Message msg = mHander.obtainMessage(MSG_WHAT_SHOW_FRAGMENT,id,0);
-                mHander.sendMessageDelayed(msg,250);
+                Message msg = mHandler.obtainMessage(MSG_WHAT_SHOW_FRAGMENT,id,0);
+                mHandler.sendMessageDelayed(msg,250);
                 break;
             case R.id.nav_mode_change:
                 boolean nightMode = mSettingHelper.isNightModeNow();
@@ -158,7 +167,7 @@ public class MainActivity extends BaseActivity
         }
 
         int size = mTagMenuIds.size();
-        for(int i = 0 ; i <= size; i++){
+        for(int i = 0 ; i < size; i++){
             int menuId = mTagMenuIds.keyAt(i);
             String tag = mTagMenuIds.valueAt(i);
             if(mShowingFragmentTag.equals(tag)){

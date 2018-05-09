@@ -186,7 +186,7 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
         params.put("type", "json");
         params.put("pn", "" + mPageIndex);
         params.put("tid" ,""+ mCate.tid);
-        params.put("_", "" + System.currentTimeMillis());
+        //params.put("_", "" + System.currentTimeMillis());
         return params;
     }
 

@@ -24,7 +24,9 @@ public class MApplication extends Application {
         instance = this;
         //chrome://inspect
         //Stetho.initializeWithDefaults(this);
-        ReflectDebugUtil.reflectInitStetho(this);
+        if(BuildConfig.DEBUG){
+            ReflectDebugUtil.reflectInitStetho(this);
+        }
         Utilities.setNightMode(this, SettingHelper.getInstance(this).isNightMode());
 
         L.d("StethoReflection sourceDir="+getApplicationInfo().sourceDir);

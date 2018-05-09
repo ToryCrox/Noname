@@ -5,6 +5,9 @@ import com.tory.noname.bili.apis.BangumiService;
 import com.tory.noname.bili.apis.BiliApiService;
 import com.tory.noname.bili.apis.FastJsonConverterFactory;
 import com.tory.noname.bili.apis.RankService;
+import com.tory.noname.gank.Gank;
+import com.tory.noname.gank.apis.GankApiConstance;
+import com.tory.noname.gank.apis.GankApiService;
 import com.tory.noname.utils.http.XOkHttpUtils;
 
 import retrofit2.Retrofit;
@@ -28,6 +31,10 @@ public class RetrofitHelper {
 
     public static BangumiService createBangumiService(){
         return createApi(BangumiService.class, ApiConstants.BANGUMI_BASE_URL);
+    }
+
+    public static GankApiService createGankApiService(){
+        return createApi(GankApiService.class, GankApiConstance.BASE_URL);
     }
 
     /**

@@ -32,14 +32,6 @@ public class VectorTestActivity extends Activity {
         textView.setText("drawable is = "+imageView.getDrawable());
     }
 
-    @Override
-    public Resources getResources() {
-        if (mResources == null && VectorEnabledTintResources.shouldBeUsed()) {
-            mResources = new VectorEnabledTintResources(this, super.getResources());
-        }
-        return mResources == null ? super.getResources() : mResources;
-    }
-
     private boolean f = false;
     @OnClick(R.id.test)
     public void testRotationX(View view){

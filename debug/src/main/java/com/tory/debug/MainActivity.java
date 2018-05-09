@@ -7,7 +7,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        TimeRecorder.begin("MainActivity#onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TimeRecorder.end("MainActivity#onCreate");
     }
 }

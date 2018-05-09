@@ -1,5 +1,6 @@
 package com.tory.library.springview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
@@ -46,6 +47,7 @@ public class SpringScrollView extends NestedScrollView implements SpringScrollab
         return super.onTouchEvent(e) ;
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void draw(Canvas canvas) {
         mSpringViewHelper.draw(canvas);
@@ -54,6 +56,12 @@ public class SpringScrollView extends NestedScrollView implements SpringScrollab
 
     public void absorbGlows(int velocityX, int velocityY){
         mSpringViewHelper.absorbGlows(velocityX, velocityY);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mSpringViewHelper.onDetachedFromWindow();
     }
 
     @Override

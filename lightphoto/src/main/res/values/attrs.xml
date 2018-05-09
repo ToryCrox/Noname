@@ -9,4 +9,7 @@
         <attr name="metaButtonBarButtonStyle" format="reference"/>
     </declare-styleable>
 
+
+    <item name="none_layout" type="layout">@null</item>
+
 </resources>

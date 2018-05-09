@@ -1,5 +1,6 @@
 package com.tory.noname.utils.http;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -14,6 +15,9 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -21,6 +25,9 @@ import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -38,13 +45,15 @@ import okio.Okio;
 public class XOkHttpUtils {
     public static final int DEFAULT_MILLISECONDS = 5000; //默认的超时时间
     public static final String CACHE_DIR_NAME = "HttpCache";
-    public static final long SIZE_OF_CACHE =  10*10240*1024;//缓存10M
+    public static final long SIZE_OF_CACHE =  50*10240*1024;//缓存50M
 
     public static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
     private static final String TAG = "XOkHttpUtils";
-    private Handler mHandler;
+
     private static volatile XOkHttpUtils mInstance;
+    private Context mContext;
     private OkHttpClient mOkHttpClient;
+    private Handler mHandler;
 
     public interface HttpCallBack {
         void onLoadStart();
@@ -55,13 +64,14 @@ public class XOkHttpUtils {
     }
 
     private XOkHttpUtils() {
+        mContext = MApplication.getInstance().getApplicationContext();
         mHandler = new Handler(Looper.getMainLooper());
         OkHttpClient.Builder builder = new OkHttpClient().newBuilder()
                 .connectTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
                 .writeTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
                 .readTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
                 .cache(provideCache()) //设置缓存
-                //.addNetworkInterceptor(new CacheInterceptor())
+                .cookieJar(mCookieJar)
                 .addNetworkInterceptor(new StethoInterceptor())
                 .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR);
                 //.build();
@@ -83,7 +93,7 @@ public class XOkHttpUtils {
     }
 
     public String getCacheDirName(){
-        return FileUtils.getCacheDir(MApplication.getInstance()).getAbsolutePath()
+        return FileUtils.getCacheDir(mContext).getAbsolutePath()
                 + File.separator + CACHE_DIR_NAME;
     }
     /**
@@ -94,55 +104,44 @@ public class XOkHttpUtils {
         return new Cache(new File(getCacheDirName()), SIZE_OF_CACHE);
     }
 
-    //服务器不支持缓存情况下
-    public class CacheInterceptor implements Interceptor {
+
+    /**
+     * http://werb.github.io/2016/07/29/%E4%BD%BF%E7%94%A8Retrofit2+OkHttp3%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98%E5%A4%84%E7%90%86/
+     * https://juejin.im/post/5aab7240f265da239530bd78
+     */
+    //cache
+    private Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR =new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
             Response response = chain.proceed(request);
-            Response response1 = response.newBuilder()
-                    .removeHeader("Pragma")
-                    .removeHeader("Cache-Control")
-                    //cache for 30 days
-                    .header("Cache-Control", "max-age=" + 3600 * 24 * 30)
-                    .build();
-            return response1;
-        }
-    }
+            if(NetUtils.isNetworkAvailable(mContext)){
+                //有网络时缓存
+                int maxTime = 30 * 24 * 60 * 60;
 
-    /**
-     * http://werb.github.io/2016/07/29/%E4%BD%BF%E7%94%A8Retrofit2+OkHttp3%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98%E5%A4%84%E7%90%86/
-     */
-    //cache
-    Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR =new Interceptor() {
+                Response newResponse = response.newBuilder()
+                        .header("Cache-Control","public, max-age="+maxTime)
+                        .removeHeader("Progma")
+                        .build();
+                return newResponse;
+            }
+            return response;
+        }
+
+    };
+
+    Map<HttpUrl, List<Cookie>> mCookieStore= new HashMap<>();
+    CookieJar mCookieJar = new CookieJar() {
         @Override
-        public Response intercept(Chain chain) throws IOException {
-            CacheControl.Builder cacheBuilder = new CacheControl.Builder();
-            cacheBuilder.maxAge(0, TimeUnit.SECONDS);
-            cacheBuilder.maxStale(365,TimeUnit.DAYS);
-            CacheControl cacheControl = cacheBuilder.build();
-            Request request = chain.request();
-            if(!NetUtils.isNetworkAvailable(MApplication.getInstance())){
-                request = request.newBuilder()
-                        .cacheControl(cacheControl)
-                        .build();
-            }
-            Response originalResponse = chain.proceed(request);
-            if (NetUtils.isNetworkAvailable(MApplication.getInstance())) {
-                int maxAge = 10; // read from cache
-                return originalResponse.newBuilder()
-                        .removeHeader("Pragma")
-                        .header("Cache-Control", "public ,max-age=" + maxAge)
-                        .build();
-            } else {
-                int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
-                return originalResponse.newBuilder()
-                        .removeHeader("Pragma")
-                        .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
-                        .build();
-            }
+        public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+            mCookieStore.put(HttpUrl.parse(url.host()), cookies);
         }
 
+        @Override
+        public List<Cookie> loadForRequest(HttpUrl url) {
+            List<Cookie> cookies = mCookieStore.get(url.host());
+            return cookies != null ? cookies : new ArrayList<Cookie>();
+        }
     };
 
     /**
