@@ -124,11 +124,17 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
     public void onBindViewHolder(BaseViewHolder holder, int position) {
         int viewType = holder.getItemViewType();
         if (viewType != TYPE_HEADER && viewType != TYPE_FOOTER) {
-            convert(holder, mData.get(position));
+            convert(holder, mData.get(position), position);
         }
     }
 
-    protected abstract void convert(BaseViewHolder holder, T item);
+    protected void convert(BaseViewHolder holder, T item, int position){
+        convert(holder, item);
+    }
+
+    protected  void convert(BaseViewHolder holder, T item){
+
+    }
 
     @Override
     public int getItemCount() {

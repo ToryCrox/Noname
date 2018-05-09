@@ -2,18 +2,50 @@ package com.tory.library.lightness;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.support.annotation.CheckResult;
+import android.support.annotation.ColorInt;
+import android.support.annotation.FloatRange;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v7.graphics.Palette;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+
+
 /**
- *
+ * Utility methods for working with colors.
+ * @author tao.xu2
  */
 public class LightnessUtils {
 
     public static final int MAX_BITMAP_EXTRACTION_AREA = 384 * 216;
-    private static final int GRAY_COLOR_MIDDLE = 192;
+    private static final int GRAY_COLOR_MIDDLE = 180;
 
     private LightnessUtils() { }
+
+
+    /**
+     *
+     * @param bitmap
+     * @return
+     */
+    @Lightness.LightnessValues
+    public static int checkLightness(@NonNull Bitmap bitmap){
+        Bitmap bmp = BitmapUtil.scaleBitmapDown(bitmap, MAX_BITMAP_EXTRACTION_AREA);
+        int lightness = BitmapColorMode.getBitmapColorMode(bmp);
+        if(lightness == Lightness.UNKNOWN){
+            lightness = checkPaltteLightness(bmp);
+        }
+        if(bmp != bitmap && !bmp.isRecycled()){
+            bmp.recycle();
+        }
+        return lightness;
+    }
+
 
 
     /**
@@ -49,8 +81,57 @@ public class LightnessUtils {
      * @return
      */
     public static boolean isWhite(int color){
-        return getGrayColor(color) >= GRAY_COLOR_MIDDLE;
+        int grayLevel = (int) (Color.red(color) * 0.3 + Color.green(color) * 0.59 + Color.blue(color) * 0.11);
+        if(grayLevel >= GRAY_COLOR_MIDDLE){
+            return true;
+        }
+        return false;
     }
 
+
+
+    private static final float DARK_PIXEL_LUMINANCE = 0.45f;
+    private static final float MAX_DARK_AREA = 0.05f;
+    private static final float BRIGHT_IMAGE_MEAN_LUMINANCE = 0.75f;
+    private static final float DARK_THEME_MEAN_LUMINANCE = 0.25f;
+    public static final int HINT_SUPPORTS_DARK_TEXT = 1 << 0;
+    public static final int HINT_SUPPORTS_DARK_THEME = 1 << 1;
+    public static int calculateDarkHints(Bitmap source) {
+        if (source == null) {
+            return 0;
+        }
+
+        int[] pixels = new int[source.getWidth() * source.getHeight()];
+        double totalLuminance = 0;
+        final int maxDarkPixels = (int) (pixels.length * MAX_DARK_AREA);
+        int darkPixels = 0;
+        source.getPixels(pixels, 0 /* offset */, source.getWidth(), 0 /* x */, 0 /* y */,
+                source.getWidth(), source.getHeight());
+
+        // This bitmap was already resized to fit the maximum allowed area.
+        // Let's just loop through the pixels, no sweat!
+        float[] tmpHsl = new float[3];
+        for (int i = 0; i < pixels.length; i++) {
+            ColorUtils.colorToHSL(pixels[i], tmpHsl);
+            final float luminance = tmpHsl[2];
+            final int alpha = Color.alpha(pixels[i]);
+            // Make sure we don't have a dark pixel mass that will
+            // make text illegible.
+            if (luminance < DARK_PIXEL_LUMINANCE && alpha != 0) {
+                darkPixels++;
+            }
+            totalLuminance += luminance;
+        }
+
+        int hints = 0;
+        double meanLuminance = totalLuminance / pixels.length;
+        if (meanLuminance > BRIGHT_IMAGE_MEAN_LUMINANCE && darkPixels < maxDarkPixels) {
+            hints |= HINT_SUPPORTS_DARK_TEXT;
+        }
+        if (meanLuminance < DARK_THEME_MEAN_LUMINANCE) {
+            hints |= HINT_SUPPORTS_DARK_THEME;
+        }
+        return hints;
+    }
 
 }

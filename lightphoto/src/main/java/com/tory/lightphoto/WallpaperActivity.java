@@ -1,5 +1,6 @@
 package com.tory.lightphoto;
 
+import android.app.WallpaperColors;
 import android.app.WallpaperManager;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,15 +11,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.graphics.Palette;
 import android.support.v7.graphics.Target;
 import android.text.SpannableString;
@@ -29,21 +28,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.tory.library.lightness.ColorUtils;
+import com.tory.library.lightness.BitmapColorMode;
+import com.tory.library.lightness.BitmapUtil;
+import com.tory.library.lightness.LightnessUtils;
 import com.tory.library.lightness.Lightness;
 import com.tory.library.utils.FileUtils;
-import com.tory.library.utils.GrayImageUtil;
 import com.tory.library.utils.ImageUtils;
 import com.tory.library.utils.SimilarImageUtil;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -83,7 +80,7 @@ public class WallpaperActivity extends AppCompatActivity {
         setContentView(R.layout.activity_wallpaper);
         ButterKnife.bind(this);
 
-        //setWallapers();
+        setWallapers();
         
         requestPermissions();
         
@@ -96,7 +93,7 @@ public class WallpaperActivity extends AppCompatActivity {
 
         String ahash = SimilarImageUtil.computImageHash(ab);
         String bhash = SimilarImageUtil.computImageHash(bb);
-        mTextView.setText("aHash="+ahash+"\nbHash="+bhash);
+        //mTextView.setText("aHash="+ahash+"\nbHash="+bhash);
     }
 
     private void setWallapers() {
@@ -130,7 +127,7 @@ public class WallpaperActivity extends AppCompatActivity {
     public void saveWallpaper(){
         Log.d(TAG, "saveWallpaper: ");
         WallpaperManager wm = WallpaperManager.getInstance(getApplicationContext());
-        Drawable drawable = wm.getDrawable();
+        Drawable drawable = wm.peekDrawable();
         Bitmap bitmap = ImageUtils.drawableToBitmap(drawable);
         wm.forgetLoadedWallpaper();
 
@@ -182,22 +179,61 @@ public class WallpaperActivity extends AppCompatActivity {
 
     private void setBitmap(Bitmap bitmap){
         mWallpaperView.setImageBitmap(bitmap);
-        Palette palette = Palette.from(bitmap).clearFilters().generate();
+        Palette palette = Palette.from(bitmap)
+                .maximumColorCount(5)
+                .clearFilters()
+                .resizeBitmapArea(LightnessUtils.MAX_BITMAP_EXTRACTION_AREA)
+                .generate();
         Palette.Swatch swatch = palette.getDominantSwatch();
         Log.d(TAG, "setBitmap swatch="+swatch);
 
+        Bitmap bmp = BitmapUtil.scaleBitmapDown(bitmap, LightnessUtils.MAX_BITMAP_EXTRACTION_AREA);
         long t2 = SystemClock.uptimeMillis();
-        boolean isLight = LightnessUtils.checkLightness(bitmap) == Lightness.LIGHT;
-        int color = isLight ? Color.BLACK : Color.WHITE;
-        int color2 = isLight ? Color.WHITE : Color.BLACK;
-
-
+        int bitmode = BitmapColorMode.getBitmapColorMode(bitmap);
         StringBuilder sb = new StringBuilder();
         ArrayList<String> strs = new ArrayList<>();
         ArrayList<ForegroundColorSpan> css = new ArrayList<>();
-        strs.add("这是通过checkLightness取的颜色, Hsl="+Arrays.toString(swatch.getHsl())
+        strs.add("这是通过bitmapColorMode取的颜色, mode="+bitmode+", 耗时:"+(SystemClock.uptimeMillis() - t2)+"\n");
+        css.add(new ForegroundColorSpan(bitmode == Lightness.LIGHT ? Color.BLACK : Color.WHITE));
+
+        t2 = SystemClock.uptimeMillis();
+        boolean isLight = LightnessUtils.checkPaltteLightness(bmp) == Lightness.LIGHT;
+        int color = isLight ? Color.BLACK : Color.WHITE;
+        int color2 = isLight ? Color.WHITE : Color.BLACK;
+        strs.add("这是通过checkPaltteLightness取的颜色, mainColor=0x"+Integer.toHexString(swatch.getRgb())
+                + ", isWhite="+LightnessUtils.isWhite(swatch.getRgb())+", grayColor="+LightnessUtils.getGrayColor(swatch.getRgb())
                 +", 耗时:"+(SystemClock.uptimeMillis() - t2) + "\n");
         css.add(new ForegroundColorSpan(color));
+
+        t2 = SystemClock.uptimeMillis();
+        bitmode = LightnessUtils.checkLightness(bitmap);
+        strs.add("这是通过checkLightness取的颜色, mode="+bitmode+", 耗时:"+(SystemClock.uptimeMillis() - t2)+"\n");
+        css.add(new ForegroundColorSpan(bitmode == Lightness.LIGHT ? Color.BLACK : Color.WHITE));
+
+
+        t2 = SystemClock.uptimeMillis();
+        int darkHits = LightnessUtils.calculateDarkHints(bmp);
+        isLight = (darkHits & LightnessUtils.HINT_SUPPORTS_DARK_TEXT) != 0;
+        strs.add("这是通过calculateDarkHints取的文字颜色, isLight="+isLight+", 耗时:"+(SystemClock.uptimeMillis() - t2)+"\n");
+        css.add(new ForegroundColorSpan(isLight ? Color.BLACK : Color.WHITE));
+        isLight = (darkHits & LightnessUtils.HINT_SUPPORTS_DARK_THEME) != 0;
+        strs.add("这是通过calculateDarkHints取的主题颜色, isLight="+isLight+", 耗时:"+(SystemClock.uptimeMillis() - t2)+"\n");
+        css.add(new ForegroundColorSpan(isLight ? Color.BLACK : Color.WHITE));
+
+        strs.add("这是通过calculateDarkHints取的颜色, isLight="+isLight+", 耗时:"+(SystemClock.uptimeMillis() - t2)+"\n");
+        css.add(new ForegroundColorSpan(isLight ? Color.BLACK : Color.WHITE));
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            t2 = SystemClock.uptimeMillis();
+            WallpaperColors colors = null;
+            colors = WallpaperColors.fromBitmap(bitmap);
+            isLight = LightnessUtils.isWhite(colors.getPrimaryColor().toArgb());
+            strs.add("这是通过wallpaperColor取的颜色, mainColor=0x"+Integer.toHexString(colors.getPrimaryColor().toArgb())
+                    + ", isLight="+isLight
+                    +", 耗时:"+(SystemClock.uptimeMillis() - t2) + "\n");
+            css.add(new ForegroundColorSpan(isLight ? Color.BLACK : Color.WHITE));
+        }
+
 
 
         long t1 = SystemClock.uptimeMillis();
@@ -207,7 +243,7 @@ public class WallpaperActivity extends AppCompatActivity {
         strs.add("这是通过decodeColor获取的颜色, colorMode = "+colorMode+", 耗时:"+(SystemClock.uptimeMillis() - t1) + "\n");
         css.add(new ForegroundColorSpan(isLight ? Color.BLACK : Color.WHITE));
 
-        Map<String, Target> map = new LinkedHashMap<>(6);
+        /*Map<String, Target> map = new LinkedHashMap<>(6);
         map.put("LIGHT_VIBRANT", Target.LIGHT_VIBRANT);
         map.put("VIBRANT", Target.VIBRANT);
         map.put("DARK_VIBRANT", Target.DARK_VIBRANT);
@@ -227,13 +263,6 @@ public class WallpaperActivity extends AppCompatActivity {
             css.add(new ForegroundColorSpan(sw.getTitleTextColor()));
             strs.add("这是通过"+name+"Swatch获取的颜色BodyColor\n");
             css.add(new ForegroundColorSpan(sw.getBodyTextColor()));
-        }
-        /*List<Palette.Swatch> swatchs = palette.getSwatches();
-        for (Palette.Swatch swatch1 : swatchs) {
-            strs.add("这是通过Swatch获取的颜色titlecolor\n");
-            css.add(new ForegroundColorSpan(swatch1.getTitleTextColor()));
-            strs.add("这是通过Swatch获取的颜色BodyColor\n");
-            css.add(new ForegroundColorSpan(swatch1.getBodyTextColor()));
         }*/
 
         SpannableString st = new SpannableString(TextUtils.join("",strs));
@@ -332,8 +361,8 @@ public class WallpaperActivity extends AppCompatActivity {
     }
 
     public static final int BITMAP_COLOR_MODE_DARK = 0;
-    public static final int BITMAP_COLOR_MODE_LIGHT = 2;
-    public static final int BITMAP_COLOR_MODE_MEDIUM = 1;
+    public static final int BITMAP_COLOR_MODE_LIGHT = 1;
+    public static final int BITMAP_COLOR_MODE_MEDIUM = 2;
 
 
 }

@@ -2,6 +2,11 @@ package com.tory.library.lightness;
 
 import android.graphics.Bitmap;
 
+/**
+ * @author tao.xu2
+ * @date 2018/3/19
+ */
+
 public class BitmapUtil {
 
     /**
