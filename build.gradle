@@ -18,6 +18,14 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+
+    gradle.taskGraph.whenReady {
+        tasks.each { task ->
+            if (task.name.equals('mockableAndroidJar')) {
+                task.enabled = false
+            }
+        }
+    }
 }
 allprojects {
     repositories {

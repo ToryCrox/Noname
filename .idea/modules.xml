@@ -3,12 +3,20 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/NoName.iml" filepath="$PROJECT_DIR$/NoName.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Noname.iml" filepath="$PROJECT_DIR$/Noname.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/buildsrc/buildsrc.iml" filepath="$PROJECT_DIR$/buildsrc/buildsrc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/buildsrc/buildsrc.iml" filepath="$PROJECT_DIR$/buildsrc/buildsrc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/customviewtest/customviewtest.iml" filepath="$PROJECT_DIR$/customviewtest/customviewtest.iml" />
       <module fileurl="file://$PROJECT_DIR$/customviewtest/customviewtest.iml" filepath="$PROJECT_DIR$/customviewtest/customviewtest.iml" />
       <module fileurl="file://$PROJECT_DIR$/debug/debug.iml" filepath="$PROJECT_DIR$/debug/debug.iml" />
+      <module fileurl="file://$PROJECT_DIR$/debug/debug.iml" filepath="$PROJECT_DIR$/debug/debug.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/lightphoto/lightphoto.iml" filepath="$PROJECT_DIR$/lightphoto/lightphoto.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lightphoto/lightphoto.iml" filepath="$PROJECT_DIR$/lightphoto/lightphoto.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugin/plugin.iml" filepath="$PROJECT_DIR$/plugin/plugin.iml" />
       <module fileurl="file://$PROJECT_DIR$/plugin/plugin.iml" filepath="$PROJECT_DIR$/plugin/plugin.iml" />
     </modules>
   </component>
