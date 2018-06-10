@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--每种类型，如果icon pack包里面没有就进行等价处理,并且第一个会具有优先级-->
+    <cns name="PHONE" cn="com.android.dialer/com.android.dialer.DialtactsActivity"/>
+    <cns name="PHONE" cn="com.android.dialer/com.android.dialer.app.DialtactsActivity"/>
+    <cns name="PHONE" cn="com.android.contacts/com.android.contacts.activities.DialerActivity"/>
+    <cns name="PHONE" cn="com.android.contacts/com.android.contacts.activities.DialtactsActivity"/>
+    <cns name="PHONE" cn="com.android.contacts/com.android.dialer.DialtactsActivity"/>
+    <cns name="PHONE" cn="com.android.mms/com.yulong.android.contacts.dial.DialActivity"/>
+
+    <!--CONTACTS-->
+    <cns name="CONTACTS" cn="com.android.contacts/com.android.contacts.activities.PeopleActivity"/>
+
+    <!--EMAIL-->
+    <cns name="EMAIL" cn="com.android.email/com.android.email.activity.Welcome"/>
+    <cns name="EMAIL" cn="com.android.email/com.android.email.activity.EmailActivity"/>
+
+    <!--GALLERY-->
+    <cns name="GALLERY" cn="com.android.gallery3d/com.android.gallery3d.app.GalleryActivity"/>
+
+    <!--SMS-->
+    <cns name="SMS" cn="com.android.contacts/com.android.mms.ui.ConversationList"/>
+    <cns name="SMS" cn="com.android.mms/com.android.mms.ui.BootActivity"/>
+    <cns name="SMS" cn="com.android.mms/com.android.mms.ui.ConversationList"/>
+    <cns name="SMS" cn="com.android.mms/com.android.mms.ui.traditional.MessageLaunchActivity"/>
+    <cns name="SMS" cn="com.android.mms/com.yulong.android.mms.ui.MmsConversationListActivity"/>
+
+    <!--CAMERA-->
+    <cns name="CAMERA" cn="com.android.camera/com.android.camera.CameraActivity"/>
+    <cns name="CAMERA" cn="com.android.camera/com.android.camera.Camera"/>
+    <cns name="CAMERA" cn="com.android.camera/com.android.camera.CameraActivityWraper"/>
+    <cns name="CAMERA" cn="com.android.camera/com.android.camera.CameraLauncher"/>
+    <cns name="CAMERA" cn="com.android.camera2/com.android.camera.CameraLauncher"/>
+    <cns name="CAMERA" cn="com.mediatek.camera/com.android.camera.CameraLauncher"/>
+
+
+    <!--BROWSER-->
+    <cns name="BROWSER" cn="com.android.browser/com.android.browser.BrowserActivity"/>
+
+    <!--CALCULATOR-->
+    <cns name="CALCULATOR" cn="com.android.calculator2/com.android.calculator2.Calculator"/>
+    <cns name="CALCULATOR" cn="com.android2.calculator3/com.android2.calculator3.Calculator"/>
+    <cns name="CALCULATOR" cn="com.transsion.calculator/com.transsion.calculator.Calculator"/>
+
+    <!--CALENDAR 可能多个-->
+    <cns name="CALENDAR" cn="com.android.calendar/com.android.calendar.AllInOneActivity"/>
+    <cns name="CALENDAR" cn="com.oneplus.calendar/com.android.calendar.AllInOneActivity"/>
+
+    <!--CLOCK-->
+    <cns name="CLOCK" cn="com.android.deskclock/com.android.deskclock.DeskClockTabActivity"/>
+    <cns name="CLOCK" cn="com.android.deskclock/com.transsion.deskclock.DeskClock"/>
+    <cns name="CLOCK" cn="com.transsion.deskclock/com.transsion.deskclock.DeskClock"/>
+
+</resources>
