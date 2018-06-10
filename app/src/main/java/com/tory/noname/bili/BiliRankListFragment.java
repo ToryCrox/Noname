@@ -20,20 +20,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-
+import java.util.List;
 import com.tory.noname.R;
 import com.tory.noname.main.base.BaseActivity;
 import com.tory.noname.utils.L;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * @Author: Tory
  * Create: 2016/9/16
  * Update: 2016/9/16
  */
-public class BiliRankListFragment extends Fragment{
+public class BiliRankListFragment extends Fragment {
     public static final String FRAGMENT_TAG = "BiliRankListFragment";
     private static final String TAG = "BiliRankListFragment";
 

@@ -11,14 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Url;
-import rx.Observable;
 
 /**
  * @Author: tory
@@ -46,7 +46,7 @@ public interface BgmService {
             Retrofit retrofit =new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
 
             return retrofit.create(BgmService.class);
@@ -57,7 +57,7 @@ public interface BgmService {
                     .baseUrl(BASE_URL)
                     .client(XOkHttpUtils.getInstance().getOkHttpClient())
                     .addConverterFactory(new BgmItemsFactory())
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
 
             return retrofit.create(BgmService.class);

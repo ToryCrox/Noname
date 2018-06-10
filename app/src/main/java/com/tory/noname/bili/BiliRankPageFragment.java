@@ -23,13 +23,12 @@ import com.tory.noname.bili.bean.RankVideoItem;
 import com.tory.noname.main.base.BasePageFragment;
 import com.tory.noname.utils.L;
 import com.tory.noname.utils.Utilities;
-import com.tory.noname.utils.http.XOkHttpUtils;
 
 import java.util.List;
 
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 
 public class BiliRankPageFragment extends BasePageFragment implements
         BaseRecyclerAdapter.OnRecyclerViewItemClickListener,
@@ -133,23 +132,7 @@ public class BiliRankPageFragment extends BasePageFragment implements
                 .getRankItems(mRankType,mRankRange,mRankCatelogyId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<RankVideoInfo>() {
-                    @Override
-                    public void onCompleted() {
-                        L.d(TAG,"onCompleted");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        L.e(TAG,"onError",e);
-                    }
-
-                    @Override
-                    public void onNext(RankVideoInfo rankVideoInfo) {
-                        L.d(TAG,"onNext");
-                        refresData(rankVideoInfo.rank.list);
-                    }
-                });
+                .subscribe( rankVideoInfo -> refresData(rankVideoInfo.rank.list));
 
     }
 

@@ -1,16 +1,13 @@
 apply plugin: 'com.android.application'
 
-def config = rootProject.ext.android
-def librarys = rootProject.ext.dependences
-
 android {
-    compileSdkVersion config.compileSdkVersion
-    buildToolsVersion config.buildToolsVersion
+    compileSdkVersion configs.compileSdkVersion
+    buildToolsVersion configs.buildToolsVersion
 
     defaultConfig {
         applicationId "tory.com.customviewtest"
-        minSdkVersion config.miniSdkVersion
-        targetSdkVersion config.targetSdkVersion
+        minSdkVersion configs.miniSdkVersion
+        targetSdkVersion configs.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -26,11 +23,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile librarys.appcompat
-    compile librarys.constraintLayout
-    testCompile 'junit:junit:4.12'
+    implementation libraries.appcompat
+    implementation libraries.constraintLayout
+    testImplementation 'junit:junit:4.12'
 }

@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/Noname.iml" filepath="$PROJECT_DIR$/Noname.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/buglytest/buglytest.iml" filepath="$PROJECT_DIR$/buglytest/buglytest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/buglytest/buglytest.iml" filepath="$PROJECT_DIR$/buglytest/buglytest.iml" />
       <module fileurl="file://$PROJECT_DIR$/buildsrc/buildsrc.iml" filepath="$PROJECT_DIR$/buildsrc/buildsrc.iml" />
       <module fileurl="file://$PROJECT_DIR$/customviewtest/customviewtest.iml" filepath="$PROJECT_DIR$/customviewtest/customviewtest.iml" />
       <module fileurl="file://$PROJECT_DIR$/debug/debug.iml" filepath="$PROJECT_DIR$/debug/debug.iml" />

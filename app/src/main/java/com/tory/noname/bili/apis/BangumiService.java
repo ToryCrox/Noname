@@ -5,10 +5,11 @@ import com.tory.noname.bili.bean.VideoItem;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
-import rx.Observable;
+
 
 /**
  * @Author: tory

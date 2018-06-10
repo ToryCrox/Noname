@@ -7,14 +7,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 import com.tory.library.recycler.BaseRecyclerAdapter;
 import com.tory.library.recycler.BaseViewHolder;
@@ -23,7 +21,6 @@ import com.tory.library.utils.FileUtils;
 import com.tory.library.utils.Md5Util;
 import com.tory.noname.R;
 import com.tory.noname.bili.RetrofitHelper;
-import com.tory.noname.gank.bean.GankApiResult;
 import com.tory.noname.gank.bean.GankItem;
 import com.tory.noname.main.base.BasePageFragment;
 import com.tory.noname.utils.Constance;
@@ -32,16 +29,12 @@ import com.tory.noname.utils.Utilities;
 import com.tory.noname.utils.http.XOkHttpUtils;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import retrofit2.Retrofit;
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class GankPageFragment extends BasePageFragment
@@ -140,32 +133,15 @@ public class GankPageFragment extends BasePageFragment
         RetrofitHelper.createGankApiService()
                 .getGankApiResult(mTag, mPageCount, mPageIndex)
                 .subscribeOn(Schedulers.io())
-                .map(new Func1<GankApiResult, List<GankItem>>() {
-                    @Override
-                    public List<GankItem> call(GankApiResult gankApiResult) {
-                        return gankApiResult.getResults();
-                    }
-                })
+                .map(gankApiResult -> {
+                        return gankApiResult.getResults(); })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<GankItem>>() {
-                    @Override
-                    public void onCompleted() {
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Toast.makeText(getContext(), "加载" + mTag + "失败", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onNext(List<GankItem> gankItems) {
+                .subscribe(gankItems -> {
                         if (mPageIndex == 1) {
                             mRecyclerAdpater.clear();
                         }
                         mRecyclerAdpater.addAll(gankItems);
-                    }
-                });
+                }, e -> e.printStackTrace(), mSwipeRefreshLayout.setRefreshing(false));
 
     }
 

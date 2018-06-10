@@ -2,10 +2,10 @@ package com.tory.noname.gank.apis;
 
 import com.tory.noname.gank.bean.GankApiResult;
 
-
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
-import rx.Observable;
+
 
 /**
  * @author tory

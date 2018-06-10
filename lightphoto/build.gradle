@@ -1,16 +1,13 @@
 apply plugin: 'com.android.application'
 
-def config = rootProject.ext.android
-def librarys = rootProject.ext.dependences
-
 android {
-    compileSdkVersion config.compileSdkVersion
-    buildToolsVersion config.buildToolsVersion
+    compileSdkVersion configs.compileSdkVersion
+    buildToolsVersion configs.buildToolsVersion
 
     defaultConfig {
         applicationId "com.tory.lightphoto"
-        minSdkVersion config.miniSdkVersion
-        targetSdkVersion config.targetSdkVersion
+        minSdkVersion configs.miniSdkVersion
+        targetSdkVersion configs.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -34,16 +31,16 @@ repositories {
 }
 
 dependencies {
-    compile project(':library')
+    implementation project(':library')
 
 
-    compile librarys.appcompat
-    compile librarys.palette
+    implementation libraries.appcompat
+    implementation libraries.palette
 
     testCompile 'junit:junit:4.12'
 
-    compile librarys.butterknife
-    annotationProcessor librarys.butterknifeCompiler
+    implementation libraries.butterknife
+    annotationProcessor libraries.butterknifeCompiler
 
 
     //compile(name: 'widgetslib_v9', ext: 'aar')

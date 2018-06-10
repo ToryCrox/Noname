@@ -5,13 +5,12 @@ import com.tory.noname.bili.apis.BangumiService;
 import com.tory.noname.bili.apis.BiliApiService;
 import com.tory.noname.bili.apis.FastJsonConverterFactory;
 import com.tory.noname.bili.apis.RankService;
-import com.tory.noname.gank.Gank;
 import com.tory.noname.gank.apis.GankApiConstance;
 import com.tory.noname.gank.apis.GankApiService;
 import com.tory.noname.utils.http.XOkHttpUtils;
 
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 /**
  * @Author: tory
@@ -44,7 +43,7 @@ public class RetrofitHelper {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .client(XOkHttpUtils.getInstance().getOkHttpClient())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(FastJsonConverterFactory.create())
                 .build();
 

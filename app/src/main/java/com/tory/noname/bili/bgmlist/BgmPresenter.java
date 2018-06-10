@@ -16,11 +16,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import rx.Observable;
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @Author: Tory
@@ -80,35 +77,20 @@ public class BgmPresenter {
         L.d("loadData start");
         BgmService.Apis.createArchivesObservalbe()
                 .getArchives()
-                .flatMap(new Func1<ArchiveResult, Observable<List<BgmItem>>>() {
-                    @Override
-                    public Observable<List<BgmItem>> call(ArchiveResult archives) {
+                .flatMap(archives -> {
                         String url = archives.resoveLatestArchive().path;
                         L.d("loadData url="+url);
                         return BgmService.Apis
                                 .createArchivesObservalbe(url)
                                 .getBgmItems(url);
                     }
-                })
+                )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<BgmItem>>() {
-                    @Override
-                    public void onNext(List<BgmItem> list) {
-                        mList.clear();
-                        mList.addAll(list);
-                        onLoadComplete();
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        L.d("loadData onCompleted=");
-                    }
-
-                    @Override
-                    public void onError(Throwable error) {
-                        L.e("loadData"," onError "+error);
-                    }
+                .subscribe(list ->{
+                    mList.clear();
+                    mList.addAll(list);
+                    onLoadComplete();
                 });
     }
 

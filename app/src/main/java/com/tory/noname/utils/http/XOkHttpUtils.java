@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
-import okhttp3.CacheControl;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Cookie;
@@ -33,8 +32,8 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.internal.DiskLruCache;
 import okhttp3.internal.Util;
+import okhttp3.internal.cache.DiskLruCache;
 import okhttp3.internal.io.FileSystem;
 import okio.BufferedSource;
 import okio.Okio;

@@ -1,11 +1,7 @@
 apply plugin: 'com.android.application'
 
-def configs = rootProject.ext.android
-def librarys = rootProject.ext.dependences
-
 android {
     compileSdkVersion configs.compileSdkVersion
-    buildToolsVersion configs.buildToolsVersion
 
     defaultConfig {
         applicationId "com.tory.noname"
@@ -22,57 +18,53 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildToolsVersion '26.0.2'
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     //支持多个dex文件构建应用程序
-    compile files('libs/tbs_sdk_thirdapp_v2.3.0.1048_36801_shareonly_obfs_20160829_200523.jar')
-    //compile files('libs/glide-3.7.0.jar')
-    //compile 'com.github.XhinLiang.MDPreference:mdpreference:0.3.2@aar'
-    // You should add this because the 'mdpreference' depend on this
-    //compile 'com.github.XhinLiang.MDPreference:material:0.3.2@aar'
-    // You should add these because the 'material' depend on them
-    compile project(':library')
+    implementation files('libs/tbs_sdk_thirdapp_v2.3.0.1048_36801_shareonly_obfs_20160829_200523.jar')
+    implementation project(':library')
 
     //support相关包
-    compile librarys.appcompat
-    compile librarys.design
-    compile librarys.cardview
-    compile librarys.recyclerview
-    compile librarys.preference
-    compile librarys.constraintLayout
+    implementation libraries.appcompat
+    implementation libraries.design
+    implementation libraries.cardview
+    implementation libraries.recyclerview
+    implementation libraries.preference
+    implementation libraries.constraintLayout
 
     //rx
-    compile librarys.rxjava
-    compile librarys.rxandroid
+    implementation libraries.rxjava
+    implementation libraries.rxandroid
 
     //okhttp
-    compile librarys.okhttp3
+    implementation libraries.okhttp3
 
     //retrofit
-    compile librarys.retrofit
-    compile librarys.retrofitRxjava
+    implementation libraries.retrofit
+    implementation libraries.adapterRxjava
 
     //gson
-    compile librarys.gson
-    compile librarys.converterGson
+    implementation libraries.gson
+    implementation libraries.converterGson
     //glide
-    compile librarys.glide
+    implementation libraries.glide
 
-    compile librarys.fastjson
+    implementation libraries.fastjson
 
     //stetho调试时使用
-    compile librarys.stetho
-    compile librarys.stethoOkhttp3
+    implementation libraries.stetho
+    implementation libraries.stethoOkhttp3
 
 
     //butterknife引用
-    compile librarys.butterknife
-    annotationProcessor librarys.butterknifeCompiler
+    implementation libraries.butterknife
+    annotationProcessor libraries.butterknifeCompiler
 
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 }
-
-apply from: "debug.gradle"

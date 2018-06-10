@@ -18,13 +18,14 @@ import com.tory.noname.utils.L;
 import com.tory.noname.utils.SettingHelper;
 import com.tory.noname.utils.Utilities;
 
+import org.reactivestreams.Subscriber;
+
 import java.io.File;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -77,29 +78,23 @@ public class SettingsFragment extends PreferenceFragmentCompat
     public void onCatchSizeChange() {
         final Activity activity = getActivity();
 
-        Observable.create(new Observable.OnSubscribe<String>() {
-            @Override
-            public void call(Subscriber<? super String> subscriber) {
+        Observable.create(subscriber -> {
                 String s = FileUtils.getCacheSize(activity);
                 String s1 = FileUtils.getFileSizeFormat(Glide.getPhotoCacheDir(activity));
                 subscriber.onNext(s);
                 subscriber.onNext("图片缓存:" + s1);
-                subscriber.onCompleted();
-            }
+                subscriber.onComplete();
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<String>() {
-                    @Override
-                    public void call(String s) {
-                        if (s.startsWith("图片缓存:")) {
-                            findPreference("photo_cache_clear").setSummary(s);
-                        } else {
-                            findPreference("cache_clear").setSummary("缓存:" + s);
-                        }
-                        L.d("compute file end :" + Thread.currentThread().getName());
+                .subscribe(s -> {
+                    if (s.startsWith("图片缓存:")) {
+                        findPreference("photo_cache_clear").setSummary(s);
+                    } else {
+                        findPreference("cache_clear").setSummary("缓存:" + s);
                     }
-                });
+                    L.d("compute file end :" + Thread.currentThread().getName());
+                }, e -> e.printStackTrace());
 
     }
 
@@ -131,22 +126,15 @@ public class SettingsFragment extends PreferenceFragmentCompat
             DialogUtils.create(getActivity(), "清除缓存", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Observable.create(new Observable.OnSubscribe<Void>() {
-                        @Override
-                        public void call(Subscriber<? super Void> subscriber) {
+                    Observable.create( subscriber -> {
                             FileUtils.clearCache(getActivity());
                             subscriber.onNext(null);
-                            subscriber.onCompleted();
-                        }
-                    })
+                            subscriber.onComplete();
+                        })
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Action1<Void>() {
-                                @Override
-                                public void call(Void aVoid) {
-                                    onCatchSizeChange();
-                                }
-                            });
+                            .subscribe( aVoid -> onCatchSizeChange()
+                            );
 
                 }
             }).show();
@@ -154,21 +142,15 @@ public class SettingsFragment extends PreferenceFragmentCompat
             DialogUtils.create(getActivity(), "清除图片缓存", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Observable.create(new Observable.OnSubscribe<Void>() {
-                        @Override
-                        public void call(Subscriber<? super Void> subscriber) {
+                    Observable.create(subscriber -> {
                             Glide.get(getActivity()).clearDiskCache();
                             subscriber.onNext(null);
-                            subscriber.onCompleted();
-                        }
+                            subscriber.onComplete();
                     })
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Action1<Void>() {
-                                @Override
-                                public void call(Void aVoid) {
-                                    onCatchSizeChange();
-                                }
+                            .subscribe( a -> {
+                                onCatchSizeChange();
                             });
 
                 }

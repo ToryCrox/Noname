@@ -6,11 +6,11 @@ import com.tory.noname.bili.bean.RankVideoItem;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
-import rx.Observable;
 
 /**
  * Created by tao.xu2 on 2016/10/13.

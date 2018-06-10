@@ -1,15 +1,12 @@
 apply plugin: 'com.android.library'
 
-def config = rootProject.ext.android
-def librarys = rootProject.ext.dependences
-
 android {
-    compileSdkVersion config.compileSdkVersion
-    buildToolsVersion config.buildToolsVersion
+    compileSdkVersion configs.compileSdkVersion
+    buildToolsVersion configs.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion config.miniSdkVersion
-        targetSdkVersion config.targetSdkVersion
+        minSdkVersion configs.miniSdkVersion
+        targetSdkVersion configs.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -26,17 +23,17 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile librarys.appcompat
-    compile librarys.preference
-    compile librarys.palette
-    testCompile 'junit:junit:4.12'
+    implementation libraries.appcompat
+    implementation libraries.preference
+    implementation libraries.palette
+    testImplementation 'junit:junit:4.12'
 
-    compile librarys.glide
-    compile librarys.rxjava
-    compile librarys.rxandroid
+    implementation libraries.glide
+    implementation libraries.rxjava
+    implementation libraries.rxandroid
 }
 
 

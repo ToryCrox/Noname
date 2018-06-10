@@ -35,11 +35,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import rx.Observable;
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -145,36 +145,23 @@ public class CategoryPageFragment extends BasePageFragment implements BaseRecycl
 
     @Override
     public void fetchData() {
+
         RetrofitHelper
                 .createBangumiService()
                 .get3DayHotVideoInfos(mCate.tid)
-                .flatMap(new Func1<HotVideoInfo, Observable<PartitionVideoInfo>>() {
-                    @Override
-                    public Observable<PartitionVideoInfo> call(HotVideoInfo hotVideoInfo) {
+                .flatMap(hotVideoInfo -> {
                         L.d("fetchData="+hotVideoInfo);
                         return RetrofitHelper.createBiliApiService().getVideoByPartion(getParams());
-                    }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<PartitionVideoInfo>() {
-                    @Override
-                    public void onCompleted() {
-                        L.d(TAG,"onCompleted");
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        L.e(TAG,"onError",e);
-                    }
-
-                    @Override
-                    public void onNext(PartitionVideoInfo partitionVideoInfo) {
+                .subscribe( partitionVideoInfo -> {
                         L.d(TAG,"onNext");
                         refresData(partitionVideoInfo.data.archives);
-                    }
-                });
+                }, e -> e.printStackTrace(),() -> {
+                    L.d(TAG,"onCompleted");
+                    mSwipeRefreshLayout.setRefreshing(false);
+                } );
 
     }
     public String getBaseUrl() {
