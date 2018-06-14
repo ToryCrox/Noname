@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -61,6 +62,8 @@ public class WallpaperActivity extends AppCompatActivity {
 
     private static final int REUEST_CODE_STORAGE = 322;
 
+    private Point mWallpaperSize = new Point();
+
     @BindView(R.id.main)
     protected View mMain;
 
@@ -101,8 +104,10 @@ public class WallpaperActivity extends AppCompatActivity {
         Drawable wallpaper = wm.getDrawable();
         wm.forgetLoadedWallpaper();
         Bitmap bitmap = ImageUtils.drawableToBitmap(wallpaper);
-        setBitmap(bitmap);
+        mWallpaperSize.set(wallpaper.getIntrinsicWidth(), wallpaper.getIntrinsicHeight());
 
+
+        setBitmap(bitmap);
     }
 
     private void requestPermissions() {
@@ -273,6 +278,8 @@ public class WallpaperActivity extends AppCompatActivity {
             index += str.length();
         }
         mTextView.setText(st);
+
+        mTextView.append("\nWallaperSize="+mWallpaperSize);
     }
 
     public static boolean checkLightness(Bitmap bitmap){

@@ -1,6 +1,7 @@
 package com.tory.iconpacklauncher;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -12,6 +13,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
+import android.os.UserHandle;
+import android.os.UserManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -80,6 +83,18 @@ public class MainActivity extends BaseActivity implements BaseRecyclerAdapter.On
 
     @Override
     public void doBusiness() {
+        UserManager mUserManager = (UserManager) getSystemService(Context.USER_SERVICE);
+        List<UserHandle> users = mUserManager.getUserProfiles();
+        for (UserHandle user : users) {
+            try{
+                L.e(TAG, "user="+user+
+                    ", isUserUnlocked="+mUserManager.isUserUnlocked(user)
+                        +", isQuietModeEnabled="+mUserManager.isQuietModeEnabled(user));
+            } catch (Exception e){
+                L.e(TAG, "user="+user);
+            }
+        }
+
         //intent.addCategory("com.novalauncher.category.CUSTOM_ICON_PICKER");
         PackageManager pm = getPackageManager();
         ArrayList<AppInfo> appInfos = new ArrayList<>();

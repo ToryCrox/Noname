@@ -13,9 +13,9 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.android.tools.build:gradle:3.0.0'
         classpath "com.leon.channel:plugin:2.0.1"
-        classpath "com.tencent.bugly:tinker-support:1.0.8"
+        classpath "com.tencent.bugly:tinker-support:1.1.2"
         //classpath 'com.aleaf.plugin:plugin:1.0.0'
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -35,11 +35,8 @@ allprojects {
         mavenCentral()
         jcenter()
         maven { url "https://jitpack.io" }
-        maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
         mavenLocal()
+        google()
     }
 }
 task clean(type: Delete) {

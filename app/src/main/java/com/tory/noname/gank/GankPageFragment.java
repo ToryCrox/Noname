@@ -141,7 +141,7 @@ public class GankPageFragment extends BasePageFragment
                             mRecyclerAdpater.clear();
                         }
                         mRecyclerAdpater.addAll(gankItems);
-                }, e -> e.printStackTrace(), mSwipeRefreshLayout.setRefreshing(false));
+                }, e -> e.printStackTrace(), () -> mSwipeRefreshLayout.setRefreshing(false));
 
     }
 

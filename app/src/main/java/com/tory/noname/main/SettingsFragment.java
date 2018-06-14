@@ -79,17 +79,17 @@ public class SettingsFragment extends PreferenceFragmentCompat
         final Activity activity = getActivity();
 
         Observable.create(subscriber -> {
-                String s = FileUtils.getCacheSize(activity);
-                String s1 = FileUtils.getFileSizeFormat(Glide.getPhotoCacheDir(activity));
-                subscriber.onNext(s);
-                subscriber.onNext("图片缓存:" + s1);
-                subscriber.onComplete();
-        })
+                    String s = FileUtils.getCacheSize(activity);
+                    String s1 = FileUtils.getFileSizeFormat(Glide.getPhotoCacheDir(activity));
+                    subscriber.onNext(s);
+                    subscriber.onNext("图片缓存:" + s1);
+                    subscriber.onComplete();
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
-                    if (s.startsWith("图片缓存:")) {
-                        findPreference("photo_cache_clear").setSummary(s);
+                    if (s.toString().startsWith("图片缓存:")) {
+                        findPreference("photo_cache_clear").setSummary(s.toString());
                     } else {
                         findPreference("cache_clear").setSummary("缓存:" + s);
                     }

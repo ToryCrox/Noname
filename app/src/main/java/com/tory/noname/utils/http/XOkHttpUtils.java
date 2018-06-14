@@ -6,6 +6,7 @@ import android.os.Looper;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.tory.library.utils.FileUtils;
+import com.tory.library.utils.Md5Util;
 import com.tory.library.utils.NetUtils;
 import com.tory.noname.MApplication;
 import com.tory.noname.utils.L;
@@ -268,7 +269,7 @@ public class XOkHttpUtils {
         DiskLruCache cache = DiskLruCache.create(FileSystem.SYSTEM, cacheDirectory,
                 VERSION, ENTRY_COUNT, SIZE_OF_CACHE);
         cache.flush();
-        String key = Util.md5Hex(url);
+        String key = Md5Util.digest(url);//Util.md5Hex(url);
         final DiskLruCache.Snapshot snapshot;
         try {
             snapshot = cache.get(key);

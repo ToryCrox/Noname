@@ -1,0 +1,114 @@
+import groovy.transform.Field
+import java.text.SimpleDateFormat
+
+def hasApp = project.plugins.hasPlugin("com.android.application")
+if(!hasApp){
+    return
+}
+@Field TAG = "COPYING:"
+@Field def targetPath = "build/apkBackup/${new SimpleDateFormat("yyyyMMddHHmm").format(new Date())}"
+
+
+def deleteDirs(def dirs){
+    file(dirs).listFiles().each{
+        it.delete()
+    }
+    file(dirs).delete()
+}
+
+def copyTinkerBase () {
+    def target = file("${targetPath}/tinkerBase")
+    if(target.exists()){
+        target.delete()
+    }
+    target.mkdirs()
+    def targetPath = target.getPath()
+    println(TAG + " copy to path: " + targetPath)
+    def tinkerBakDir = file(tinkerSupport.autoBackupApkDir)
+    println("$TAG find tinkerBakDir = $tinkerBakDir")
+    if(tinkerBakDir == null || !tinkerBakDir.exists() || !tinkerBakDir.listFiles()[0].exists()){
+        println("$TAG can not find tinkerBakDir")
+        return
+    }
+    def tinkerBakPath = tinkerBakDir.listFiles()[0].getPath()
+    println("$TAG tinkerBakPath = $tinkerBakPath")
+
+    copy{ from tinkerBakPath
+        into targetPath
+        include "*.*"
+    }
+    println("$TAG delete  tinkerBakDir")
+    deleteDirs(tinkerBakDir)
+}
+
+//拷贝Patch文件
+def copyTinkerPatch(){
+    def target = file("$targetPath/patch")
+    if(target.exists()){
+        target.delete()
+    }
+    def targetPath = target.getPath()
+
+    def patchDir = file("$buildDir/outputs/patch/release")
+    if(patchDir == null || !patchDir.exists() || patchDir.listFiles().length <= 0){
+        println("$TAG can not find patchDir files")
+        return
+    }
+    println("$TAG copy patch files")
+    copy{ from patchDir.getPath()
+        into targetPath
+        include "*.*"
+    }
+    deleteDirs(patchDir.getPath())
+}
+
+def copyChannels(){
+    def target = file("$targetPath/channels")
+    if(target.exists()){
+        target.delete()
+    }
+    target.mkdirs()
+    def targetPath = target.getPath()
+
+    def channelsPath = channel.baseOutputDir.exists() ? channel.baseOutputDir.listFiles()[0].getPath() : null
+    if(channelsPath == null){
+        return
+    }
+    println("$TAG channelsPath = ${channelsPath}")
+
+    copy{ from channelsPath
+        into targetPath
+        include "*.*"
+    }
+}
+
+project.afterEvaluate{
+
+    def releaseTask = "assembleRelease"
+    def channelTask = "channelRelease"
+    def tinkerPatchRelease = "buildTinkerPatchRelease"
+
+    if(tasks.findByName(releaseTask) != null){
+        tasks.getByName(releaseTask) {
+            it.doLast {
+                copyTinkerBase()
+            }
+        }
+    }
+
+    if(tasks.findByName(tinkerPatchRelease) != null){
+        tasks.getByName(tinkerPatchRelease) {
+            it.doLast {
+                copyTinkerPatch()
+            }
+        }
+    }
+
+    if(tasks.findByName(channelTask)){
+        tasks.getByName(channelTask) {
+            it.doLast {
+                copyChannels()
+            }
+        }
+    }
+}

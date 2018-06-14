@@ -1,5 +1,6 @@
 package com.tory.noname.main.base;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -26,6 +27,7 @@ public abstract class BaseWebViewActivity<V extends View> extends BaseActivity{
     protected String mUrl;
 
 
+    @SuppressLint("WrongViewCast")
     @CallSuper
     @Override
     public void initView() {
