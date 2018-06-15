@@ -2,8 +2,11 @@ package com.mimikko.buglytest;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.tencent.bugly.beta.Beta;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +19,20 @@ public class MainActivity extends AppCompatActivity {
 
 
         ((TextView)findViewById(R.id.text)).setText("pathed version="+BuildConfig.VERSION_CODE);
+
+        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Beta.checkUpgrade();
+            }
+        });
+        findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Beta.downloadPatch();
+            }
+        });
+
 
         getWindow().getDecorView().post(new Runnable() {
             @Override

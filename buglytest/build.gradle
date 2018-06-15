@@ -25,7 +25,7 @@ android {
         applicationId "com.mimikko.buglytest"
         minSdkVersion 22//configs.miniSdkVersion
         targetSdkVersion configs.targetSdkVersion
-        versionCode 39
+        versionCode 42
         versionName "1.0"
         signingConfig signingConfigs.release
 
@@ -61,7 +61,7 @@ def getGitCommitCount(path) {
     def gitCommitCount = Integer.parseInt('git rev-list --count HEAD'.execute([], new File(path)).text.trim())
     return gitCommitCount
 }
-
+println("tasks="+(tasks.findByName("buildTinkerPatchRelease") != null))
 
 apply from: 'channel.gradle'
 apply from: 'tinker-support.gradle'
