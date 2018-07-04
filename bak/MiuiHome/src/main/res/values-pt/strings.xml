@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="application_name">Launcher</string>
+    <string name="folder_name">Pasta</string>
+    <string name="chooser_wallpaper">Selecionar plano de fundo de</string>
+    <string name="activity_not_found">O aplicativo não está instalado no seu telefone.</string>
+    <string name="cancel_action">Cancelar</string>
+    <string name="menu_item_add_item">Adicionar à tela da Página inicial</string>
+    <string name="group_shortcuts">Atalhos</string>
+    <string name="group_folder">Nova pasta</string>
+    <string name="group_live_folders">Pastas</string>
+    <string name="out_of_space">Não há mais espaço nesta tela da Página inicial.</string>
+    <string name="title_select_shortcut">Selecionar atalho</string>
+    <string name="title_select_live_folder">Selecionar pasta</string>
+    <string name="menu_add">Adicionar</string>
+    <string name="menu_wallpaper">Plano de fundo</string>
+    <string name="menu_search">Pesquisa</string>
+    <string name="menu_settings">Configurações</string>
+    <string name="permlab_install_shortcut">instalar atalhos</string>
+    <string name="permdesc_install_shortcut">Permite que um aplicativo adicione os atalhos sem a intervenção do usuário.</string>
+    <string name="permlab_uninstall_shortcut">desinstalar atalhos</string>
+    <string name="permdesc_uninstall_shortcut">Permite que um aplicativo remova os atalhos sem a intervenção do usuário.</string>
+    <string name="permlab_read_settings">ler configurações e atalhos da Página inicial</string>
+    <string name="permdesc_read_settings">Permite que um aplicativo leia as configurações e atalhos na Página inicial.</string>
+    <string name="permlab_write_settings">gravar configurações e atalhos da Página inicial</string>
+    <string name="permdesc_write_settings">Permite que um aplicativo altere as configurações e atalhos na Página inicial.</string>
+    <string name="gadget_error_text">Problema ao carregar o widget</string>
+</resources>

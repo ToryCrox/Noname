@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="transformation_entries">
+        <item>Clásico</item>
+        <item>Deslizar</item>
+        <item>Desvanecer</item>
+        <item>Rueda</item>
+        <item>Página</item>
+        <item>Cascada</item>
+        <item>Rotación</item>
+        <item>Cubo</item>
+    </array>
+    <array name="wallpaper_scroll_entries">
+        <item>Tema predeterminado</item>
+        <item>Centro</item>
+        <item>Izquierda</item>
+        <item>Derecha</item>
+    </array>
+    <array name="cell_layout_size_entries">
+        <item>4x4</item>
+        <item>4x5</item>
+    </array>
+    <array name="cell_layout_size_values">
+        <item>4x4</item>
+        <item>4x5</item>
+    </array>
+    <array name="gadget_weather_theme_type_entries">
+        <item>Predeterminado</item>
+        <item>Clásico</item>
+    </array>
+    <array name="gadget_weather_image">
+        <item>Despejado</item>
+        <item>Nublado</item>
+        <item>Neblina</item>
+        <item>Humo</item>
+        <item>Diluvio</item>
+        <item>Tormentas de lluvia</item>
+        <item>Lluvia fuerte</item>
+        <item>Tormenta eléctrica</item>
+        <item>Baño</item>
+        <item>Lluvia muy fuerte</item>
+        <item>Lluvia</item>
+        <item>Llovizna</item>
+        <item>Aguanieve</item>
+        <item>Tormenta de nieve</item>
+        <item>Nevada intermitente</item>
+        <item>Nevada intensa</item>
+        <item>Nevada</item>
+        <item>Nevada ligera</item>
+        <item>Fuerte tormenta de arena</item>
+        <item>Tormenta de arena</item>
+        <item>Tormenta de arena ligera</item>
+        <item>Tormenta de arena</item>
+        <item>Granizo</item>
+        <item>Polvo</item>
+        <item>Neblina</item>
+    </array>
+    <array name="editing_mode_entries">
+        <item>Temas</item>
+        <item>Widgets</item>
+        <item>Fondo de pantalla</item>
+        <item>Efectos</item>
+        <item>Celdas de pantalla</item>
+    </array>
+    <array name="quality_business_devices">
+        <item>Litio</item>
+    </array>
+</resources>

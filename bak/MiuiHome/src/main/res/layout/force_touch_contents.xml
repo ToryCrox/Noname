@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.miui.home.launcher.ForceTouchPressureCircle android:id="@id/force_touch_pressure_circle" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent" />
+    <ImageView android:id="@id/force_touch_icon" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:scaleType="fitCenter" />
+    <LinearLayout android:orientation="vertical" android:id="@id/force_touch_menu" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:divider="@drawable/force_touch_menu_divider" android:showDividers="middle">
+        <include layout="@layout/force_touch_layer_menu_item" />
+        <include layout="@layout/force_touch_layer_menu_item" />
+        <include layout="@layout/force_touch_layer_menu_item" />
+        <include layout="@layout/force_touch_layer_menu_item" />
+    </LinearLayout>
+</merge>

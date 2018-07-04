@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/force_touch_menu_item_pressed_color" />
+            <corners android:bottomLeftRadius="@dimen/force_touch_menu_angle_radius" android:bottomRightRadius="@dimen/force_touch_menu_angle_radius" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="@color/force_touch_menu_item_normal_color" />
+            <corners android:bottomLeftRadius="@dimen/force_touch_menu_angle_radius" android:bottomRightRadius="@dimen/force_touch_menu_angle_radius" />
+        </shape>
+    </item>
+</selector>

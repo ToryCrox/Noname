@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="transformation_entries">
+        <item>Приплъзване</item>
+        <item>Плъзване</item>
+        <item>Избледняване</item>
+        <item>2D ротация</item>
+        <item>Страница</item>
+        <item>Каскадно</item>
+        <item>3D ротация</item>
+        <item>3D куб</item>
+    </array>
+    <array name="wallpaper_scroll_entries">
+        <item>Според темата</item>
+        <item>Централно</item>
+        <item>Отляво</item>
+        <item>Отдясно</item>
+    </array>
+    <array name="cell_layout_size_entries">
+        <item>4x4</item>
+        <item>4x5</item>
+    </array>
+    <array name="cell_layout_size_values">
+        <item>4x4</item>
+        <item>4x5</item>
+    </array>
+    <array name="gadget_weather_theme_type_entries">
+        <item>По подразбиране</item>
+        <item>Класическа</item>
+    </array>
+    <array name="gadget_weather_image">
+        <item>Ясно</item>
+        <item>Облачно</item>
+        <item>Неясно</item>
+        <item>Мъгливо</item>
+        <item>Силна дъждовна буря</item>
+        <item>Дъждовна буря</item>
+        <item>Много обилни валежи</item>
+        <item>Гръмотевична буря</item>
+        <item>Преваляване</item>
+        <item>Проливен дъжд</item>
+        <item>Дъжд</item>
+        <item>Ръмеж</item>
+        <item>Суграшица</item>
+        <item>Снежна буря</item>
+        <item>Превалявания от сняг</item>
+        <item>Силен снеговалеж</item>
+        <item>Снеговалеж</item>
+        <item>Слаб снеговалеж</item>
+        <item>Силна снежна буря</item>
+        <item>Пясъчна буря</item>
+        <item>Лека пясъчна буря</item>
+        <item>Пясъчна буря</item>
+        <item>Градушка</item>
+        <item>Плаващ прах</item>
+        <item>Мараня</item>
+    </array>
+    <array name="editing_mode_entries">
+        <item>Теми</item>
+        <item>Джаджи</item>
+        <item>Тапет</item>
+        <item>Ефекти</item>
+        <item>Разделяне на екрана</item>
+    </array>
+    <array name="quality_business_devices">
+        <item>Литиева</item>
+    </array>
+</resources>

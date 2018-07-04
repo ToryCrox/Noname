@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/com.android.settings" settings:title="@string/wallpaper" settings:layoutDirection="locale">
+    <PreferenceCategory>
+        <com.miui.home.launcher.setting.ImageListPreference settings:key="current_wallpaper" />
+    </PreferenceCategory>
+    <PreferenceCategory settings:title="@string/wallpaper_auto_change_title" settings:key="wallpaper_changer" />
+</PreferenceScreen>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="transformation_entries">
+        <item>Klasický</item>
+        <item>Klasický(bez odrazu)</item>
+        <item>Prolnutí</item>
+        <item>Přetočení</item>
+        <item>Strana</item>
+        <item>Kaskádově</item>
+        <item>3D rotace</item>
+        <item>3D kostka</item>
+    </array>
+    <array name="wallpaper_scroll_entries">
+        <item>Podle tématu</item>
+        <item>Střed</item>
+        <item>Vlevo</item>
+        <item>Vpravo</item>
+    </array>
+    <array name="cell_layout_size_entries">
+        <item>4x4</item>
+        <item>4x5</item>
+    </array>
+    <array name="cell_layout_size_values">
+        <item>4x4</item>
+        <item>4x5</item>
+    </array>
+    <array name="gadget_weather_theme_type_entries">
+        <item>Předvolený</item>
+        <item>Klasický</item>
+    </array>
+    <array name="gadget_weather_image">
+        <item>Jasno</item>
+        <item>Oblačno</item>
+        <item>Zamračeno</item>
+        <item>Mlhavo</item>
+        <item>Velká dešťová bouře</item>
+        <item>Dešťová bouře</item>
+        <item>Liják</item>
+        <item>Hromobití</item>
+        <item>Přehánka</item>
+        <item>Silný déšť</item>
+        <item>Déšť</item>
+        <item>Mrholení</item>
+        <item>Déšť se sněhem</item>
+        <item>Sněhová bouře</item>
+        <item>Sněhové pásy</item>
+        <item>Husté sněžení</item>
+        <item>Sněžení</item>
+        <item>Lehké sněžení</item>
+        <item>Silná písečná bouře</item>
+        <item>Písečná bouře</item>
+        <item>Lehká písečná bouře</item>
+        <item>Písečná bouře</item>
+        <item>Krupobití</item>
+        <item>Plovoucí prach</item>
+        <item>Mlha</item>
+    </array>
+    <array name="editing_mode_entries">
+        <item>Themes</item>
+        <item>Widgety</item>
+        <item>Tapety</item>
+        <item>Efekty</item>
+        <item>Screen cells</item>
+    </array>
+    <array name="quality_business_devices">
+        <item>Lithium</item>
+    </array>
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.miui.home.launcher.upsidescene.EditModeBottomBar xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@id/editModeBottomBar" android:background="@drawable/free_style_edit_bottom_bar_bg" android:visibility="invisible" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1">
+    <TextView android:textColor="@color/free_style_bar_msg_color" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@id/editModeMoveTip" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/free_style_edit_move_tip" style="@*style/TextAppearance.Large.Inverse" />
+    <TextView android:textColor="@color/free_style_bar_msg_color" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@id/editModeDraggingTip" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/free_style_edit_move_tip" style="@*style/TextAppearance.Large.Inverse" />
+    <miui.widget.ScreenView android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@id/editModeFreeButton" android:visibility="invisible" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginBottom="10dp">
+        <include android:id="@id/editModeFreeButtonApp" layout="@layout/free_style_edit_bar_free_button_item" />
+        <include android:id="@id/editModeFreeButtonFolder" layout="@layout/free_style_edit_bar_free_button_item" />
+        <include android:id="@id/editModeFreeButtonDrawer" layout="@layout/free_style_edit_bar_free_button_item" />
+        <include android:id="@id/editModeFreeButtonToggle" layout="@layout/free_style_edit_bar_free_button_item" />
+        <include android:id="@id/editModeFreeButtonEmpty" layout="@layout/free_style_edit_bar_free_button_item" />
+    </miui.widget.ScreenView>
+    <LinearLayout android:orientation="vertical" android:id="@id/editDragSource" android:visibility="invisible" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <FrameLayout android:id="@id/dragSourceTabHost" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_weight="1.0" />
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@id/tabLabelShortcut" android:background="@drawable/free_style_edit_bottom_tab_left" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/free_style_edit_tab_shortcut" android:layout_weight="1.0" style="@*style/TextAppearance.Inverse" />
+            <TextView android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@id/tabLabelFreeButton" android:background="@drawable/free_style_edit_bottom_tab_middle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/free_style_edit_tab_free_component" android:layout_weight="1.0" style="@*style/TextAppearance.Inverse" />
+            <TextView android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@id/tabLabelWidget" android:background="@drawable/free_style_edit_bottom_tab_right" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/free_style_edit_tab_widget" android:layout_weight="1.0" style="@*style/TextAppearance.Inverse" />
+        </LinearLayout>
+    </LinearLayout>
+</com.miui.home.launcher.upsidescene.EditModeBottomBar>

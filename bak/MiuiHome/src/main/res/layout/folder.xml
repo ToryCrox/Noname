@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.miui.home.launcher.Folder xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="vertical" android:id="@id/folder" android:clickable="true" android:animationCache="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/folder_content_margin_top" android:layout_marginBottom="@dimen/folder_content_margin_bottom">
+    <include layout="@layout/folder_header" />
+    <com.miui.home.launcher.FolderContainer android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <include android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="wrap_content" android:layout_height="wrap_content" layout="@layout/folder_grid" />
+        <include android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/recommend_switch_margin_top" layout="@layout/recommend_switch" />
+    </com.miui.home.launcher.FolderContainer>
+</com.miui.home.launcher.Folder>

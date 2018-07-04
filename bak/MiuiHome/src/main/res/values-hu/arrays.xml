@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="transformation_entries">
+        <item>Túlcsúszás</item>
+        <item>Csúsztatás</item>
+        <item>Átkeverés</item>
+        <item>Lezuhanás</item>
+        <item>Lapozás</item>
+        <item>Kártyák</item>
+        <item>Forgatás</item>
+        <item>Kocka</item>
+    </array>
+    <array name="wallpaper_scroll_entries">
+        <item>Alapértelmezett téma</item>
+        <item>Közép</item>
+        <item>Bal</item>
+        <item>Jobb</item>
+    </array>
+    <array name="cell_layout_size_entries">
+        <item>4x4</item>
+        <item>4x5</item>
+    </array>
+    <array name="cell_layout_size_values">
+        <item>4x4</item>
+        <item>4x5</item>
+    </array>
+    <array name="gadget_weather_theme_type_entries">
+        <item>Alapértelmezett</item>
+        <item>Klasszikus</item>
+    </array>
+    <array name="gadget_weather_image">
+        <item>Tiszta</item>
+        <item>Felhős</item>
+        <item>Enyhén ködös</item>
+        <item>Ködös</item>
+        <item>Erős felhőszakadás</item>
+        <item>Felhőszakadás</item>
+        <item>Nagyon erős csapadék</item>
+        <item>Zivatar</item>
+        <item>Zápor</item>
+        <item>Erős csapadék</item>
+        <item>Eső</item>
+        <item>Szitálás</item>
+        <item>Havas eső</item>
+        <item>Hóvihar</item>
+        <item>Foltokban hóesés</item>
+        <item>Sűrű havazás</item>
+        <item>Havazás</item>
+        <item>Enyhe havazás</item>
+        <item>Erős homokvihar</item>
+        <item>Homokvihar</item>
+        <item>Enyhe homokvihar</item>
+        <item>Homokvihar</item>
+        <item>Jégeső</item>
+        <item>Szálló por</item>
+        <item>Enyhe köd</item>
+    </array>
+    <array name="editing_mode_entries">
+        <item>Témák</item>
+        <item>Widgetek</item>
+        <item>Háttérkép</item>
+        <item>Effektek</item>
+        <item>Ikonelrendezés</item>
+    </array>
+    <array name="quality_business_devices">
+        <item>Lítium</item>
+    </array>
+</resources>

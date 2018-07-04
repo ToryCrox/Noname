@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="horizontal" android:layout_width="UNKNOWN_DATA_0x7f0b0080" android:layout_height="UNKNOWN_DATA_0x7f0b007f">
+    <ImageView android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@id/force_touch_item_icon" android:layout_width="UNKNOWN_DATA_0x7f0b0085" android:layout_height="UNKNOWN_DATA_0x7f0b0086" android:scaleType="centerCrop" android:layout_marginStart="23dp" android:layout_marginEnd="23dp" />
+    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="vertical" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_weight="1.0">
+        <TextView android:textSize="15.33dp" android:textColor="#000000" android:ellipsize="marquee" android:id="@id/force_touch_item_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" />
+        <TextView android:textSize="11dp" android:textColor="#75797b" android:ellipsize="marquee" android:id="@id/force_touch_item_desc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" />
+    </LinearLayout>
+</LinearLayout>

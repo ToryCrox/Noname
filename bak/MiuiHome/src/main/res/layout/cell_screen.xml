@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.miui.home.launcher.CellScreen xmlns:android="http://schemas.android.com/apk/res/android" android:clipChildren="false" android:clipToPadding="false" android:animationCache="false" android:layout_width="match_parent" android:layout_height="match_parent">
+    <FrameLayout android:id="@id/background_container" android:visibility="invisible" android:animationCache="false" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginBottom="@dimen/workspace_background_margin_bottom">
+        <ImageView android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@id/delete_btn" android:visibility="invisible" android:clickable="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/editing_delete_screen_btn" />
+        <ImageView android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@id/new_btn" android:visibility="invisible" android:clickable="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/editing_new_screen_btn" />
+    </FrameLayout>
+    <com.miui.home.launcher.CellLayout android:id="@id/cell_layout" android:clipChildren="false" android:clipToPadding="false" android:animationCache="false" android:layout_width="match_parent" android:layout_height="match_parent" />
+</com.miui.home.launcher.CellScreen>

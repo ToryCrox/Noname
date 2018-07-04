@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene xmlns:android="http://schemas.android.com/apk/res/com.miui.home" width="720">
+    <screen type="UNKNOWN_DATA_0x6" width="720" home="1">
+        <sprite index="0" left="312" top="1100" rotation="0.0" scale_x="0.0" scale_y="0.0" width="0" height="0" appearance="" function="children_mode_exit:" />
+        <sprite index="0" left="290" top="540" rotation="0.0" scale_x="0.0" scale_y="0.0" width="0" height="0" appearance="" function="children_folder:" />
+    </screen>
+</scene>

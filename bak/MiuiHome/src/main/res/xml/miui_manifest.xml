@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/miui" miui:name="com.miui.home" miui:level="1">
+    <uses-sdk miui:minLevel="5" miui:targetLevel="7" />
+    <modules>
+        <module miui:name="com.miui.home.launcher.assistant" miui:minLevel="1" />
+    </modules>
+</manifest>
