@@ -233,6 +233,9 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
         return hasFooterView() && position == getItemCount() - 1;
     }
 
+    public List<T> getAll(){
+        return mData;
+    }
 
     public void add(T bean) {
         mData.add(bean);

@@ -33,5 +33,11 @@
         android:text="下载补丁"
         tools:layout_editor_absoluteX="148dp"
         tools:layout_editor_absoluteY="391dp" />
+    
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/blank_loading"/>
 
 </android.support.constraint.ConstraintLayout>

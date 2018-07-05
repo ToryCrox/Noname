@@ -67,6 +67,7 @@ public class AppLike extends DefaultApplicationLike{
         Beta.betaPatchListener = new BetaPatchListener() {
             @Override
             public void onPatchReceived(String patchFile) {
+                Beta.
                 MLog.d(TAG, "onPatchReceived patchFile="+patchFile);
             }
 

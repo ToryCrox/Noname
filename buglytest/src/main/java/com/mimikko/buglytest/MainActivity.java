@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        ((TextView)findViewById(R.id.text)).setText("pathed version="+BuildConfig.VERSION_CODE);
+        ((TextView)findViewById(R.id.text)).setText("new pathed version="+BuildConfig.VERSION_CODE);
 
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override

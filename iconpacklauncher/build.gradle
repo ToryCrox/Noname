@@ -21,16 +21,22 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     implementation project(':library')
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation libraries.appcompat
     implementation libraries.design
     implementation libraries.recyclerview
-
+    //rx
+    implementation libraries.rxjava
+    implementation libraries.rxandroid
     implementation libraries.butterknife
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     annotationProcessor libraries.butterknifeCompiler
-
 }

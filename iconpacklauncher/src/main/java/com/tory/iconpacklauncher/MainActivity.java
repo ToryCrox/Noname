@@ -154,7 +154,8 @@ public class MainActivity extends BaseActivity implements BaseRecyclerAdapter.On
         int type = mAppInfoAdpater.getItemViewType(position);
         if(type == AppInfoAdpater.ITYE_GET_MORE){
             if(position == mAppInfoAdpater.getItemCount() - 2){
-                choseIcon();
+                //choseIcon();
+                startActivity(new Intent(this, LauncherAppActivity.class));
             }else{
                 turnToAppMarket();
             }

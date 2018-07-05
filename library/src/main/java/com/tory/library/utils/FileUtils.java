@@ -1,7 +1,9 @@
 package com.tory.library.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 
@@ -390,6 +392,16 @@ public class FileUtils {
                 }
             }
         }
+    }
+
+    /**
+     * 通知系统扫描文件
+     * @param context
+     * @param filePath
+     */
+    public static void notifyMediaScanFile(@NonNull Context context, @NonNull String filePath){
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                Uri.parse("file://" + filePath)));
     }
 
 

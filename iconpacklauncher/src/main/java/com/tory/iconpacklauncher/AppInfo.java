@@ -1,11 +1,13 @@
 package com.tory.iconpacklauncher;
 
+import android.content.ComponentName;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 
 public class AppInfo implements Comparable {
     String name;
     String pkg;
+    ComponentName cn;
     Drawable icon;
     int versionCode;
 
@@ -14,6 +16,12 @@ public class AppInfo implements Comparable {
         this.pkg = pkg;
         this.icon = icon;
         this.versionCode = versionCode;
+    }
+
+    public AppInfo(String name, ComponentName cn, Drawable icon) {
+        this.name = name;
+        this.cn = cn;
+        this.icon = icon;
     }
 
 
