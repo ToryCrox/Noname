@@ -125,13 +125,11 @@ public class LauncherAppActivity extends BaseActivity {
     private void export(){
 
         String format = "%-20s\t<folderapp launcher:componentName=\"%s\"/>";
-        ArrayList<String> strs = new ArrayList<>();
-        for (LauncherActivityInfo activityInfo : mAdapter.getAll()) {
-            if(FILTER_APPS.contains(activityInfo.loadLable())){
-                continue;
-            }
-            strs.add(String.format(format, activityInfo.loadLable(), activityInfo.loadCompnent()));
-        }
+        List<String> strs = Observable.fromIterable(mAdapter.getAll())
+                .filter(activityInfo -> FILTER_APPS.contains(activityInfo.loadLable()))
+                .map(activityInfo -> String.format(format, activityInfo.loadLable(), activityInfo.loadCompnent()))
+                .toList()
+                .blockingGet();
         String target = TextUtils.join("\n", strs);
         File dest = new File(FileUtils.getSDPath(), "systemApp.txt");
         try {

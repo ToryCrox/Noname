@@ -7,6 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 import static org.junit.Assert.*;
 
 /**
@@ -21,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.tory.debug", appContext.getPackageName());
+        System.out.printf("pid="+Thread.currentThread().getId());
     }
 }
