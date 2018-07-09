@@ -2,6 +2,7 @@ package com.tory.noname;
 
 import android.app.Application;
 
+import com.tory.library.applife.AppLifeApplication;
 import com.tory.library.reflect.ReflectDebugUtil;
 import com.tory.noname.utils.L;
 import com.tory.noname.utils.SettingHelper;
@@ -12,7 +13,7 @@ import com.tory.noname.utils.Utilities;
  * Create: 2016/9/15
  * Update: 2016/9/15
  */
-public class MApplication extends Application {
+public class MApplication extends AppLifeApplication {
     private static MApplication instance;
 
     public static MApplication getInstance() {
