@@ -44,6 +44,8 @@ ext {
             eventbus             : "org.greenrobot:eventbus:3.1.1",
             eventbusCompiler     : "org.greenrobot:eventbus-annotation-processor:3.1.1",
 
+            eleastictyview     : "com.github.ToryCrox:EleastictyView:1.0.0",
+
             //测试用
             junit               : "junit:junit:4.12",
             mockito             : "org.mockito:mockito-core:2.11.0",

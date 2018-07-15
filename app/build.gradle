@@ -61,7 +61,7 @@ dependencies {
     implementation libraries.stetho
     implementation libraries.stethoOkhttp3
 
-
+    implementation libraries.eleastictyview
     //butterknife引用
     implementation libraries.butterknife
     annotationProcessor libraries.butterknifeCompiler
