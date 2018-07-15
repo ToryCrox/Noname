@@ -37,7 +37,7 @@ dependencies {
     implementation libraries.appcompat
     implementation libraries.palette
 
-    testCompile 'junit:junit:4.12'
+    testImplementation libraries.junit
 
     implementation libraries.butterknife
     annotationProcessor libraries.butterknifeCompiler

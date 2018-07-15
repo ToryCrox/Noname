@@ -33,10 +33,10 @@ dependencies {
     implementation libraries.appcompat
     implementation libraries.design
     implementation libraries.recyclerview
+    implementation libraries.constraintLayout
     //rx
     implementation libraries.rxjava
     implementation libraries.rxandroid
     implementation libraries.butterknife
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     annotationProcessor libraries.butterknifeCompiler
 }

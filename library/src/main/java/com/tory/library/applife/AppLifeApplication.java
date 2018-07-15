@@ -3,6 +3,7 @@ package com.tory.library.applife;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.support.multidex.MultiDex;
 
 /**
  * @author tory
@@ -15,6 +16,7 @@ public class AppLifeApplication extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
+        MultiDex.install(this);
         mApplicationDelegate = new ApplicationDelegate();
         mApplicationDelegate.attachBaseContext(this);
     }

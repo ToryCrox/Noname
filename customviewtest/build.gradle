@@ -24,10 +24,10 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation(libraries.espresso, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation libraries.appcompat
     implementation libraries.constraintLayout
-    testImplementation 'junit:junit:4.12'
+    testImplementation libraries.junit
 }
