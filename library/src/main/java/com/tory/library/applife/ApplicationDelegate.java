@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * @author tory
- * @dae 2018-7-9
+ * @date 2018-7-9
  * 帮忙Application分发AppLike
  */
 public class ApplicationDelegate implements IAppLife{
@@ -20,8 +20,8 @@ public class ApplicationDelegate implements IAppLife{
     @Override
     public void attachBaseContext(Application base) {
         mAppLifes = new ManifestParser(base).parse();
-        //进行优先级排序，大的在前，小的在后
-        Collections.sort(mAppLifes, (o1, o2) -> o2.priority() - o1.priority());
+        //进行优先级排序，小的在前，大的在后
+        Collections.sort(mAppLifes, (o1, o2) -> o1.priority() - o2.priority());
         for (IAppLife iAppLife : mAppLifes) {
             if(iAppLife.enable()){
                 iAppLife.attachBaseContext(base);

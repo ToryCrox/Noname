@@ -1,4 +1,3 @@
-/*Transsion Top Secret*/
 package com.tory.library.utils;
 
 import android.content.res.Resources;

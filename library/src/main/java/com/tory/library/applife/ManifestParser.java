@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * @author tory
- * @dae 2018-7-9
+ * @date 2018-7-9
  * 仿Glide
  */
 public final class ManifestParser {

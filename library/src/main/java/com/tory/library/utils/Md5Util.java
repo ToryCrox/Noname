@@ -8,8 +8,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Md5Util {
-	static final char hexs[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
-	static final String digital = "0123456789abcdef";
+	private static final char HEXS[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+	private static final String DIGITAL = "0123456789abcdef";
 	private static final String MD5 = "MD5";
 
 	public static String digest(String str) {
@@ -75,9 +75,9 @@ public class Md5Util {
 		int temp;
 		for (int i = 0; i < bytes.length; i++) {
 			temp = (bytes[i] >>> 4) & 0x0F;
-			sBuffer.append(hexs[temp]);
+			sBuffer.append(HEXS[temp]);
 			temp = bytes[i] & 0x0F;
-			sBuffer.append(hexs[temp]);
+			sBuffer.append(HEXS[temp]);
 		}
 		return sBuffer.toString();
 	}
@@ -97,8 +97,8 @@ public class Md5Util {
 		char[] hex2char = hexString.toCharArray();// 将字符串转换成字符数组
 		int temp;
 		for (int i = 0; i < bytes.length; i++) {
-			temp = digital.indexOf(hex2char[2 * i]) << 4;
-			temp += digital.indexOf(hex2char[2 * i + 1]);
+			temp = DIGITAL.indexOf(hex2char[2 * i]) << 4;
+			temp += DIGITAL.indexOf(hex2char[2 * i + 1]);
 			bytes[i] = (byte) (temp & 0xff);
 		}
 		return bytes;

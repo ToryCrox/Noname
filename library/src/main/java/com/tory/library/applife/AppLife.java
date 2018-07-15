@@ -2,15 +2,17 @@ package com.tory.library.applife;
 
 import android.app.Application;
 import android.content.res.Configuration;
+import android.support.annotation.CallSuper;
 
 /**
  * @author tory
- * @dae 2018-7-9
+ * @date 2018-7-9
  */
 public class AppLife implements IAppLife {
 
     protected Application mApplication;
 
+    @CallSuper
     @Override
     public void attachBaseContext(Application application) {
         mApplication = application;

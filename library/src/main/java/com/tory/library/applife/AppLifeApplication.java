@@ -6,7 +6,7 @@ import android.content.res.Configuration;
 
 /**
  * @author tory
- * @dae 2018-7-9
+ * @date 2018-7-9
  */
 public class AppLifeApplication extends Application {
 
