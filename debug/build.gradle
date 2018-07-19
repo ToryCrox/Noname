@@ -23,13 +23,12 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestImplementation(libraries.espresso, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation libraries.appcompat
     testImplementation libraries.junit
-
     implementation libraries.stetho
     implementation libraries.stethoOkhttp3
     implementation libraries.constraintLayout
