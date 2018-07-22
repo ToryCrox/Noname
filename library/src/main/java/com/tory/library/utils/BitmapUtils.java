@@ -3,6 +3,8 @@ package com.tory.library.utils;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -14,13 +16,37 @@ import android.support.annotation.Nullable;
 public class BitmapUtils {
 
 
+    /**
+     * 是否为合法的bitmap
+     * @param bitmap
+     * @return
+     */
+    public static boolean isAvailable(@Nullable Bitmap bitmap){
+        return bitmap != null && !bitmap.isRecycled();
+    }
+
+    /**
+     * recycler bitmap
+     * @param bitmap
+     */
     public static void safelyRecycle(@Nullable Bitmap bitmap){
         if(bitmap != null && !bitmap.isRecycled()){
             bitmap.recycle();
         }
     }
 
-    public static Bitmap scaleCenterCrop(@NonNull Bitmap src, int targetWidth, int targetHeight){
+    /**
+     * 居中缩放并裁剪图片
+     * @param src
+     * @param targetWidth
+     * @param targetHeight
+     * @return
+     */
+    @Nullable
+    public static Bitmap scaleCenterCrop(@Nullable Bitmap src, int targetWidth, int targetHeight){
+        if (!isAvailable(src)){
+            return null;
+        }
 
         int srcWidth = src.getWidth();
         int srcHeight = src.getHeight();
@@ -45,6 +71,23 @@ public class BitmapUtils {
         canvas.drawBitmap(src, 0, 0, paint);
         canvas.setBitmap(null);
         safelyRecycle(src);
+        return bitmap;
+    }
+
+    /**
+     * @param drawable
+     * @return
+     */
+    @NonNull
+    public static Bitmap toBitmap(@NonNull Drawable drawable) {
+        int width = drawable.getIntrinsicWidth();   // 取 drawable 的长宽
+        int height = drawable.getIntrinsicHeight();
+        Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ?
+                Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565;// 取 drawable 的颜色格式
+        Bitmap bitmap = Bitmap.createBitmap(width, height, config);// 建立对应 bitmap
+        Canvas canvas = new Canvas(bitmap); // 建立对应 bitmap 的画布
+        drawable.setBounds(0, 0, width, height);
+        drawable.draw(canvas);      // 把 drawable 内容画到画布中
         return bitmap;
     }
 }
