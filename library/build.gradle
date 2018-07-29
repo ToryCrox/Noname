@@ -8,7 +8,7 @@ android {
         minSdkVersion configs.miniSdkVersion
         targetSdkVersion configs.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.3"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -30,11 +30,14 @@ dependencies {
 
     implementation libraries.multidex
     implementation libraries.appcompat
+    implementation libraries.design
     implementation libraries.preference
     implementation libraries.palette
     implementation libraries.glide
     implementation libraries.rxjava
     implementation libraries.rxandroid
+
+    implementation libraries.multitype
 
     androidTestImplementation(libraries.espresso, {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -42,30 +45,4 @@ dependencies {
     testImplementation libraries.junit
 }
 
-
-dependencies {
-    compileOnly files(getLayoutLibPath())
-}
-
-def getLayoutLibPath() {
-    def rootDir = project.rootDir
-    def localProperties = new File(rootDir, "local.properties")
-    def sdkDir = null
-    if(localProperties.exists()){
-        Properties properties = new Properties()
-        localProperties.withInputStream {
-            instr -> properties.load(instr)
-        }
-        sdkDir = properties.getProperty('sdk.dir')
-    }
-    if(sdkDir == null || sdkDir.equals("")){
-        sdkDir = System.getenv("ANDROID_HOME")
-    }
-    if (sdkDir != null && !sdkDir.equals("")) {
-        def compileSdkVersion = android.compileSdkVersion
-        Console.println("app compileSdkVersion : " + compileSdkVersion)
-        def androidJarPath = sdkDir + "/platforms/" + compileSdkVersion + "/data/layoutlib.jar"
-        return androidJarPath
-    }
-    return rootDir
-}
+apply from : "local_maven.gradle"

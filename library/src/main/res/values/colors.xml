@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="item_background_gray">#44999999</color>
+
     <!-- for colorpicker  start-->
     <color name="preference_divider_color">#19000000</color>
     <array name="preview_colors">

@@ -44,6 +44,8 @@ ext {
             eventbus             : "org.greenrobot:eventbus:3.1.1",
             eventbusCompiler     : "org.greenrobot:eventbus-annotation-processor:3.1.1",
 
+            multitype            : "me.drakeet.multitype:multitype:3.4.4",
+
             eleastictyview     : "com.github.ToryCrox:EleastictyView:1.0.0",
 
             //测试用
