@@ -13,21 +13,19 @@ public class BlurUtil {
     private static final String TAG = "BlurUtil";
 
     private static final int DEFAULT_BLUR_RADIUS = 25;
-    private static final int DEFAULT_BLUR_SCALE = 8;
+    private static final float DEFAULT_BLUR_SCALE = 1/8f;
 
     /**
      * 高斯模糊
      * @param context
      * @param bitmap
-     * @param width 目标宽度
-     * @param height 目标高度度
      * @return
      */
-    public static Bitmap blur(@NonNull Context context, Bitmap bitmap, int width, int height){
-        return blur(context, bitmap, width, height ,DEFAULT_BLUR_RADIUS, DEFAULT_BLUR_SCALE);
+    public static Bitmap blur(@NonNull Context context,@NonNull Bitmap bitmap, int radius, int scaleFactor){
+        return blur(context, bitmap, bitmap.getWidth(), bitmap.getHeight() ,radius, scaleFactor);
     }
 
-    public static Bitmap blur(@NonNull Context context, Bitmap bitmap){
+    public static Bitmap blur(@NonNull Context context,@NonNull Bitmap bitmap){
         return blur(context, bitmap, bitmap.getWidth(), bitmap.getHeight() ,DEFAULT_BLUR_RADIUS, DEFAULT_BLUR_SCALE);
     }
 
@@ -42,10 +40,10 @@ public class BlurUtil {
      * @return
      */
     public static Bitmap blur(Context context, Bitmap bitmap, int width, int height, int radius,
-                              int scaleFactor){
+                              float scaleFactor){
         if(bitmap == null) return null;
-        Bitmap overlay = Bitmap.createBitmap( (width / scaleFactor),
-                (height / scaleFactor), Bitmap.Config.ARGB_8888);
+        Bitmap overlay = Bitmap.createBitmap( (int)(width * scaleFactor),
+                (int)(height * scaleFactor), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(overlay);
         cropCanvas(canvas, bitmap, overlay);
         Paint paint = new Paint();
