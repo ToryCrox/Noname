@@ -1,0 +1,8 @@
+[
+  {
+    "aliasTitle" : "Miui桌面",
+    "packageName" : "com.miui.home",
+    "authority": "com.miui.home.launcher.settings",
+    "readPermission": "com.android.launcher.permission.READ_SETTINGS"
+  }
+]

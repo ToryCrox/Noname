@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.annotation.RawRes;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -122,6 +123,10 @@ public class FileUtils {
 
     public static String readAssets(Context context, String filePath) throws IOException {
         return readString(context.getAssets().open(filePath));
+    }
+
+    public static String readAssets(Context context,@RawRes int rawResId) throws IOException {
+        return readString(context.getResources().openRawResource(rawResId));
     }
 
     /**

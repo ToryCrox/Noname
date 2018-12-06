@@ -16,17 +16,11 @@
 
 package com.tory.library.utils;
 
-import android.content.res.Resources;
-import android.graphics.Outline;
 import android.graphics.Paint;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.phone.common.R;
 
 /**
  * Provides static functions to work with views

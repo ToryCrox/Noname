@@ -8,4 +8,21 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <declare-styleable name="VectorCompatTextView">
+        <attr name="drawableStartCompat" format="reference" />
+        <attr name="drawableEndCompat" format="reference" />
+        <attr name="drawableLeftCompat" format="reference" />
+        <attr name="drawableRightCompat" format="reference" />
+        <attr name="drawableTopCompat" format="reference" />
+        <attr name="drawableBottomCompat" format="reference" />
+        <attr name="tintDrawableInTextColor" format="boolean" />
+        <attr name="drawableCompatTint" format="color|reference" />
+        <attr name="drawableAdjustTextWidth" format="boolean" />
+        <attr name="drawableAdjustTextHeight" format="boolean" />
+        <attr name="drawableAdjustViewWidth" format="boolean" />
+        <attr name="drawableAdjustViewHeight" format="boolean" />
+        <attr name="drawableWidth" format="dimension|reference" />
+        <attr name="drawableHeight" format="dimension|reference" />
+        <attr name="textIsMarquee" format="boolean"/>
+    </declare-styleable>
 </resources>

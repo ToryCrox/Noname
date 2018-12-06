@@ -9,8 +9,10 @@
       <module fileurl="file://$PROJECT_DIR$/customviewtest/customviewtest.iml" filepath="$PROJECT_DIR$/customviewtest/customviewtest.iml" />
       <module fileurl="file://$PROJECT_DIR$/debug/debug.iml" filepath="$PROJECT_DIR$/debug/debug.iml" />
       <module fileurl="file://$PROJECT_DIR$/iconpacklauncher/iconpacklauncher.iml" filepath="$PROJECT_DIR$/iconpacklauncher/iconpacklauncher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/launcherimport/launcherimport.iml" filepath="$PROJECT_DIR$/launcherimport/launcherimport.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/lightphoto/lightphoto.iml" filepath="$PROJECT_DIR$/lightphoto/lightphoto.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lottie/lottie.iml" filepath="$PROJECT_DIR$/lottie/lottie.iml" />
       <module fileurl="file://$PROJECT_DIR$/plugin/plugin.iml" filepath="$PROJECT_DIR$/plugin/plugin.iml" />
     </modules>
   </component>
