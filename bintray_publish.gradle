@@ -1,0 +1,30 @@
+apply plugin: 'com.novoda.bintray-release'
+apply from: "$project.rootDir/config.gradle"
+
+
+publish {
+    // 读取 local.properties 中配置
+    Properties properties = new Properties()
+    File localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        properties.load(localPropertiesFile.newDataInputStream())
+    }
+    // 用户名
+    bintrayUser = properties.getProperty("bintray.user")
+    // apkKey
+    bintrayKey = properties.getProperty("bintray.key")
+    // 仓库名称，默认maven
+    //repoName = 'maven'
+    // 组织名称
+    userOrg = repos.userOrg
+
+    groupId = repos.groupId
+    artifactId = POM_ARTIFACT_ID
+    publishVersion = android.defaultConfig.versionName
+    // 项目描述
+    desc = POM_DSC
+    // 项目地址
+    website = POM_WEBSITE
+    // 如果设置为true，它将运行所有内容，但不会将包上传到bintray。如果是false，那么它会正常上传。
+    dryRun = false
+}
