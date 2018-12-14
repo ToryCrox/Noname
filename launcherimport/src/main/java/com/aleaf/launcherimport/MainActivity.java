@@ -8,11 +8,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         for (HomeAppSupportInfo info : mAppSupportInfos) {
             Log.d(TAG, "onCreate: title="+info.title);
         }
+
+        HomeImportUtils.loadAllHomeProviders(this);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String getAthority(){
-        return "com.miui.home.launcher.settings";
+        return "com.android.badge";
     }
 
     private Uri getContentUri(){
@@ -110,5 +115,32 @@ public class MainActivity extends AppCompatActivity {
                         +", itemType="+itemType+", screen="+screen);
             }
         }
+    }
+
+    /**
+     * adb shell dumpsys activity com.aleaf.launcherimport.MainActivity [params]
+     * @param prefix
+     * @param fd
+     * @param writer
+     * @param args
+     */
+    @Override
+    public void dump(String prefix, FileDescriptor fd, PrintWriter writer, String[] args) {
+        //super.dump(prefix, fd, writer, args);
+        if (args.length <= 0){
+            return;
+        }
+
+        if (TextUtils.equals(args[0], "--all")){
+            List<HomeAppSupportInfo> infos = HomeImportUtils.loadAllHomeProviders(this);
+            for (HomeAppSupportInfo info : infos) {
+                debugLog(writer, String.valueOf(info));
+            }
+        }
+    }
+
+    private void debugLog(PrintWriter writer, String msg){
+        writer.println(msg);
+        Log.i(TAG, msg);
     }
 }
