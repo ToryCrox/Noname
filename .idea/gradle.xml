@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/lightphoto" />
             <option value="$PROJECT_DIR$/lottie" />
             <option value="$PROJECT_DIR$/plugin" />
+            <option value="$PROJECT_DIR$/videoplayer" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

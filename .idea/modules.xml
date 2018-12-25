@@ -14,6 +14,7 @@
       <module fileurl="file://$PROJECT_DIR$/lightphoto/lightphoto.iml" filepath="$PROJECT_DIR$/lightphoto/lightphoto.iml" />
       <module fileurl="file://$PROJECT_DIR$/lottie/lottie.iml" filepath="$PROJECT_DIR$/lottie/lottie.iml" />
       <module fileurl="file://$PROJECT_DIR$/plugin/plugin.iml" filepath="$PROJECT_DIR$/plugin/plugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/videoplayer/videoplayer.iml" filepath="$PROJECT_DIR$/videoplayer/videoplayer.iml" />
     </modules>
   </component>
 </project>
