@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="VipCardContainerView">
+        <attr name="vcc_shadow_dx" format="dimension"/>
+        <attr name="vcc_shadow_dy" format="dimension"/>
+        <attr name="vcc_shadow_radius" format="dimension"/>
+        <attr name="vcc_shadow_color" format="color"/>
+        <attr name="vcc_corner_radius" format="dimension"/>
+        <attr name="vcc_start_color" format="color"/>
+        <attr name="vcc_end_color" format="color"/>
+        <attr name="vcc_chara_drawable" format="reference"/>
+        <attr name="vcc_mask_drawable" format="reference"/>
+        <attr name="vcc_chara_drawable_offset_end" format="dimension"/>
+        <attr name="vcc_min_content_height" format="dimension"/>
+
+        <attr name="vcc_corner_only_has_top" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="VipViewProfile">
+        <attr name="vcp_level" format="integer"/>
+        <attr name="vcp_card_start_color" format="color"/>
+        <attr name="vcp_card_end_color" format="color"/>
+        <attr name="vcp_card_shadow_color" format="color"/>
+        <attr name="vcp_card_chara_drawable" format="reference"/>
+        <attr name="vcp_header_mask_color" format="color"/>
+        <attr name="vcp_icon_color_tint" format="color"/>
+        <attr name="vcp_icon_text_tint" format="color"/>
+    </declare-styleable>
+</resources>

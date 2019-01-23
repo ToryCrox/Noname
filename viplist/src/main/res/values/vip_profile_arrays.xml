@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="vip_view_profiles" >
+        <!--vip level -->
+        <item>0</item>
+        <!--cardStartColor -->
+        <item>#E6E6E6</item>
+        <!--cardEndColor -->
+        <item>#CACACA</item>
+        <!--cardShadowColor-->
+        <item>#66C7C7C7</item>
+        <!--cardCharaDrawableRes-->
+        <item>@drawable/img_vip_card_chara_00</item>
+        <!--headerMaskColor-->
+        <item>#ff999999</item>
+        <!--iconColorTint-->
+        <item>#ADADAD</item>
+        <!--iconTextTint-->
+        <item>#333333</item>
+
+        <!--vip level -->
+        <item>1</item>
+        <!--cardStartColor -->
+        <item>#F2EEAD</item>
+        <!--cardEndColor -->
+        <item>#E1D975</item>
+        <!--cardShadowColor-->
+        <item>#66E1D975</item>
+        <!--cardCharaDrawableRes-->
+        <item>@drawable/img_vip_card_chara_01</item>
+        <!--headerMaskColor-->
+        <item>#B9B156</item>
+        <!--iconColorTint-->
+        <item>#ffd2ad1a</item>
+        <!--iconTextTint-->
+        <item>#ffc4a010</item>
+
+
+        <!--vip level -->
+        <item>2</item>
+        <!--cardStartColor -->
+        <item>#FFE5D3</item>
+        <!--cardEndColor -->
+        <item>#E7AAB5</item>
+        <!--cardShadowColor-->
+        <item>#66CEADA8</item>
+        <!--cardCharaDrawableRes-->
+        <item>@drawable/img_vip_card_chara_02</item>
+        <!--headerMaskColor-->
+        <item>#ffd09da6</item>
+        <!--iconColorTint-->
+        <item>#ffd88997</item>
+        <!--iconTextTint-->
+        <item>#ffbe717e</item>
+
+        <!--vip level -->
+        <item>3</item>
+        <!--cardStartColor -->
+        <item>#FFEF85</item>
+        <!--cardEndColor -->
+        <item>#FFB919</item>
+        <!--cardShadowColor-->
+        <item>#66DBB644</item>
+        <!--cardCharaDrawableRes-->
+        <item>@drawable/img_vip_card_chara_03</item>
+        <!--headerMaskColor-->
+        <item>#ffdda852</item>
+        <!--iconColorTint-->
+        <item>#fff5aa00</item>
+        <!--iconTextTint-->
+        <item>#ffdf9300</item>
+
+        <!--vip level -->
+        <item>4</item>
+        <!--cardStartColor -->
+        <item>#FFAF8C</item>
+        <!--cardEndColor -->
+        <item>#F04872</item>
+        <!--cardShadowColor-->
+        <item>#66F87E80</item>
+        <!--cardCharaDrawableRes-->
+        <item>@drawable/img_vip_card_chara_04</item>
+        <!--headerMaskColor-->
+        <item>#fff1898f</item>
+        <!--iconColorTint-->
+        <item>#fff04a72</item>
+        <!--iconTextTint-->
+        <item>#ffe62d5b</item>
+
+        <!--vip level -->
+        <item>5</item>
+        <!--cardStartColor -->
+        <item>#FAC2FF</item>
+        <!--cardEndColor -->
+        <item>#6C56FA</item>
+        <!--cardShadowColor-->
+        <item>#66C69AFD</item>
+        <!--cardCharaDrawableRes-->
+        <item>@drawable/img_vip_card_chara_05</item>
+        <!--headerMaskColor-->
+        <item>#ffa27ac5</item>
+        <!--iconColorTint-->
+        <item>#6C56FA</item>
+        <!--iconTextTint-->
+        <item>#ff5c45ee</item>
+
+        <!--vip level -->
+        <item>6</item>
+        <!--cardStartColor -->
+        <item>#11EFE7</item>
+        <!--cardEndColor -->
+        <item>#2782FE</item>
+        <!--cardShadowColor-->
+        <item>#6650B9ED</item>
+        <!--cardCharaDrawableRes-->
+        <item>@drawable/img_vip_card_chara_06</item>
+        <!--headerMaskColor-->
+        <item>#ff5e91d7</item>
+        <!--iconColorTint-->
+        <item>#ff1486ff</item>
+        <!--iconTextTint-->
+        <item>#ff0876eb</item>
+
+        <!--vip level -->
+        <item>7</item>
+        <!--cardStartColor -->
+        <item>#B7C9F0</item>
+        <!--cardEndColor -->
+        <item>#45639F</item>
+        <!--cardShadowColor-->
+        <item>#668093BB</item>
+        <!--cardCharaDrawableRes-->
+        <item>@drawable/img_vip_card_chara_07</item>
+        <!--headerMaskColor-->
+        <item>#ff586a90</item>
+        <!--iconColorTint-->
+        <item>#ff45639f</item>
+        <!--iconTextTint-->
+        <item>#ff7ed321</item>
+
+        <!--vip level -->
+        <item>8</item>
+        <!--cardStartColor -->
+        <item>#7394B9</item>
+        <!--cardEndColor -->
+        <item>#0A2043</item>
+        <!--cardShadowColor-->
+        <item>#6659769D</item>
+        <!--cardCharaDrawableRes-->
+        <item>@drawable/img_vip_card_chara_08</item>
+        <!--headerMaskColor-->
+        <item>#ff3f4d63</item>
+        <!--iconColorTint-->
+        <item>#ff193153</item>
+        <!--iconTextTint-->
+        <item>#ff7ed321</item>
+
+
+    </array>
+</resources>

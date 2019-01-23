@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aleaf.viplist.VipCardContainerView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/vip_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/vip_card_view_padding_h"
+    android:paddingEnd="@dimen/vip_card_view_padding_h"
+    android:paddingBottom="@dimen/vip_card_view_padding_bottom"
+    android:paddingTop="@dimen/vip_card_view_padding_top"
+
+    app:vcc_chara_drawable="@drawable/img_vip_card_chara_03"
+    app:vcc_start_color="@color/color_bg_card_vip_1_start"
+    app:vcc_end_color="@color/color_bg_card_vip_1_end"
+    app:vcc_shadow_color="@color/color_bg_card_vip_1_shadow"
+
+    app:vcc_mask_drawable="@drawable/img_vip_card_mask"
+    app:vcc_min_content_height="170dp"
+    app:vcc_shadow_dx="0dp"
+    app:vcc_shadow_dy="@dimen/vip_card_shadow_dy"
+    app:vcc_shadow_radius="@dimen/vip_card_shadow_radius"
+    app:vcc_chara_drawable_offset_end="10dp"
+    app:vcc_corner_radius="7dp">
+
+</com.aleaf.viplist.VipCardContainerView>

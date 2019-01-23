@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="corner_radius">7dp</dimen>
+    <dimen name="shadow_dy">7dp</dimen>
+    <dimen name="shadow_radius">7dp</dimen>
+
+    <dimen name="vip_card_shadow_radius">12dp</dimen>
+    <dimen name="vip_card_shadow_dy">4dp</dimen>
+    <dimen name="vip_card_view_padding_top">30dp</dimen>
+    <dimen name="vip_card_view_padding_bottom">20dp</dimen>
+    <!-- 要大于等于阴影的宽度-->
+    <dimen name="vip_card_view_padding_h">12dp</dimen>
+    <dimen name="vip_card_view_pager_padding_h">-12dp</dimen>
+</resources>

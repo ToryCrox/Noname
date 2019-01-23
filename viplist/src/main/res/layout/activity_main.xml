@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    tools:context=".MainActivity">
+
+
+    <View android:id="@+id/header_bg"
+        android:layout_width="match_parent"
+        android:layout_height="173dp"/>
+
+    <SeekBar
+        android:id="@+id/seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingStart="12dp"
+        android:paddingEnd="24dp">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:paddingStart="@dimen/vip_card_view_pager_padding_h"
+            android:paddingEnd="@dimen/vip_card_view_pager_padding_h"
+            android:overScrollMode="never"
+            android:clipChildren="false"
+            android:clipToPadding="false">
+
+        </android.support.v4.view.ViewPager>
+
+    </FrameLayout>
+
+
+    <com.aleaf.viplist.VipCardContainerView
+        android:id="@+id/vip_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="30dp"
+
+        app:vcc_chara_drawable="@drawable/img_vip_card_chara_03"
+        app:vcc_start_color="@color/color_bg_card_vip_1_start"
+        app:vcc_end_color="@color/color_bg_card_vip_1_end"
+        app:vcc_shadow_color="@color/color_bg_card_vip_1_shadow"
+
+        app:vcc_mask_drawable="@drawable/img_vip_card_mask"
+        app:vcc_min_content_height="170dp"
+        app:vcc_shadow_dx="0dp"
+        app:vcc_shadow_dy="4dp"
+        app:vcc_shadow_radius="12dp"
+        app:vcc_chara_drawable_offset_end="10dp"
+        app:vcc_corner_radius="7dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="测试"
+            android:layout_gravity="center"
+            android:textColor="@android:color/black"/>
+
+    </com.aleaf.viplist.VipCardContainerView>
+
+
+
+    <com.aleaf.viplist.VipCardContainerView
+        android:id="@+id/vip_card_view_out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="30dp"
+        app:vcc_chara_drawable="@drawable/img_vip_card_chara_03"
+        app:vcc_start_color="@color/color_bg_card_vip_1_start"
+        app:vcc_end_color="@color/color_bg_card_vip_1_end"
+
+        app:vcc_min_content_height="180dp"
+        app:vcc_chara_drawable_offset_end="10dp"
+        app:vcc_corner_radius="7dp"
+        app:vcc_corner_only_has_top="true">
+
+    </com.aleaf.viplist.VipCardContainerView>
+
+
+</LinearLayout>
