@@ -1,28 +1,30 @@
 import groovy.transform.Field
-import java.text.SimpleDateFormat
 
 def hasApp = project.plugins.hasPlugin("com.android.application")
-if(!hasApp){
+if (!hasApp) {
     return
 }
+if (!hasChannelTask && !hasTinkerPatchTask) {
+    return
+}
+
 @Field TAG = "COPYING:"
-def targetBakPath = "build/apkBackup/${new SimpleDateFormat("yyyyMMddHHmm").format(new Date())}"
 
 
-def deleteDirs(def dirs){
-    file(dirs).listFiles().each{
-        if(it.isDirectory()){
+def deleteDirs(def dirs) {
+    file(dirs).listFiles().each {
+        if (it.isDirectory()) {
             deleteDirs(it.getPath())
-        }else{
+        } else {
             it.delete()
         }
     }
     file(dirs).delete()
 }
 
-def copyTinkerBase (def targetDir) {
+def copyTinkerBase = { targetDir ->
     def target = file("${targetDir}/tinkerBase")
-    if(target.exists()){
+    if (target.exists()) {
         target.delete()
     }
     target.mkdirs()
@@ -30,115 +32,107 @@ def copyTinkerBase (def targetDir) {
     println(TAG + " copy to path: " + targetPath)
     def tinkerBakDir = file(tinkerSupport.autoBackupApkDir)
     println("$TAG find tinkerBakDir = $tinkerBakDir")
-    if(tinkerBakDir == null || !tinkerBakDir.exists() || !tinkerBakDir.listFiles()[0].exists()){
+    if (tinkerBakDir == null || !tinkerBakDir.exists() || !tinkerBakDir.listFiles()[0].exists()) {
         println("$TAG can not find tinkerBakDir")
         return
     }
     def tinkerBakPath = tinkerBakDir.listFiles()[0].getPath()
     println("$TAG tinkerBakPath = $tinkerBakPath")
 
-    copy{ from tinkerBakPath
+    copy {
+        from tinkerBakPath
         into targetPath
         include "*.*"
     }
+    target.listFiles().each {
+        if (it.getPath().endsWith(".apk")) {
+            def targetApkName = it.getParent() + "/${project.name}-base.apk"
+            println("rename apk=" + targetApkName)
+            it.renameTo(targetApkName)
+        }
+    }
+
     println("$TAG delete  tinkerBakDir")
     deleteDirs(tinkerBakDir)
 }
 
 //拷贝Patch文件
-def copyTinkerPatch(def targetDir){
+def copyTinkerPatch = { targetDir, var ->
     def target = file("$targetDir/patch")
-    if(target.exists()){
+    if (target.exists()) {
         target.delete()
     }
     def targetPath = target.getPath()
 
-    def patchDir = file("$buildDir/outputs/patch/release")
-    if(patchDir == null || !patchDir.exists() || patchDir.listFiles().length <= 0){
-        println("$TAG can not find patchDir files")
+    def patchDir = file("$buildDir/outputs/patch/${var}")
+    if (patchDir == null || !patchDir.exists() || patchDir.listFiles().length <= 0) {
+        println("$TAG can not find patchDir files patchDir=${patchDir}")
         return
     }
-    println("$TAG copy patch files to="+targetDir)
-    copy{ from patchDir.getPath()
+    println("$TAG copy patch files to=" + targetDir)
+    copy {
+        from patchDir.getPath()
         into targetPath
         include "*.*"
     }
     deleteDirs(patchDir.getPath())
 }
 
-def copyChannels(def targetDir){
+def copyChannelApks = { targetDir ->
     def target = file("$targetDir/channels")
-    if(target.exists()){
+    if (target.exists()) {
         target.delete()
     }
     target.mkdirs()
     def targetPath = target.getPath()
 
-    def channelsPath = channel.baseOutputDir.exists() ? channel.baseOutputDir.listFiles()[0].getPath() : null
-    if(channelsPath == null){
+    def channelsPath = channel != null && channel.baseOutputDir.exists() && channel.baseOutputDir.listFiles().size() > 0 ? channel.baseOutputDir.listFiles()[0].getPath() : null
+    if (channelsPath == null) {
         return
     }
     println("$TAG channelsPath = ${channelsPath}")
 
-    copy{ from channelsPath
+    copy {
+        from channelsPath
         into targetPath
         include "*.*"
     }
+    deleteDirs(channelsPath)
 }
-
-project.afterEvaluate{
-
-    def releaseTask = "assembleRelease"
-    def channelTask = "channelRelease"
-    def tinkerPatchTask = "buildTinkerPatchRelease"
-
-    def hasReleaseTask = tasks.findByName(releaseTask) != null;
-
-    if(!hasReleaseTask){
-        return
-    }
-    //判断当前执行的任务
-    def hasChannelTask = false
-    def hasTinkerPatchTask = false
-    gradle.startParameter.getTaskNames().each { taskName ->
-        if (channelTask == taskName){
-            hasChannelTask = true
-        }else if(tinkerPatchTask == taskName){
-            hasTinkerPatchTask = true
+def myTaskName = ""
+gradle.startParameter.getTaskNames().each { taskName ->
+    println("taskName.taskName=" + taskName)
+    myTaskName = taskName
+}
+println(" hasChannelTask=$hasChannelTask, hasTinkerPatchTask=$hasTinkerPatchTask")
+project.android.applicationVariants.all { variant ->
+    tasks.all { task ->
+        if (task.project.name != project.name || myTaskName != task.name
+                || !myTaskName.endsWith(variant.name.capitalize())) {
+            return
         }
-    }
-
-    println("$TAG hasTinkerPatchTask=$hasTinkerPatchTask, hasChannelTask=$hasChannelTask")
-
-    if(hasChannelTask){
-        targetBakPath = targetBakPath + "-channels"
-    }else if(hasTinkerPatchTask){
-        targetBakPath = targetBakPath + "-patch"
-    }else{
-        return
-    }
-
-    if(hasReleaseTask){
-        tasks.getByName(releaseTask) {
-            it.doLast {
+        def targetBakPath = "${project.projectDir}/apkBackup/${project.name}-${variant.versionName}" + "-${variant.versionCode}" + "-${variant.name}"
+        if (hasChannelTask) {
+            targetBakPath = targetBakPath + "-channels"
+        } else if (hasTinkerPatchTask) {
+            targetBakPath = targetBakPath + "-patch"
+        } else {
+            return
+        }
+        println("targetBakPath=" + targetBakPath + ", task.name=" + task.name)
+        if (task.name == "buildTinkerPatchRelease" || task.name == "buildTinkerPatchBeta") {
+            task.doLast {
+                copyTinkerPatch(targetBakPath, variant.name)
                 copyTinkerBase(targetBakPath)
             }
         }
-    }
-
-    if(hasTinkerPatchTask){
-        tasks.getByName(tinkerPatchTask) {
-            it.doLast {
-                copyTinkerPatch(targetBakPath)
+        if (task.name == "channelRelease" || task.name == "channelBeta") {
+            task.doLast {
+                println("targetBakPath=" + targetBakPath + ", task.name=" + it.name)
+                copyChannelApks(targetBakPath)
+                copyTinkerBase(targetBakPath)
             }
         }
-    }
 
-    if(hasChannelTask){
-        tasks.getByName(channelTask) {
-            it.doLast {
-                copyChannels(targetBakPath)
-            }
-        }
     }
 }

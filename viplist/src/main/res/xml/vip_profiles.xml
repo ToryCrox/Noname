@@ -1,4 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<Profiles xmlns:app="http://schemas.android.com/apk/res-auto">
 
-</PreferenceScreen>
+    <Profile
+        app:vcp_level="0"
+        app:vcp_card_start_color="#E6E6E6"
+        app:vcp_card_end_color="#CACACA"
+        app:vcp_card_shadow_color="#66C7C7C7"
+        app:vcp_card_chara_drawable="@drawable/img_vip_card_chara_00"
+        app:vcp_header_mask_color="#ff999999"
+        app:vcp_icon_color_tint="#ADADAD"
+        app:vcp_icon_text_tint="#333333"
+        />
+
+
+    <Profile
+        app:vcp_level="1"
+        app:vcp_card_start_color="#F2EEAD"
+        app:vcp_card_end_color="#E1D975"
+        app:vcp_card_shadow_color="#66E1D975"
+        app:vcp_card_chara_drawable="@drawable/img_vip_card_chara_01"
+        app:vcp_header_mask_color="#B9B156"
+        app:vcp_icon_color_tint="#ffd2ad1a"
+        app:vcp_icon_text_tint="#ffc4a010"
+        />
+
+
+
+    <Profile
+        app:vcp_level="2"
+        app:vcp_card_start_color="#FFE5D3"
+        app:vcp_card_end_color="#E7AAB5"
+        app:vcp_card_shadow_color="#66CEADA8"
+        app:vcp_card_chara_drawable="@drawable/img_vip_card_chara_02"
+        app:vcp_header_mask_color="#ffd09da6"
+        app:vcp_icon_color_tint="#ffd88997"
+        app:vcp_icon_text_tint="#ffbe717e"
+        />
+
+
+    <Profile
+        app:vcp_level="3"
+        app:vcp_card_start_color="#FFEF85"
+        app:vcp_card_end_color="#FFB919"
+        app:vcp_card_shadow_color="#66DBB644"
+        app:vcp_card_chara_drawable="@drawable/img_vip_card_chara_03"
+        app:vcp_header_mask_color="#ffdda852"
+        app:vcp_icon_color_tint="#fff5aa00"
+        app:vcp_icon_text_tint="#ffdf9300"
+        />
+
+</Profiles>

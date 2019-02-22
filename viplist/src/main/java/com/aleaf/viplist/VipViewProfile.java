@@ -10,14 +10,19 @@ import android.support.annotation.DrawableRes;
  */
 public class VipViewProfile {
 
+    @MappingRes(R.styleable.VipViewProfile_vcp_level)
     public int level;
     @ColorInt
+    @MappingRes(R.styleable.VipViewProfile_vcp_card_start_color)
     public int cardStartColor;
     @ColorInt
+    @MappingRes(R.styleable.VipViewProfile_vcp_card_end_color)
     public int cardEndColor;
     @ColorInt
+    @MappingRes(R.styleable.VipViewProfile_vcp_card_shadow_color)
     public int cardShadowColor;
     @DrawableRes
+    @MappingRes(R.styleable.VipViewProfile_vcp_card_chara_drawable)
     public int cardCharaDrawableRes;
 
     public int headerMaskColor;
