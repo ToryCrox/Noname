@@ -1,1 +1,1 @@
-include ':app', ':library', ':debug', ':lightphoto', ':customviewtest', ':buglytest', ':iconpacklauncher', ':launcherimport', ':lottie', ':viplist'
+include ':app', ':library', ':debug', ':lightphoto', ':customviewtest', ':buglytest', ':iconpacklauncher', ':launcherimport', ':lottie', ':viplist', ':dbdemo'

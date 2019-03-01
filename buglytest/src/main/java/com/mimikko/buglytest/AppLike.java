@@ -9,7 +9,8 @@ import com.leon.channel.helper.ChannelReaderUtil;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.beta.interfaces.BetaPatchListener;
-import com.tencent.tinker.loader.app.DefaultApplicationLike;
+import com.tencent.tinker.entry.DefaultApplicationLike;
+
 
 import java.util.Locale;
 
@@ -18,7 +19,7 @@ import java.util.Locale;
  * @date 2018/6/13
  */
 
-public class AppLike extends DefaultApplicationLike{
+public class AppLike extends DefaultApplicationLike {
 
     private static final String TAG = "AppLike";
 
@@ -67,7 +68,6 @@ public class AppLike extends DefaultApplicationLike{
         Beta.betaPatchListener = new BetaPatchListener() {
             @Override
             public void onPatchReceived(String patchFile) {
-                Beta.
                 MLog.d(TAG, "onPatchReceived patchFile="+patchFile);
             }
 

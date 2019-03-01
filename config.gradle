@@ -54,6 +54,9 @@ ext {
 
             lottie               : "com.airbnb.android:lottie:2.7.0",
 
+            greendao            : "org.greenrobot:greendao:3.2.2",
+            greendaoPlugin      : "org.greenrobot:greendao-gradle-plugin:3.2.2",
+
             //测试用
             junit               : "junit:junit:4.12",
             mockito             : "org.mockito:mockito-core:2.11.0",
