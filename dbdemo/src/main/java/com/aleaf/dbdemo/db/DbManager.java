@@ -30,7 +30,8 @@ public class DbManager {
     }
 
     private void initGreenDao(Context context) {
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context.getApplicationContext(), "aserbao.db");
+        DaoMaster.OpenHelper helper = new DaoOpenHelper(context.getApplicationContext(),
+                "aserbao.db");
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
         mSesstion = daoMaster.newSession();

@@ -35,6 +35,7 @@ dependencies {
 
 
     implementation libraries.appcompat
+    implementation libraries.design
     implementation libraries.palette
 
     testImplementation libraries.junit
