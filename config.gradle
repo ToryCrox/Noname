@@ -9,7 +9,7 @@ ext {
     //定义各版本号
     configs = [
             compileSdkVersion: 28,
-            buildToolsVersion: "28.0.1",
+            buildToolsVersion: "28.0.3",
             miniSdkVersion   : 17,
             targetSdkVersion : 28
     ]

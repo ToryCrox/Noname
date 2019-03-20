@@ -1,7 +1,11 @@
 package com.aleaf.dbdemo.bean;
 
+import android.support.annotation.NonNull;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.NotNull;
+import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.Unique;
 import org.greenrobot.greendao.annotation.Generated;
 
@@ -10,16 +14,20 @@ public class Student {
     @Id(autoincrement = true)
     Long id;
     @Unique
+    private
     int studentNo;//学号
     int age; //年龄
-    String telPhone;//手机号
+    @NotNull
+    String telPhone = "111";//手机号
+    @NotNull
     String sex; //性别
     String name;//姓名
     String address;//家庭住址
+    @Property(nameInDb = "schoolName")
     String schoolName;//学校名字
-    @Generated(hash = 2128249844)
-    public Student(Long id, int studentNo, int age, String telPhone, String sex,
-            String name, String address, String schoolName) {
+    @Generated(hash = 253765646)
+    public Student(Long id, int studentNo, int age, @NotNull String telPhone,
+            @NotNull String sex, String name, String address, String schoolName) {
         this.id = id;
         this.studentNo = studentNo;
         this.age = age;
