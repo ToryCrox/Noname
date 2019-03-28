@@ -39,6 +39,8 @@ ext {
             stetho               : "com.facebook.stetho:stetho:1.3.1",
             stethoOkhttp3        : "com.facebook.stetho:stetho-okhttp3:1.3.1",
 
+            disklrucache         : 'com.jakewharton:disklrucache:2.0.2',
+
             rxlifecycleComponents: "com.trello.rxlifecycle2:rxlifecycle-components:2.2.1",
 
             butterknife          : "com.jakewharton:butterknife:8.6.0",

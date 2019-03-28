@@ -1,1 +1,3 @@
 include ':app', ':library', ':debug', ':lightphoto', ':customviewtest', ':buglytest', ':iconpacklauncher', ':launcherimport', ':lottie', ':viplist', ':dbdemo'
+
+include ':netexe'

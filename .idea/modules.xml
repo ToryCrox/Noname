@@ -13,6 +13,7 @@
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/lightphoto/lightphoto.iml" filepath="$PROJECT_DIR$/lightphoto/lightphoto.iml" />
       <module fileurl="file://$PROJECT_DIR$/lottie/lottie.iml" filepath="$PROJECT_DIR$/lottie/lottie.iml" />
+      <module fileurl="file://$PROJECT_DIR$/netexe/netexe.iml" filepath="$PROJECT_DIR$/netexe/netexe.iml" />
       <module fileurl="file://$PROJECT_DIR$/viplist/viplist.iml" filepath="$PROJECT_DIR$/viplist/viplist.iml" />
     </modules>
   </component>

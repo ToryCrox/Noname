@@ -9,7 +9,7 @@ android {
         versionCode 1
         versionName "1.0.3"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
     buildTypes {
@@ -25,7 +25,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation libraries.multidex
     implementation libraries.appcompat
@@ -35,13 +35,14 @@ dependencies {
     implementation libraries.glide
     implementation libraries.rxjava
     implementation libraries.rxandroid
+    implementation libraries.gson
 
     implementation libraries.multitype
 
-    androidTestImplementation(libraries.espresso, {
+    /*androidTestImplementation(libraries.espresso, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testImplementation libraries.junit
+    testImplementation libraries.junit*/
 }
 
 apply from : "local_maven.gradle"

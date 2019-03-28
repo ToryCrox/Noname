@@ -1,0 +1,45 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion configs.compileSdkVersion
+
+    defaultConfig {
+        applicationId "com.tory.netexe"
+        minSdkVersion configs.miniSdkVersion
+        targetSdkVersion configs.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    implementation project(':library')
+
+    implementation libraries.appcompat
+    testImplementation libraries.junit
+    implementation libraries.stetho
+    implementation libraries.stethoOkhttp3
+    implementation libraries.constraintLayout
+
+    implementation libraries.disklrucache
+    //gson
+    implementation libraries.gson
+    implementation libraries.converterGson
+    implementation libraries.rxjava
+    implementation libraries.rxandroid
+
+    //retrofit
+    implementation libraries.retrofit
+    implementation libraries.adapterRxjava
+}
