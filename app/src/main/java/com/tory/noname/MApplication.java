@@ -1,9 +1,9 @@
 package com.tory.noname;
 
-import android.app.Application;
-
+import com.facebook.stetho.Stetho;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.tory.library.applife.AppLifeApplication;
-import com.tory.library.reflect.ReflectDebugUtil;
 import com.tory.noname.utils.L;
 import com.tory.noname.utils.SettingHelper;
 import com.tory.noname.utils.Utilities;
@@ -15,6 +15,7 @@ import com.tory.noname.utils.Utilities;
  */
 public class MApplication extends AppLifeApplication {
     private static MApplication instance;
+    private RefWatcher refWatcher;
 
     public static MApplication getInstance() {
         return instance;
@@ -24,12 +25,19 @@ public class MApplication extends AppLifeApplication {
         super.onCreate();
         instance = this;
         //chrome://inspect
-        //Stetho.initializeWithDefaults(this);
-        if(BuildConfig.DEBUG){
-            ReflectDebugUtil.reflectInitStetho(this);
-        }
+        Stetho.initializeWithDefaults(this);
+        //if(BuildConfig.DEBUG){
+        //    ReflectDebugUtil.reflectInitStetho(this);
+        //}
         Utilities.setNightMode(this, SettingHelper.getInstance(this).isNightMode());
-
+        refWatcher = setupLeakCanary();
         L.d("StethoReflection sourceDir="+getApplicationInfo().sourceDir);
+    }
+
+    private RefWatcher setupLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return RefWatcher.DISABLED;
+        }
+        return LeakCanary.install(this);
     }
 }

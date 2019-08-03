@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.miui.home.launcher.ForceTouchLayer xmlns:android="http://schemas.android.com/apk/res/android" android:id="@id/force_touch_layer" android:layout_width="match_parent" android:layout_height="match_parent">
-    <include layout="@layout/launcher_background" />
-    <com.miui.home.launcher.MinusOneScreenView android:id="@id/minus_one_layer" android:layout_width="match_parent" android:layout_height="match_parent">
-        <include layout="0x1b030000" />
-        <include layout="@layout/drag_layer" />
-    </com.miui.home.launcher.MinusOneScreenView>
-    <include layout="@layout/force_touch_contents" />
-</com.miui.home.launcher.ForceTouchLayer>

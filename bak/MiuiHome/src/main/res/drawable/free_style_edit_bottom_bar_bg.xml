@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
-        <bitmap android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:src="@drawable/free_style_edit_bottom_bar_bg_tile" android:tileMode="repeat" />
-    </item>
-    <item>
-        <nine-patch android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:src="@drawable/free_style_edit_bottom_bar_bg_base" />
-    </item>
-</layer-list>

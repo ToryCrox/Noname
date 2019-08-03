@@ -1,0 +1,53 @@
+import java.text.SimpleDateFormat
+
+static def getGitCommitCount(path) {
+    def gitCommitCount = 0
+    try{
+        gitCommitCount = Integer.parseInt('git rev-list --count HEAD'.execute([], new File(path)).text.trim())
+    } catch (Exception e){
+
+    }
+    return gitCommitCount
+}
+
+def getTotalGitCommitCount() {
+    totalCommitCount = 0
+    getGitRepos(project.rootDir.toString())
+    return totalCommitCount
+}
+
+def getGitRepos(path) {
+    def pathdir = new File(path.toString())
+    pathdir.eachDir() { dir ->
+        if (dir.getName() == ".git") {
+            totalCommitCount += getGitCommitCount(dir.getPath())
+        } else if(!dir.getName().startsWith(".")){
+            getGitRepos(dir.getPath())
+        }
+    }
+}
+
+static def getBuildTime() {
+    def df = new SimpleDateFormat("yyyyMMddHHmm")
+    return df.format(new Date())
+}
+
+def isDebugTask() {
+    gradle.startParameter.getTaskNames().each { task ->
+        if (task.contains("Debug")) {
+            return true
+        } else if (task.contains("Release")) {
+            return false
+        }
+    }
+    return false
+}
+
+ext {
+    totalCommitCount = 0
+    getGitCommitCount = this.&getGitCommitCount
+    getTotalGitCommitCount = this.&getTotalGitCommitCount
+    getGitRepos = this.&getGitRepos
+    getBuildTime = this.&getBuildTime
+    isDebugTask = this.&isDebugTask
+}

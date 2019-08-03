@@ -1,5 +1,6 @@
 package com.tory.library.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,6 +9,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RawRes;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -518,4 +520,15 @@ public class FileUtils {
         return getFileSizeFormat(isFile(file) ? file.length() : 0);
     }
 
+    public static void deleteEmptyDir(File file, boolean b) {
+
+    }
+
+    public static void clearCache(FragmentActivity activity) {
+
+    }
+
+    public static String getCacheSize(Activity activity) {
+        return null;
+    }
 }

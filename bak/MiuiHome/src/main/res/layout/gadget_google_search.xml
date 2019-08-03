@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:background="@drawable/gadget_google_search_bg" android:layout_width="match_parent" android:layout_height="wrap_content">
-    <TextView android:id="@id/google" android:layout_width="match_parent" android:layout_height="match_parent" android:drawableLeft="@drawable/gadget_google_search_google_btn" />
-    <ImageView android:layout_gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@id/voice" android:background="@drawable/gadget_google_search_voice_btn" android:layout_width="wrap_content" android:layout_height="match_parent" android:scaleType="centerInside" />
-</FrameLayout>

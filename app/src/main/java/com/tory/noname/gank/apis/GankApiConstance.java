@@ -7,5 +7,5 @@ package com.tory.noname.gank.apis;
 
 public class GankApiConstance {
 
-    public static String BASE_URL = "http://gank.io/api/data/";
+    public static String BASE_URL = "https://gank.io/api/data/";
 }

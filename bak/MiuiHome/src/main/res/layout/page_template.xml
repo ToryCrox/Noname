@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@id/page_container" android:clipChildren="false" android:layout_width="match_parent" android:layout_height="match_parent">
-    <ImageView android:id="@id/wallpaper" android:layout_width="match_parent" android:layout_height="match_parent" android:scaleType="centerCrop" />
-    <LinearLayout android:orientation="vertical" android:id="@id/click_area" android:clipChildren="false" android:clipToPadding="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="26dp" android:layout_marginTop="20dp" android:layout_marginRight="26dp" android:alpha="0.0">
-        <com.miui.home.launcher.lockwallpaper.AlphaOptimizedTextView android:textSize="@dimen/page_title_text_size" android:textColor="@color/page_title_text_color" android:id="@id/title" android:clipToPadding="false" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-        <com.miui.home.launcher.lockwallpaper.AlphaOptimizedTextView android:textSize="@dimen/page_content_text_size" android:textColor="@color/page_content_text_color" android:id="@id/content" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5dp" android:maxWidth="270dp" android:lineSpacingExtra="2dp" />
-    </LinearLayout>
-</FrameLayout>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="vertical" android:paddingTop="30dp" android:paddingBottom="30dp" android:layout_width="wrap_content" android:layout_height="wrap_content">
-    <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
-        <ImageView android:id="@id/content" android:layout_width="UNKNOWN_DATA_0x7f0b0042" android:layout_height="wrap_content" />
-        <TextView android:textSize="13sp" android:textColor="@color/icon_title_text" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@id/content_title" android:background="@color/preview_title_bg" android:layout_width="UNKNOWN_DATA_0x7f0b0042" android:layout_height="UNKNOWN_DATA_0x1b01" />
-    </FrameLayout>
-    <TextView android:textSize="14sp" android:textColor="@color/change_wallpaper_title" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@id/change_btn" android:background="@drawable/change_wallpaper_btn" android:layout_width="UNKNOWN_DATA_0x7f0b007b" android:layout_height="UNKNOWN_DATA_0x7f0b007c" android:layout_marginTop="13dp" android:text="@string/change_wallpaper" />
-</LinearLayout>

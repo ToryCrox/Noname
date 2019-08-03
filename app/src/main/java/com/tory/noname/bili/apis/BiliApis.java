@@ -10,7 +10,7 @@ public class BiliApis {
     public static final String CLIENT_PACKE_NAME = "tv.danmaku.bili";
     public static final String CLIENT_HANDLE_INTENT = "tv.danmaku.bili.ui.intent.IntentHandlerActivity";
 
-    public static String BASE_URL = "http://www.bilibili.com/";
+    public static String BASE_URL = "https://www.bilibili.com/";
     public static String BASE_URL_API = "http://api.bilibili.com/";
 
     public static String BASE_RANK_URL = BASE_URL + "index/rank/";

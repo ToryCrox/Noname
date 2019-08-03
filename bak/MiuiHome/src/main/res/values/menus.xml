@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <menu name="delete_wallpaper">res/menu/delete_wallpaper.xml</menu>
-    <menu name="gadget_edit">res/menu/gadget_edit.xml</menu>
-    <menu name="immersion">res/menu/immersion.xml</menu>
-</resources>

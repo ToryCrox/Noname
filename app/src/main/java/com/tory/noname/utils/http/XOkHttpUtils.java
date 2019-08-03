@@ -3,8 +3,11 @@ package com.tory.noname.utils.http;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.tory.library.log.LogUtils;
 import com.tory.library.utils.FileUtils;
 import com.tory.library.utils.Md5Util;
 import com.tory.library.utils.NetUtils;
@@ -19,6 +22,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -33,7 +37,7 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.internal.Util;
+import okhttp3.ResponseBody;
 import okhttp3.internal.cache.DiskLruCache;
 import okhttp3.internal.io.FileSystem;
 import okio.BufferedSource;
@@ -72,6 +76,7 @@ public class XOkHttpUtils {
                 .readTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
                 .cache(provideCache()) //设置缓存
                 .cookieJar(mCookieJar)
+                .addInterceptor(new LogInterceptor())
                 .addNetworkInterceptor(new StethoInterceptor())
                 .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR);
                 //.build();
@@ -129,6 +134,34 @@ public class XOkHttpUtils {
         }
 
     };
+
+    private static class LogInterceptor implements Interceptor {
+        @Override
+        public Response intercept(@NonNull Chain chain) throws IOException {
+            Response response = null;
+            try {
+                Request request = chain.request();
+                Log.v(TAG, "request:" + request.toString());
+                Log.v(TAG, "headers: " + request.headers().toString());
+                long t1 = System.nanoTime();
+                response = chain.proceed(chain.request());
+                long t2 = System.nanoTime();
+                Log.v(TAG, String.format(Locale.getDefault(), "Received response for %s in %.1fms%n%s",
+                        response.request().url(), (t2 - t1) / 1e6d, response.headers()));
+                ResponseBody body = response.body();
+                okhttp3.MediaType mediaType = body.contentType();
+                LogUtils.i(TAG, "contentLength:" + body.contentLength());
+                String content = body.string();
+                LogUtils.i(TAG, "response body:" + content);
+                return response.newBuilder()
+                        .body(okhttp3.ResponseBody.create(mediaType, content))
+                        .build();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+    }
 
     Map<HttpUrl, List<Cookie>> mCookieStore= new HashMap<>();
     CookieJar mCookieJar = new CookieJar() {

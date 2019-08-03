@@ -4,17 +4,18 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Noname.iml" filepath="$PROJECT_DIR$/Noname.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/buglytest/buglytest.iml" filepath="$PROJECT_DIR$/buglytest/buglytest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/customviewtest/customviewtest.iml" filepath="$PROJECT_DIR$/customviewtest/customviewtest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dbdemo/dbdemo.iml" filepath="$PROJECT_DIR$/dbdemo/dbdemo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/debug/debug.iml" filepath="$PROJECT_DIR$/debug/debug.iml" />
-      <module fileurl="file://$PROJECT_DIR$/iconpacklauncher/iconpacklauncher.iml" filepath="$PROJECT_DIR$/iconpacklauncher/iconpacklauncher.iml" />
-      <module fileurl="file://$PROJECT_DIR$/launcherimport/launcherimport.iml" filepath="$PROJECT_DIR$/launcherimport/launcherimport.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo/buglytest/buglytest.iml" filepath="$PROJECT_DIR$/demo/buglytest/buglytest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo/customviewtest/customviewtest.iml" filepath="$PROJECT_DIR$/demo/customviewtest/customviewtest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo/dbdemo/dbdemo.iml" filepath="$PROJECT_DIR$/demo/dbdemo/dbdemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo/debug/debug.iml" filepath="$PROJECT_DIR$/demo/debug/debug.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo/demo.iml" filepath="$PROJECT_DIR$/demo/demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo/iconpacklauncher/iconpacklauncher.iml" filepath="$PROJECT_DIR$/demo/iconpacklauncher/iconpacklauncher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo/launcherimport/launcherimport.iml" filepath="$PROJECT_DIR$/demo/launcherimport/launcherimport.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
-      <module fileurl="file://$PROJECT_DIR$/lightphoto/lightphoto.iml" filepath="$PROJECT_DIR$/lightphoto/lightphoto.iml" />
-      <module fileurl="file://$PROJECT_DIR$/lottie/lottie.iml" filepath="$PROJECT_DIR$/lottie/lottie.iml" />
-      <module fileurl="file://$PROJECT_DIR$/netexe/netexe.iml" filepath="$PROJECT_DIR$/netexe/netexe.iml" />
-      <module fileurl="file://$PROJECT_DIR$/viplist/viplist.iml" filepath="$PROJECT_DIR$/viplist/viplist.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo/lightphoto/lightphoto.iml" filepath="$PROJECT_DIR$/demo/lightphoto/lightphoto.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo/lottie/lottie.iml" filepath="$PROJECT_DIR$/demo/lottie/lottie.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo/netexe/netexe.iml" filepath="$PROJECT_DIR$/demo/netexe/netexe.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo/viplist/viplist.iml" filepath="$PROJECT_DIR$/demo/viplist/viplist.iml" />
     </modules>
   </component>
 </project>

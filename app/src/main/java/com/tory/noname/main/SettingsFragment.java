@@ -18,13 +18,10 @@ import com.tory.noname.utils.L;
 import com.tory.noname.utils.SettingHelper;
 import com.tory.noname.utils.Utilities;
 
-import org.reactivestreams.Subscriber;
-
 import java.io.File;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -162,7 +159,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             L.d(TAG, "目录：" + file.getAbsolutePath());
-                            FileUtils.deletEmptyDir(file, false);
+                            FileUtils.deleteEmptyDir(file, false);
 
                         }
                     }).show();
