@@ -17,7 +17,7 @@ import com.aleaf.dbdemo.db.StudentDao;
 /**
  * {@inheritDoc}
  * 
- * @see org.greenrobot.greendao.AbstractDaoSession
+ * @see AbstractDaoSession
  */
 public class DaoSession extends AbstractDaoSession {
 

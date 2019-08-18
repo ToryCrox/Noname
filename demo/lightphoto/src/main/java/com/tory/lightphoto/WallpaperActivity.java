@@ -124,7 +124,7 @@ public class WallpaperActivity extends AppCompatActivity {
         Log.d(TAG, "pickPhoto: ");
         //PhotoPickUtils.startPick().setPhotoCount(1).start(this);
         Intent i = new Intent(
-                Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(i, RESULT_LOAD_IMAGE);
     }
 
@@ -228,7 +228,7 @@ public class WallpaperActivity extends AppCompatActivity {
         strs.add("这是通过calculateDarkHints取的颜色, isLight="+isLight+", 耗时:"+(SystemClock.uptimeMillis() - t2)+"\n");
         css.add(new ForegroundColorSpan(isLight ? Color.BLACK : Color.WHITE));
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             t2 = SystemClock.uptimeMillis();
             WallpaperColors colors = null;
             colors = WallpaperColors.fromBitmap(bitmap);

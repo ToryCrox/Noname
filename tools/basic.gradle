@@ -7,11 +7,6 @@ android {
         targetSdkVersion configs.targetSdkVersion
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [ moduleName : project.getName() ]
-            }
-        }
         ndk {
             abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86'
         }

@@ -1,6 +1,7 @@
 include ':app'
 include ':library'
 
+
 include ':demo:debug'
 include ':demo:lightphoto'
 include ':demo:customviewtest'
@@ -11,3 +12,4 @@ include ':demo:lottie'
 include ':demo:viplist'
 include ':demo:dbdemo'
 include ':demo:netexe'
+include ':demo:jetpack'

@@ -1,0 +1,51 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: "$project.rootDir/tools/basic.gradle"
+
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs'
+
+android {
+
+    defaultConfig {
+        applicationId "com.tory.jetpack"
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding {
+        enabled true
+    }
+
+}
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation libraries.kotlinPlugin
+    implementation libraries.appcompatX
+    implementation libraries.constraintlayoutX
+
+    implementation libraries.navigationKtx
+    implementation libraries.navigationUiKtx
+
+
+    implementation libraries.livedataKtx
+    implementation libraries.viewmodelKtx
+    implementation libraries.lifecycleExtensions
+
+    //testImplementation 'junit:junit:4.12'
+    //androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    //androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
