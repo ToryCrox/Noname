@@ -28,7 +28,8 @@ ext {
             kotlinPlugin            : "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}",
             navigationPlugin        : "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion",
 
-            kotlinStdJdk7           : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion",
+            kotlinJdk               : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion",
+            kotlinReflect            : "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
 
             multidex                : "com.android.support:multidex:1.0.3",
             appcompat               : "com.android.support:appcompat-v7:${supportVersion}",

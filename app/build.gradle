@@ -35,6 +35,7 @@ dependencies {
 
     //okhttp
     implementation libraries.okhttp3
+    implementation libraries.okhttp3Logging
 
     //retrofit
     implementation libraries.retrofit

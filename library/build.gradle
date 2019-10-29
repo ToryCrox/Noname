@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply from: "$project.rootDir/tools/kotlin_support.gradle"
 
 android {
     compileSdkVersion configs.compileSdkVersion
@@ -31,6 +32,8 @@ dependencies {
     implementation libraries.rxandroid
     implementation libraries.gson
 
+    implementation libraries.okhttp3
+    implementation libraries.okhttp3Logging
     implementation libraries.multitype
 }
 
