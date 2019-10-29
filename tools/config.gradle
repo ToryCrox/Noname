@@ -1,6 +1,6 @@
 //定义support包的版本号
 def supportVersion = "28.0.0"
-def kotlinVersion = "1.3.31"
+def kotlinVersion = "1.3.50"
 def navigationVersion = "2.1.0-beta02"
 def lifecycleKtxVersion = "2.2.0-alpha02"
 
@@ -19,7 +19,7 @@ ext {
     javaSourceCompatibility = JavaVersion.VERSION_1_8
 
     libVersions = [
-            gradle        : "3.4.1",
+            gradle        : "3.5.1",
             supportVersion: supportVersion,
     ]
 

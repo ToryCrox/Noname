@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.util.Base64;
 import android.util.Log;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -148,6 +147,7 @@ public class AESUtils {
 					keyByteArray[i] = 0;
 				}
 			}
+
 			Cipher cipher = Cipher.getInstance(TRANSFORMATION);
 			SecretKeySpec secretKeySpec = new SecretKeySpec(keyByteArray, TYPE);
 			cipher.init(opmode, secretKeySpec, new IvParameterSpec(new byte[16]));
