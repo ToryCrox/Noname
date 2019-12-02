@@ -1,13 +1,14 @@
 package com.tory.noname.bili;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
+
+import androidx.fragment.app.Fragment;
 
 import com.tory.noname.R;
 import com.tory.noname.main.base.BaseActivity;
 import com.tory.noname.bili.bean.CategoryMeta;
 import com.tory.noname.bili.bgmlist.BgmlistFragment;
-import com.tory.noname.utils.L;
+import com.tory.noname.main.utils.L;
 
 public class CategoryHomeActivity extends BaseActivity {
 

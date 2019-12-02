@@ -3,7 +3,7 @@ package com.tory.library.applife;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.support.multidex.MultiDex;
+import androidx.multidex.MultiDex;
 
 /**
  * @author tory

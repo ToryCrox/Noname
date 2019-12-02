@@ -1,6 +1,6 @@
 package com.tory.library.log;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 public class LogUtils {

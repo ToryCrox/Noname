@@ -1,7 +1,7 @@
-package com.tory.noname.utils.glide;
+package com.tory.noname.main.utils.glide;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;

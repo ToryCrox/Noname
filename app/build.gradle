@@ -60,6 +60,9 @@ dependencies {
     implementation libraries.butterknife
     annotationProcessor libraries.butterknifeCompiler
 
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.3.6'
+
+
     testImplementation libraries.junit
 
     debugImplementation libraries.leakcanary

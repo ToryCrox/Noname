@@ -5,8 +5,8 @@ import com.tory.library.utils.FileUtils;
 import com.tory.library.utils.Md5Util;
 import com.tory.library.utils.SpHelper;
 import com.tory.noname.MApplication;
-import com.tory.noname.utils.L;
-import com.tory.noname.utils.http.XOkHttpUtils;
+import com.tory.noname.main.utils.L;
+import com.tory.noname.main.utils.http.XOkHttpUtils;
 
 import java.io.File;
 import java.io.IOException;

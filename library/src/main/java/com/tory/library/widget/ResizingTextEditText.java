@@ -18,9 +18,8 @@ package com.tory.library.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatEditText;
 import android.util.AttributeSet;
-import android.widget.EditText;
 
 import com.tory.library.R;
 import com.tory.library.utils.ViewUtil;

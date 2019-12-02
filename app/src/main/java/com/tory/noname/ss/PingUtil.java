@@ -1,6 +1,6 @@
 package com.tory.noname.ss;
 
-import com.tory.noname.utils.L;
+import com.tory.noname.main.utils.L;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.tory.noname.utils;
+package com.tory.noname.main.utils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;

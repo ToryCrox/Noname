@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Build;
 import android.renderscript.RSRuntimeException;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 
 public class BlurUtil {

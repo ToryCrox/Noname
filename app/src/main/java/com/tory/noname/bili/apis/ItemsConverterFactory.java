@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tory.library.reflect.ReflectionUtil;
-import com.tory.noname.utils.L;
+import com.tory.noname.main.utils.L;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;

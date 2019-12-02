@@ -2,8 +2,8 @@ package com.tory.noname.bili;
 
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.widget.TextViewCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.widget.TextViewCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;

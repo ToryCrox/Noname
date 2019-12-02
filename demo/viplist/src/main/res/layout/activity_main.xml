@@ -28,7 +28,7 @@
         android:paddingStart="12dp"
         android:paddingEnd="24dp">
 
-        <android.support.v4.view.ViewPager
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="250dp"
@@ -38,7 +38,7 @@
             android:clipChildren="false"
             android:clipToPadding="false">
 
-        </android.support.v4.view.ViewPager>
+        </androidx.viewpager.widget.ViewPager>
 
     </FrameLayout>
 

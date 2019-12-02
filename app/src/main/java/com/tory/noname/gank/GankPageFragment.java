@@ -2,16 +2,17 @@ package com.tory.noname.gank;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.tory.library.recycler.BaseRecyclerAdapter;
@@ -23,17 +24,15 @@ import com.tory.noname.R;
 import com.tory.noname.bili.RetrofitHelper;
 import com.tory.noname.gank.bean.GankItem;
 import com.tory.noname.main.base.BasePageFragment;
-import com.tory.noname.utils.Constance;
-import com.tory.noname.utils.L;
-import com.tory.noname.utils.Utilities;
-import com.tory.noname.utils.http.XOkHttpUtils;
+import com.tory.noname.main.utils.Constance;
+import com.tory.noname.main.utils.L;
+import com.tory.noname.main.utils.Utilities;
+import com.tory.noname.main.utils.http.XOkHttpUtils;
 
 import java.io.File;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 

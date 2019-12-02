@@ -2,11 +2,12 @@ package com.tory.noname.bili;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,9 @@ import com.tory.library.recycler.BaseRecyclerAdapter;
 import com.tory.library.recycler.BaseViewHolder;
 import com.tory.library.utils.SystemConfigUtils;
 import com.tory.noname.R;
-import com.tory.noname.bili.apis.BiliApis;
-import com.tory.noname.bili.bean.RankVideoInfo;
 import com.tory.noname.bili.bean.RankVideoItem;
 import com.tory.noname.main.base.BasePageFragment;
-import com.tory.noname.utils.L;
-import com.tory.noname.utils.Utilities;
+import com.tory.noname.main.utils.Utilities;
 
 import java.util.List;
 

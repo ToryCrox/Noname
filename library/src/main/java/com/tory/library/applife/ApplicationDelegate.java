@@ -2,7 +2,7 @@ package com.tory.library.applife;
 
 import android.app.Application;
 import android.content.res.Configuration;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.Collections;
 import java.util.List;

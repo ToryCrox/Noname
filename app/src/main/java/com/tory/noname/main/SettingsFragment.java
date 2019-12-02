@@ -6,17 +6,17 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.bumptech.glide.Glide;
 import com.tory.library.utils.FileUtils;
 import com.tory.noname.R;
 import com.tory.noname.dialog.ExpendDialog;
-import com.tory.noname.utils.L;
-import com.tory.noname.utils.SettingHelper;
-import com.tory.noname.utils.Utilities;
+import com.tory.noname.main.utils.L;
+import com.tory.noname.main.utils.SettingHelper;
+import com.tory.noname.main.utils.Utilities;
 
 import java.io.File;
 

@@ -2,11 +2,12 @@ package com.tory.noname.bili;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,23 +23,18 @@ import com.tory.library.recycler.EndlessRecyclerOnScrollListener;
 import com.tory.library.utils.SystemConfigUtils;
 import com.tory.noname.R;
 import com.tory.noname.bili.bean.CategoryMeta;
-import com.tory.noname.bili.bean.HotVideoInfo;
-import com.tory.noname.bili.bean.PartitionVideoInfo;
 import com.tory.noname.bili.bean.VideoItem;
 import com.tory.noname.main.base.BasePageFragment;
-import com.tory.noname.utils.L;
-import com.tory.noname.utils.Utilities;
-import com.tory.noname.utils.http.XOkHttpUtils;
+import com.tory.noname.main.utils.L;
+import com.tory.noname.main.utils.Utilities;
+import com.tory.noname.main.utils.http.XOkHttpUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 

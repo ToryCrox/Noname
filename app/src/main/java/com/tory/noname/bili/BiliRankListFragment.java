@@ -3,17 +3,17 @@ package com.tory.noname.bili;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.AppCompatSpinner;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.Nullable;
+import androidx.core.view.GravityCompat;
+import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +21,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import java.util.List;
+
+import com.google.android.material.tabs.TabLayout;
 import com.tory.noname.R;
 import com.tory.noname.main.base.BaseActivity;
-import com.tory.noname.utils.L;
+import com.tory.noname.main.utils.L;
 
 import java.util.Arrays;
 
@@ -146,7 +148,7 @@ public class BiliRankListFragment extends Fragment {
             }
             // ...
         });
-        spinner.setSupportBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+        ViewCompat.setBackgroundTintList(spinner, ColorStateList.valueOf(Color.WHITE));
         return spinner;
     }
 

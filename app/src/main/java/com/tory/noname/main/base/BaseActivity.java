@@ -1,23 +1,23 @@
 package com.tory.noname.main.base;
 
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.design.widget.AppBarLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.os.TraceCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.LayoutRes;
+import androidx.core.content.ContextCompat;
+import androidx.core.os.TraceCompat;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.View;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.tory.noname.R;
-import com.tory.noname.utils.L;
+import com.tory.noname.main.utils.L;
 import com.tory.library.utils.StatusBarHelper;
-import com.tory.noname.utils.Utilities;
 
 public abstract class BaseActivity extends AppCompatActivity  {
 

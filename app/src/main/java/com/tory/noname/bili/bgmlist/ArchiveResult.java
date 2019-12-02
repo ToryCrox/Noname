@@ -1,6 +1,6 @@
 package com.tory.noname.bili.bgmlist;
 
-import com.tory.noname.utils.L;
+import com.tory.noname.main.utils.L;
 
 import java.util.Collections;
 import java.util.Comparator;

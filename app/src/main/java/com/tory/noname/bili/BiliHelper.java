@@ -13,7 +13,7 @@ import com.tory.noname.R;
 import com.tory.noname.bili.apis.BiliApis;
 import com.tory.noname.bili.bean.CategoryMeta;
 import com.tory.library.utils.FileUtils;
-import com.tory.noname.utils.L;
+import com.tory.noname.main.utils.L;
 import com.tory.library.utils.Md5Util;
 
 import java.io.InputStream;

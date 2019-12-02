@@ -1,7 +1,9 @@
 package com.tory.noname.main.base;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+
+import androidx.fragment.app.Fragment;
+
 
 /**
  * from : http://www.jianshu.com/p/c5d29a0c3f4c

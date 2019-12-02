@@ -1,4 +1,4 @@
-package com.tory.noname.utils.http;
+package com.tory.noname.main.utils.http;
 
 import java.util.HashMap;
 import java.util.Map;

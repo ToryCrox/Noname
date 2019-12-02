@@ -4,16 +4,17 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.CallSuper;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.annotation.CallSuper;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.tory.noname.R;
-import com.tory.noname.utils.L;
-import com.tory.noname.utils.Utilities;
+import com.tory.noname.main.utils.L;
+import com.tory.noname.main.utils.Utilities;
 
 /**
  * @Author: Tory

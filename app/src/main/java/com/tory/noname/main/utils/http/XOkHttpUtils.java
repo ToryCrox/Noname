@@ -1,9 +1,9 @@
-package com.tory.noname.utils.http;
+package com.tory.noname.main.utils.http;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
@@ -12,7 +12,7 @@ import com.tory.library.utils.FileUtils;
 import com.tory.library.utils.Md5Util;
 import com.tory.library.utils.NetUtils;
 import com.tory.noname.MApplication;
-import com.tory.noname.utils.L;
+import com.tory.noname.main.utils.L;
 
 import java.io.File;
 import java.io.FilterInputStream;

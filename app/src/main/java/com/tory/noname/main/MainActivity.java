@@ -5,25 +5,36 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.MenuItem;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.navigation.NavigationView;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.tory.library.base.WeekHandler;
+import com.tory.library.utils.DensityUtils;
 import com.tory.noname.R;
 import com.tory.noname.bili.PartitionListFragment;
 import com.tory.noname.gank.GankListFragment;
 import com.tory.noname.main.base.BaseActivity;
+import com.tory.noname.main.utils.GlideEngine;
+import com.tory.noname.main.utils.L;
+import com.tory.noname.main.utils.SettingHelper;
+import com.tory.noname.main.utils.Utilities;
 import com.tory.noname.ss.SsListFragment;
-import com.tory.noname.utils.L;
-import com.tory.noname.utils.SettingHelper;
-import com.tory.noname.utils.Utilities;
+
+import java.util.List;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -86,7 +97,17 @@ public class MainActivity extends BaseActivity
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
-
+        mNavigationView.getHeaderView(0).findViewById(R.id.avatar).setOnClickListener(v -> {
+            PictureSelector.create(MainActivity.this)
+                    .openGallery(PictureMimeType.ofImage())
+                    .isCamera(false)
+                    .loadImageEngine(GlideEngine.createGlideEngine())
+                    .enableCrop(true)
+                    .cropWH(DensityUtils.getScreenW(this), DensityUtils.getScreenH(this))
+                    .rotateEnabled(false)
+                    .freeStyleCropEnabled(true)
+                    .forResult(PictureConfig.CHOOSE_REQUEST);
+        });
     }
 
     @Override
@@ -218,5 +239,34 @@ public class MainActivity extends BaseActivity
 
         Intent intent = new Intent(this,cls);
         startActivity(intent);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PictureConfig.CHOOSE_REQUEST:
+                    // 图片选择结果回调
+                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+                    // 例如 LocalMedia 里面返回五种path
+                    // 1.media.getPath(); 为原图path
+                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
+                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
+                    // 4.media.getOriginalPath()); media.isOriginal());为true时此字段才有值
+                    // 5.media.getAndroidQToPath();为Android Q版本特有返回的字段，此字段有值就用来做上传使用
+                    // 如果同时开启裁剪和压缩，则取压缩路径为准因为是先裁剪后压缩
+                    for (LocalMedia media : selectList) {
+                        Log.i(TAG, "压缩::" + media.getCompressPath());
+                        Log.i(TAG, "原图::" + media.getPath());
+                        Log.i(TAG, "裁剪::" + media.getCutPath());
+                        Log.i(TAG, "是否开启原图::" + media.isOriginal());
+                        Log.i(TAG, "原图路径::" + media.getOriginalPath());
+                        Log.i(TAG, "Android Q 特有Path::" + media.getAndroidQToPath());
+                    }
+                    break;
+            }
+        }
     }
 }

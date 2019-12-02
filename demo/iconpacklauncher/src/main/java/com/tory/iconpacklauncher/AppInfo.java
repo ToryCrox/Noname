@@ -2,7 +2,7 @@ package com.tory.iconpacklauncher;
 
 import android.content.ComponentName;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public class AppInfo implements Comparable {
     String name;

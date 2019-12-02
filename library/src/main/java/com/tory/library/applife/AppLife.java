@@ -2,7 +2,7 @@ package com.tory.library.applife;
 
 import android.app.Application;
 import android.content.res.Configuration;
-import android.support.annotation.CallSuper;
+import androidx.annotation.CallSuper;
 
 /**
  * @author tory

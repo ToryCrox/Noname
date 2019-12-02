@@ -1,7 +1,7 @@
 package com.aleaf.viplist;
 
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
 
 /**
  * @author tory

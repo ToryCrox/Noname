@@ -1,7 +1,7 @@
-package com.tory.noname.utils;
+package com.tory.noname.main.utils;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatDelegate;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.tory.library.utils.SpHelper;
 

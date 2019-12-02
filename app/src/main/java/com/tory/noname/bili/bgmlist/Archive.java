@@ -1,6 +1,6 @@
 package com.tory.noname.bili.bgmlist;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * @Author: tory

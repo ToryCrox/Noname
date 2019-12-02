@@ -1,8 +1,8 @@
 package com.tory.noname.bili.bgmlist;
 
 import com.alibaba.fastjson.JSONObject;
-import com.tory.noname.utils.L;
-import com.tory.noname.utils.http.XOkHttpUtils;
+import com.tory.noname.main.utils.L;
+import com.tory.noname.main.utils.http.XOkHttpUtils;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;

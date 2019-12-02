@@ -7,7 +7,7 @@ import com.tory.noname.bili.apis.FastJsonConverterFactory;
 import com.tory.noname.bili.apis.RankService;
 import com.tory.noname.gank.apis.GankApiConstance;
 import com.tory.noname.gank.apis.GankApiService;
-import com.tory.noname.utils.http.XOkHttpUtils;
+import com.tory.noname.main.utils.http.XOkHttpUtils;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
