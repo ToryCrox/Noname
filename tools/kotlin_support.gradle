@@ -5,4 +5,5 @@ apply plugin: 'kotlin-kapt'
 dependencies{
     implementation libraries.kotlinJdk
     implementation libraries.kotlinReflect
+    implementation libraries.androidxKtx
 }

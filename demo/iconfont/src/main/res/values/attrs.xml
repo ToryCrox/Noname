@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DuIconsTextView">
+        <attr name="itv_icon" format="string"/>
+        <attr name="itv_iconSize" format="dimension"/>
+        <attr name="itv_iconColor" format="color"/>
+        <attr name="itv_iconPadding" format="dimension"/>
+        <attr name="itv_iconDirection" format="enum">
+            <enum name="left" value="0"/>
+            <enum name="top" value="1"/>
+            <enum name="right" value="2"/>
+            <enum name="bottom" value="3"/>
+        </attr>
+    </declare-styleable>
+</resources>
