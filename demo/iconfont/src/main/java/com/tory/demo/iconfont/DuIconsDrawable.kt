@@ -18,8 +18,7 @@ class DuIconsDrawable(val context: Context,
     private val iconPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     init {
-        val iconFont = sIconFont ?: Typeface.createFromAsset(context.assets, "iconfont.ttf")
-        iconPaint.typeface = iconFont
+        iconPaint.typeface = getIconFont(context)
         iconPaint.textAlign = Paint.Align.LEFT
 
         iconPaint.textSize = iconSize
@@ -35,11 +34,14 @@ class DuIconsDrawable(val context: Context,
         return (fm.bottom - fm.top).roundToInt()
     }
 
-    private fun updateColorTint(){
-        tintColor?.let {
-            iconPaint.color = it.getColorForState(state, it.defaultColor)
+    private fun updateColorTint(): Boolean{
+        val usedColor = tintColor?.let {
+             it.getColorForState(state, it.defaultColor)
         } ?: run{
-            iconPaint.color = Color.BLACK
+            Color.BLACK
+        }
+        return (iconPaint.color != usedColor).also {
+            iconPaint.color = usedColor
         }
     }
 
@@ -49,9 +51,13 @@ class DuIconsDrawable(val context: Context,
         updateColorTint()
     }
 
+    /**
+     * 标记为true才能有状态变化
+     */
+    override fun isStateful(): Boolean = true
+
     override fun onStateChange(state: IntArray?): Boolean {
-        updateColorTint()
-        return super.onStateChange(state)
+        return updateColorTint()
     }
 
     override fun draw(canvas: Canvas) {
@@ -70,5 +76,9 @@ class DuIconsDrawable(val context: Context,
 
     companion object{
         var sIconFont: Typeface?= null
+
+        fun getIconFont(context: Context): Typeface{
+            return sIconFont ?: Typeface.createFromAsset(context.assets, "iconfont.ttf")
+        }
     }
 }

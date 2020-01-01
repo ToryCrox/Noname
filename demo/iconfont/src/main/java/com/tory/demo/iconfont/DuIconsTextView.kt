@@ -1,7 +1,9 @@
 package com.tory.demo.iconfont
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.util.AttributeSet
+import android.util.TypedValue
 import androidx.appcompat.widget.AppCompatTextView
 
 class DuIconsTextView @JvmOverloads constructor(
@@ -11,17 +13,32 @@ class DuIconsTextView @JvmOverloads constructor(
     private val iconText: String
     private val iconDirection: Int
     private var iconPadding = 0
+    private val iconSize: Float
+    private val iconColor: ColorStateList
 
+    private val iconOnly: Boolean
 
     init {
         val array = context.obtainStyledAttributes(attrs, R.styleable.DuIconsTextView)
+        iconOnly = array.getBoolean(R.styleable.DuIconsTextView_itv_iconOnly, text.isEmpty())
         iconPadding = array.getDimensionPixelSize(R.styleable.DuIconsTextView_itv_iconPadding, 0)
-        val iconColor = array.getColorStateList(R.styleable.DuIconsTextView_itv_iconColor) ?: textColors
-        val iconSize = array.getDimension(R.styleable.DuIconsTextView_itv_iconSize, textSize)
+        iconColor = array.getColorStateList(R.styleable.DuIconsTextView_itv_iconColor) ?: textColors
+        iconSize = array.getDimension(R.styleable.DuIconsTextView_itv_iconSize, textSize)
         iconDirection = array.getInt(R.styleable.DuIconsTextView_itv_iconDirection, DIRECTION_LEFT)
         iconText = array.getString(R.styleable.DuIconsTextView_itv_icon) ?: ""
         array.recycle()
 
+        if (!iconOnly){
+            setIconDrawable()
+        } else {
+            typeface = DuIconsDrawable.getIconFont(context)
+            text = iconText
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, iconSize)
+            setTextColor(iconColor)
+        }
+    }
+
+    private fun setIconDrawable(){
         val icon = DuIconsDrawable(context, iconText, iconSize, iconColor)
         icon.setBounds(0, 0, icon.intrinsicWidth, icon.intrinsicHeight)
         when(iconDirection){
@@ -33,6 +50,10 @@ class DuIconsTextView @JvmOverloads constructor(
         compoundDrawablePadding = iconPadding
     }
 
+
+    override fun drawableStateChanged() {
+        super.drawableStateChanged()
+    }
 
     override fun getMinimumHeight(): Int {
         return super.getMinimumHeight()

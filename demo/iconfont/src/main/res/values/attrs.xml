@@ -5,6 +5,7 @@
         <attr name="itv_iconSize" format="dimension"/>
         <attr name="itv_iconColor" format="color"/>
         <attr name="itv_iconPadding" format="dimension"/>
+        <attr name="itv_iconOnly" format="boolean"/>
         <attr name="itv_iconDirection" format="enum">
             <enum name="left" value="0"/>
             <enum name="top" value="1"/>
