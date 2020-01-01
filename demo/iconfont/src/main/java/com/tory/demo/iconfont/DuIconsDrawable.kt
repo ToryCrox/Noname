@@ -14,15 +14,27 @@ import kotlin.math.roundToInt
 class DuIconsDrawable(val context: Context,
                       val iconText: String,
                       var iconSize: Float,
-                      var tintColor: ColorStateList?): Drawable() {
+                      val iconSelectedText: String? = null,
+                      var tintColor: ColorStateList? = null): Drawable() {
     private val iconPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+    private var isSelected = false
 
     init {
         iconPaint.typeface = getIconFont(context)
         iconPaint.textAlign = Paint.Align.LEFT
 
         iconPaint.textSize = iconSize
+
         updateColorTint()
+        updateSelectedState()
+    }
+
+    private fun updateSelectedState(): Boolean {
+        val newSelectedState = android.R.attr.state_selected in state
+        return (isSelected != newSelectedState && iconSelectedText != null).also {
+            isSelected = newSelectedState
+        }
     }
 
     override fun getIntrinsicWidth(): Int {
@@ -57,13 +69,16 @@ class DuIconsDrawable(val context: Context,
     override fun isStateful(): Boolean = true
 
     override fun onStateChange(state: IntArray?): Boolean {
-        return updateColorTint()
+        val b1 = updateColorTint()
+        val b2 = updateSelectedState()
+        return b1 || b2
     }
 
     override fun draw(canvas: Canvas) {
+        val drawText = if (isSelected && iconSelectedText != null) iconSelectedText else iconText
         val iconX = bounds.left.toFloat()
         val iconY = bounds.bottom - iconPaint.fontMetrics.bottom
-        canvas.drawText(iconText, iconX, iconY, iconPaint)
+        canvas.drawText(drawText, iconX, iconY, iconPaint)
     }
 
     override fun setAlpha(alpha: Int) {

@@ -11,6 +11,7 @@ class DuIconsTextView @JvmOverloads constructor(
 ) : AppCompatTextView(context, attrs, defStyleAttr) {
 
     private val iconText: String
+    private val iconSelectedText: String?
     private val iconDirection: Int
     private var iconPadding = 0
     private val iconSize: Float
@@ -26,20 +27,21 @@ class DuIconsTextView @JvmOverloads constructor(
         iconSize = array.getDimension(R.styleable.DuIconsTextView_itv_iconSize, textSize)
         iconDirection = array.getInt(R.styleable.DuIconsTextView_itv_iconDirection, DIRECTION_LEFT)
         iconText = array.getString(R.styleable.DuIconsTextView_itv_icon) ?: ""
+        iconSelectedText  = array.getString(R.styleable.DuIconsTextView_itv_iconSelected)
         array.recycle()
 
         if (!iconOnly){
             setIconDrawable()
         } else {
             typeface = DuIconsDrawable.getIconFont(context)
-            text = iconText
+            text = if (isSelected && iconSelectedText != null) iconSelectedText else iconText
             setTextSize(TypedValue.COMPLEX_UNIT_PX, iconSize)
             setTextColor(iconColor)
         }
     }
 
     private fun setIconDrawable(){
-        val icon = DuIconsDrawable(context, iconText, iconSize, iconColor)
+        val icon = DuIconsDrawable(context, iconText, iconSize, iconSelectedText, iconColor)
         icon.setBounds(0, 0, icon.intrinsicWidth, icon.intrinsicHeight)
         when(iconDirection){
             DIRECTION_TOP -> setCompoundDrawables(null, icon , null, null)
@@ -50,13 +52,11 @@ class DuIconsTextView @JvmOverloads constructor(
         compoundDrawablePadding = iconPadding
     }
 
-
-    override fun drawableStateChanged() {
-        super.drawableStateChanged()
-    }
-
-    override fun getMinimumHeight(): Int {
-        return super.getMinimumHeight()
+    override fun dispatchSetSelected(selected: Boolean) {
+        super.dispatchSetSelected(selected)
+        if (iconOnly){
+            text = if (iconSelectedText != null && selected) iconSelectedText else iconText
+        }
     }
 
 

@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="DuIconsTextView">
         <attr name="itv_icon" format="string"/>
+        <attr name="itv_iconSelected" format="string"/>
         <attr name="itv_iconSize" format="dimension"/>
         <attr name="itv_iconColor" format="color"/>
         <attr name="itv_iconPadding" format="dimension"/>
