@@ -15,7 +15,9 @@ class DuIconsDrawable(val context: Context,
                       val iconText: String,
                       var iconSize: Float,
                       val iconSelectedText: String? = null,
-                      var tintColor: ColorStateList? = null): Drawable() {
+                      var tintColor: ColorStateList? = null,
+                      private val iconPadding: Rect = Rect()
+): Drawable() {
     private val iconPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private var isSelected = false
@@ -38,12 +40,12 @@ class DuIconsDrawable(val context: Context,
     }
 
     override fun getIntrinsicWidth(): Int {
-        return iconPaint.measureText(iconText).roundToInt()
+        return iconPaint.measureText(iconText).roundToInt() + iconPadding.left + iconPadding.right
     }
 
     override fun getIntrinsicHeight(): Int {
         val fm = iconPaint.fontMetrics
-        return (fm.bottom - fm.top).roundToInt()
+        return (fm.bottom - fm.top).roundToInt() + iconPadding.top + iconPadding.bottom
     }
 
     private fun updateColorTint(): Boolean{
@@ -76,8 +78,8 @@ class DuIconsDrawable(val context: Context,
 
     override fun draw(canvas: Canvas) {
         val drawText = if (isSelected && iconSelectedText != null) iconSelectedText else iconText
-        val iconX = bounds.left.toFloat()
-        val iconY = bounds.bottom - iconPaint.fontMetrics.bottom
+        val iconX = bounds.left.toFloat() + iconPadding.left
+        val iconY = -iconPaint.fontMetrics.top + iconPadding.top
         canvas.drawText(drawText, iconX, iconY, iconPaint)
     }
 
