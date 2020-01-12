@@ -21,5 +21,6 @@ dependencies{
     implementation libraries.design
     implementation libraries.recyclerview
     implementation libraries.constraintLayout
+    implementation libraries.dynamicanimation
 }
 
