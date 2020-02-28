@@ -35,6 +35,8 @@ dependencies {
     implementation libraries.okhttp3
     implementation libraries.okhttp3Logging
     implementation libraries.multitype
+
+    api 'com.tencent.tbs.tbssdk:sdk:43697'
 }
 
 apply from : "local_maven.gradle"

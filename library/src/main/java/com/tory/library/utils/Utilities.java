@@ -1,4 +1,4 @@
-package com.tory.noname.main.utils;
+package com.tory.library.utils;
 
 import android.app.Activity;
 import android.content.ClipboardManager;
@@ -17,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.View;
 
+import com.tory.library.log.LogUtils;
 import com.tory.noname.R;
 
 import java.lang.ref.WeakReference;
@@ -70,7 +71,7 @@ public class Utilities {
         int mode = night ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
         AppCompatDelegate.setDefaultNightMode(mode);
         if (modeChange) {
-            L.d("DefaultNightMode not change nightMode:" + nowmode);
+            LogUtils.d("setNightMode","DefaultNightMode not change nightMode:" + nowmode);
             return;
         }
         SettingHelper.getInstance(context).setNightMode(night);

@@ -20,7 +20,7 @@ import com.tory.library.utils.SystemConfigUtils;
 import com.tory.noname.R;
 import com.tory.noname.bili.bean.RankVideoItem;
 import com.tory.noname.main.base.BasePageFragment;
-import com.tory.noname.main.utils.Utilities;
+import com.tory.library.utils.Utilities;
 
 import java.util.List;
 

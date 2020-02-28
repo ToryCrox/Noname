@@ -26,7 +26,7 @@ import com.tory.noname.bili.bean.CategoryMeta;
 import com.tory.noname.bili.bean.VideoItem;
 import com.tory.noname.main.base.BasePageFragment;
 import com.tory.noname.main.utils.L;
-import com.tory.noname.main.utils.Utilities;
+import com.tory.library.utils.Utilities;
 import com.tory.noname.main.utils.http.XOkHttpUtils;
 
 import java.util.ArrayList;

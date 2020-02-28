@@ -26,7 +26,7 @@ import com.tory.noname.gank.bean.GankItem;
 import com.tory.noname.main.base.BasePageFragment;
 import com.tory.noname.main.utils.Constance;
 import com.tory.noname.main.utils.L;
-import com.tory.noname.main.utils.Utilities;
+import com.tory.library.utils.Utilities;
 import com.tory.noname.main.utils.http.XOkHttpUtils;
 
 import java.io.File;

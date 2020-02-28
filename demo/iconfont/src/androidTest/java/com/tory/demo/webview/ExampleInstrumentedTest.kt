@@ -1,4 +1,4 @@
-package com.tory.demo.iconfont
+package com.tory.demo.webview
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

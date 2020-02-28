@@ -15,8 +15,8 @@ import com.tory.library.utils.FileUtils;
 import com.tory.noname.R;
 import com.tory.noname.dialog.ExpendDialog;
 import com.tory.noname.main.utils.L;
-import com.tory.noname.main.utils.SettingHelper;
-import com.tory.noname.main.utils.Utilities;
+import com.tory.library.utils.SettingHelper;
+import com.tory.library.utils.Utilities;
 
 import java.io.File;
 

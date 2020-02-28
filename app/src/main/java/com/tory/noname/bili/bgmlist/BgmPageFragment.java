@@ -19,7 +19,7 @@ import com.tory.noname.R;
 import com.tory.noname.bili.BiliHelper;
 import com.tory.noname.main.base.BasePageFragment;
 import com.tory.noname.main.utils.L;
-import com.tory.noname.main.utils.Utilities;
+import com.tory.library.utils.Utilities;
 
 import java.util.ArrayList;
 import java.util.Collections;

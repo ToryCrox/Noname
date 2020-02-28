@@ -1,20 +1,19 @@
-package com.tory.noname.main.base;
+package com.tory.library.base;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import androidx.annotation.CallSuper;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import androidx.annotation.CallSuper;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.tory.library.R;
 import com.tory.library.log.LogUtils;
-import com.tory.noname.R;
-import com.tory.noname.main.utils.L;
 import com.tory.library.utils.Utilities;
 
 /**
@@ -109,15 +108,12 @@ public abstract class BaseWebViewActivity<V extends View> extends BaseActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_open_in_brower:
-                Utilities.openInBrowser(this,getWebUrl());
-                break;
-            case R.id.action_url_copy:
-                Utilities.copyToClipboar(this,getWebUrl());
-                break;
-            case R.id.action_share:
-                break;
+        if (item.getItemId() == R.id.action_open_in_brower){
+            Utilities.openInBrowser(this,getWebUrl());
+        } else if (item.getItemId() == R.id.action_url_copy){
+            Utilities.copyToClipboar(this,getWebUrl());
+        } else if (item.getItemId() == R.id.action_share){
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -140,7 +136,7 @@ public abstract class BaseWebViewActivity<V extends View> extends BaseActivity{
             context.startActivity(intent);
             return true;
         } catch (Exception e) {
-            L.e(TAG, "open url error:" + url);
+            LogUtils.e(TAG, "open url error:" + url, e);
             return false;
         }
     }

@@ -7,4 +7,9 @@
     <string name="charge_no_data_tips">没有更多数据</string>
     <string name="upper_load_failed_with_click">加载失败,请点击重新尝试</string>
     <string name="load_failed">加载失败</string>
+
+
+    <string name="menu_url_copy">复制链接</string>
+    <string name="menu_open_in_brower">在浏览器中打开</string>
+    <string name="menu_share">分享</string>
 </resources>

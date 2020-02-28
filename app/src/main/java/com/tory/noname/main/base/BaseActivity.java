@@ -55,12 +55,7 @@ public abstract class BaseActivity extends AppCompatActivity  {
     //监听toolbar左上角后退按钮
     public void setToolbarBackpress() {
         if(mToolbar!=null){
-            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onBackPressed();
-                }
-            });
+            mToolbar.setNavigationOnClickListener(v -> onBackPressed());
         }
 
     }

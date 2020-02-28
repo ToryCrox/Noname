@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".main.WebViewActivity">
+
+    <item
+        android:id="@+id/action_url_copy"
+        android:icon="@drawable/ic_content_copy_black_24dp"
+        android:title="@string/menu_url_copy"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_open_in_brower"
+        android:icon="@drawable/ic_open_in_browser_black_24dp"
+        android:title="@string/menu_open_in_brower"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_share"
+        android:icon="@drawable/ic_open_in_browser_black_24dp"
+        android:title="@string/menu_share"
+        app:showAsAction="never"/>
+</menu>

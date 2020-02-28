@@ -5,8 +5,8 @@ import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.tory.library.applife.AppLifeApplication;
 import com.tory.noname.main.utils.L;
-import com.tory.noname.main.utils.SettingHelper;
-import com.tory.noname.main.utils.Utilities;
+import com.tory.library.utils.SettingHelper;
+import com.tory.library.utils.Utilities;
 
 /**
  * @Author: Tory

@@ -1,9 +1,7 @@
-package com.tory.noname.main.utils;
+package com.tory.library.utils;
 
 import android.content.Context;
 import androidx.appcompat.app.AppCompatDelegate;
-
-import com.tory.library.utils.SpHelper;
 
 /**
  * @Author: Tory

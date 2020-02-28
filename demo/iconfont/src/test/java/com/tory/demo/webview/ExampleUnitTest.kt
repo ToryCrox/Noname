@@ -1,4 +1,4 @@
-package com.tory.demo.iconfont
+package com.tory.demo.webview
 
 import org.junit.Test
 

@@ -30,8 +30,8 @@ import com.tory.noname.gank.GankListFragment;
 import com.tory.noname.main.base.BaseActivity;
 import com.tory.noname.main.utils.GlideEngine;
 import com.tory.noname.main.utils.L;
-import com.tory.noname.main.utils.SettingHelper;
-import com.tory.noname.main.utils.Utilities;
+import com.tory.library.utils.SettingHelper;
+import com.tory.library.utils.Utilities;
 import com.tory.noname.ss.SsListFragment;
 
 import java.util.List;
