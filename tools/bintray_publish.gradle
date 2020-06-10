@@ -3,7 +3,7 @@ apply from: "$project.rootDir/config.gradle"
 
 
 publish {
-    // 读取 local.properties 中配置
+    // 读取 local.properties 中配置F
     Properties properties = new Properties()
     File localPropertiesFile = rootProject.file("local.properties")
     if (localPropertiesFile.exists()) {

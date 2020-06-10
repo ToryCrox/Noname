@@ -20,11 +20,12 @@ buildscript {
         classpath "com.android.tools.build:gradle:${libVersions.gradle}"
         classpath "com.leon.channel:plugin:2.0.1"
         classpath "com.tencent.bugly:tinker-support:1.1.5"
-        classpath libraries.greendaoPlugin // add plugin
+        //classpath libraries.greendaoPlugin // add plugin
 
         classpath libraries.navigationPlugin
         classpath libraries.kotlinPlugin
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" }
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
 
     gradle.taskGraph.whenReady {
         tasks.each { task ->

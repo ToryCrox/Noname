@@ -7,3 +7,8 @@ dependencies{
     implementation libraries.kotlinReflect
     implementation libraries.androidxKtx
 }
+
+androidExtensions {
+    experimental = true
+}
+
