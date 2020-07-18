@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MSlidingTabLayout">
+        <attr name="tab_textSize" format="dimension"/>
+        <attr name="tab_textActiveSize" format="dimension"/>
+        <attr name="tab_textColor" format="color"/>
+        <attr name="tab_textActiveColor" format="color"/>
+        <attr name="tab_paddingStart" format="dimension"/>
+        <attr name="tab_paddingEnd" format="dimension"/>
+        <attr name="tab_paddingTop" format="dimension"/>
+        <attr name="tab_paddingBottom" format="dimension"/>
+        <attr name="tab_background" format="reference"/>
+        <attr name="tab_indicatorColor" format="color"/>
+        <attr name="tab_indicatorFitWidth" format="boolean"/>
+        <attr name="tab_indicatorWidth" format="dimension"/>
+        <attr name="tab_indicatorHeight" format="dimension"/>
+    </declare-styleable>
+</resources>

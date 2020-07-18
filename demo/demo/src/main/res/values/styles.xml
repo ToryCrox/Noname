@@ -1,0 +1,29 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+    <style name="DefaultSlidTabLayout">
+        <item name="tab_textSize">14dp</item>
+        <item name="tab_textActiveSize">18dp</item>
+        <item name="tab_textColor">#ff14151a</item>
+        <item name="tab_textActiveColor">#ff14151a</item>
+        <item name="tab_background">?attr/selectableItemBackground</item>
+        <item name="tab_indicatorFitWidth">true</item>
+        <item name="tab_paddingStart">10dp</item>
+        <item name="tab_paddingEnd">10dp</item>
+        <item name="tab_paddingTop">8dp</item>
+        <item name="tab_paddingBottom">8dp</item>
+
+        <item name="tab_indicatorColor">#ff16a5af</item>
+        <item name="tab_indicatorWidth">30dp</item>
+        <item name="tab_indicatorHeight">3dp</item>
+
+    </style>
+</resources>
