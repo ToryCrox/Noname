@@ -33,6 +33,7 @@ dependencies {
     implementation libraries.recyclerview
     implementation libraries.gson
     implementation libraries.fastjson
+    implementation libraries.vlayout
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

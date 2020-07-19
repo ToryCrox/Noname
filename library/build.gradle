@@ -27,6 +27,7 @@ dependencies {
     implementation libraries.design
     implementation libraries.preference
     implementation libraries.palette
+    implementation libraries.swiperefreshlayout
     implementation libraries.glide
     implementation libraries.rxjava
     implementation libraries.rxandroid

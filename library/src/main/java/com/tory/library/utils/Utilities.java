@@ -10,15 +10,15 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.view.View;
-
+import com.tory.library.R;
 import com.tory.library.log.LogUtils;
-import com.tory.noname.R;
 
 import java.lang.ref.WeakReference;
 

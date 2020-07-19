@@ -152,9 +152,9 @@ object NetUtils {
 
     fun getNetworkTypeName(context: Context): String {
         val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        var networkInfo: NetworkInfo
+        val networkInfo: NetworkInfo? = manager.activeNetworkInfo
         var type = NETWORK_TYPE_DISCONNECT
-        if (manager == null || manager.activeNetworkInfo.also { networkInfo = it } == null) {
+        if (networkInfo == null) {
             return type
         }
         if (networkInfo.isConnected) {

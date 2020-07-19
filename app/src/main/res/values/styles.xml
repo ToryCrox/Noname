@@ -51,10 +51,7 @@
     <style name="AppTheme.NoActionBar.Main">
     </style>
 
-    <style name="WindowAnimationFadeInOut">
-        <item name="@android:windowEnterAnimation">@anim/fade_in</item>
-        <item name="@android:windowExitAnimation">@anim/fade_out</item>
-    </style>
+
 
     <style name="AppTheme.AppDialogThemeAlert" parent="@style/Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="colorAccent">@color/colorAccent</item>

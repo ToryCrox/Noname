@@ -10,8 +10,8 @@
 
 
     <style name="DefaultSlidTabLayout">
-        <item name="tab_textSize">14dp</item>
-        <item name="tab_textActiveSize">18dp</item>
+        <item name="tab_textSize">18dp</item>
+        <item name="tab_textActiveSize">22dp</item>
         <item name="tab_textColor">#ff14151a</item>
         <item name="tab_textActiveColor">#ff14151a</item>
         <item name="tab_background">?attr/selectableItemBackground</item>

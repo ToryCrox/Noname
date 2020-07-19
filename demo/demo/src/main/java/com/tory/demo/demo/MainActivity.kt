@@ -35,8 +35,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val pages = arrayOf("推荐", "球鞋", "数码", "手表", "服装")
+        val pages = arrayOf("推荐", "球鞋", "数码", "手表", "服装", "推荐", "球鞋", "数码", "手表", "服装")
 
+        slidingTabLayout.setupWithViewPager(viewPager)
         viewPager.adapter = object : PagerAdapter(){
 
             override fun getCount(): Int = pages.size

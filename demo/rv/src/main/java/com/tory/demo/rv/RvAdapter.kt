@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.item_inner_rv.*
  */
 class RvAdapter: RecyclerView.Adapter<BaseViewHolder>() {
 
-    val list: MutableList<Any> = mutableListOf()
+    val list: MutableList<Any> by lazy { mutableListOf() }
 
     fun setData(data: List<Any>){
         list.clear()
