@@ -6,14 +6,20 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.os.PersistableBundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.tabs.TabLayout
 import com.tory.demo.demo.R
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.layout_item_test.view.*
 import java.io.File
 
 /**
@@ -47,12 +53,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
-                val textView = AppCompatTextView(container.context)
+                val view = LayoutInflater.from(container.context).inflate(R.layout.layout_item_test,
+                    container, false)
+                val textView = view.textView
                 textView.setText(getPageTitle(position))
-                textView.gravity = Gravity.CENTER
-                container.addView(textView, ViewGroup.LayoutParams.MATCH_PARENT,
+                textView.gravity = Gravity.CENTER_HORIZONTAL
+                container.addView(view, ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT)
-                return textView
+                return view
             }
 
             override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
@@ -63,6 +71,26 @@ class MainActivity : AppCompatActivity() {
                 return obj  == view
             }
         }
+        appbar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener{
+            override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
+                Log.v("AppBarLayout", "verticalOffset:$verticalOffset")
+                val fraction = 1- Math.abs(verticalOffset).toFloat() / 60.dp()
+                slidingTabLayout.expandProgress = fraction
+
+            }
+        })
+
+        slidingTabLayout.addOnScrollListener(object : MSlidingTabLayout.OnScrollListener{
+            override fun onScrollChanged(l: Int, t: Int, oldl: Int, oldt: Int) {
+            }
+
+            override fun onStateChanged(state: MSlidingTabLayout.ScrollState) {
+                Log.v("slidingTabLayout", "ScrollState:" + state)
+            }
+        })
     }
+
+    private fun Int.dp() = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+        this.toFloat(), resources.displayMetrics).toInt()
 
 }
