@@ -1,11 +1,15 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.protobuf'
+
 apply from: "$project.rootDir/tools/basic.gradle"
+
+
 
 android {
 
     defaultConfig {
         versionCode getTotalGitCommitCount() + 10000
-        applicationId "com.mimikko.mimikkoui"
+        applicationId "com.tory.noname"
     }
     buildTypes {
         release {
@@ -13,12 +17,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+            // 定义proto文件目录
+            proto {
+                srcDir 'src/main/proto'
+                include '**/*.proto'
+            }
+        }
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //支持多个dex文件构建应用程序
-    implementation files('libs/tbs_sdk_thirdapp_v2.3.0.1048_36801_shareonly_obfs_20160829_200523.jar')
     implementation project(':library')
 
     //support相关包
@@ -68,4 +81,25 @@ dependencies {
     debugImplementation libraries.leakcanary
     releaseImplementation libraries.leakcanaryNoOp
     testImplementation libraries.leakcanaryNoOp
+
+    // 定义protobuf依赖，使用精简版
+    implementation "com.google.protobuf:protobuf-lite:3.0.0"
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.0.0'
+    }
+    plugins {
+        javalite {
+            artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0'
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins {
+                javalite {}
+            }
+        }
+    }
 }

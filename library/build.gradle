@@ -23,15 +23,15 @@ dependencies {
     //implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation libraries.multidex
-    implementation libraries.appcompat
-    implementation libraries.design
-    implementation libraries.preference
-    implementation libraries.palette
-    implementation libraries.swiperefreshlayout
+    api libraries.appcompat
+    api libraries.design
+    api libraries.preference
+    api libraries.palette
+    api libraries.swiperefreshlayout
     implementation libraries.glide
     implementation libraries.rxjava
     implementation libraries.rxandroid
-    implementation libraries.gson
+    api libraries.gson
 
     implementation libraries.okhttp3
     implementation libraries.okhttp3Logging
