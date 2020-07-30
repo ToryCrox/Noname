@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:clipChildren="false"
+    tools:context=".MainActivity">
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="com.google.android.material.appbar.MAppBarLayoutBehavior"
+        app:elevation="0dp">
+
+        <com.tory.demo.demo.MTopbarLayout
+            android:id="@+id/barContainer"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="vertical"
+            android:minHeight="40dp"
+            android:background="@color/colorAccent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#00ee00"
+                android:layout_gravity="top"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#00ee00"
+                android:layout_gravity="bottom"/>
+        </com.tory.demo.demo.MTopbarLayout>
+
+        <com.tory.demo.demo.MSlidingTabLayout
+            android:id="@+id/slidingTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:clipToPadding="false"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior" -->
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

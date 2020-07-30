@@ -12,6 +12,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.os.SystemClock
 import android.util.AttributeSet
 import android.util.Log
 import android.util.TypedValue
@@ -246,7 +247,9 @@ class MSlidingTabLayout @JvmOverloads constructor(
         return selectedTabView?.position ?: -1
     }
 
-    private fun getTabCount() = tabViews.size
+    fun getTabPosition(): Int = getSelectedPosition()
+
+    fun getTabCount() = tabViews.size
 
     fun setScrollPosition(
         position: Int,
@@ -355,14 +358,18 @@ class MSlidingTabLayout @JvmOverloads constructor(
         //translationY = (tabMaxHeight - tabMinHeight) * (1 - expandProgress)
         //slidingTabIndicator.translationY = translationY / 2
         selectedTabView?.updateFraction()
-        requestLayout()
+        if (height != getSuggestHeight()){
+            requestLayout()
+        }
+    }
 
+    fun getSuggestHeight(): Int{
+        return MathUtils.lerp(tabMinHeight.toFloat(), tabMaxHeight.toFloat(), expandProgress).toInt()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val height = MathUtils.lerp(tabMinHeight.toFloat(), tabMaxHeight.toFloat(), expandProgress).toInt()
         super.onMeasure(widthMeasureSpec,
-            MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY))
+            MeasureSpec.makeMeasureSpec(getSuggestHeight(), MeasureSpec.EXACTLY))
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -624,6 +631,10 @@ class MSlidingTabLayout @JvmOverloads constructor(
             if (this.fraction == fraction && !force) return
             this.fraction = fraction
             log("TabView $position setStateFraction fraction:$fraction")
+            updateState(fraction)
+        }
+
+        private fun updateState(fraction: Float) {
             val textSize = MathUtils.lerp(tabTextSize, tabTextActiveSize, fraction * expandProgress)
             if (isUseTextSizeChange) {
                 if (textView.textSize != textSize) {
@@ -669,7 +680,9 @@ class MSlidingTabLayout @JvmOverloads constructor(
                 && previousScrollState == ViewPager.SCROLL_STATE_IDLE)
             log("onPageScrolled position:$position, positionOffset:$positionOffset" +
                 " scrollState:$scrollState, update:$updateText, updateIndicator:$updateIndicator")
+            val startTime = SystemClock.elapsedRealtime()
             tabLayout.setScrollPosition(position, positionOffset, updateText, updateIndicator)
+            log("onPageScrolled time spent:${SystemClock.elapsedRealtime() - startTime}")
         }
 
         override fun onPageSelected(position: Int) {

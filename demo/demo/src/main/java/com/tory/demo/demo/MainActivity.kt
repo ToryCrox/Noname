@@ -2,9 +2,7 @@ package com.tory.demo.demo
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
-import android.os.PersistableBundle
+import android.os.SystemClock
 import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
@@ -12,15 +10,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.recyclerview.widget.RecyclerView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.tabs.TabLayout
-import com.tory.demo.demo.R
-import kotlinx.android.synthetic.main.activity_main.*
+import com.google.android.material.appbar.MAppBarLayoutBehavior
+import kotlinx.android.synthetic.main.activity_main_1.*
 import kotlinx.android.synthetic.main.layout_item_test.view.*
-import java.io.File
 
 /**
  * Author: xutao
@@ -35,11 +31,12 @@ import java.io.File
  */
 class MainActivity : AppCompatActivity() {
 
+    var appbarBehavior : MAppBarLayoutBehavior? = null
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main_1)
 
         val pages = arrayOf("推荐", "球鞋", "数码", "手表", "服装", "推荐", "球鞋", "数码", "手表", "服装")
 
@@ -71,14 +68,18 @@ class MainActivity : AppCompatActivity() {
                 return obj  == view
             }
         }
+
         appbar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener{
             override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
-                Log.v("AppBarLayout", "verticalOffset:$verticalOffset")
-                val fraction = 1- Math.abs(verticalOffset).toFloat() / 60.dp()
+                val total = appBarLayout.totalScrollRange
+                Log.v("AppBarLayout", "verticalOffset:$verticalOffset  total:$total")
+
+                val fraction = 1- Math.abs(verticalOffset).toFloat() / (if (total > 0) total else 60.dp())
                 slidingTabLayout.expandProgress = fraction
 
             }
         })
+
 
         slidingTabLayout.addOnScrollListener(object : MSlidingTabLayout.OnScrollListener{
             override fun onScrollChanged(l: Int, t: Int, oldl: Int, oldt: Int) {
@@ -86,6 +87,42 @@ class MainActivity : AppCompatActivity() {
 
             override fun onStateChanged(state: MSlidingTabLayout.ScrollState) {
                 Log.v("slidingTabLayout", "ScrollState:" + state)
+            }
+        })
+        val behavior = (appbar.layoutParams as CoordinatorLayout.LayoutParams).behavior
+        if (behavior is MAppBarLayoutBehavior){
+            appbarBehavior = behavior
+        }
+        slidingTabLayout.addTabSelectListener(object : MSlidingTabLayout.TabSelectListener{
+            override fun onTabSelected(tabView: MSlidingTabLayout.TabView) {
+                Log.v("TabSelectListener", "isExpand :" + (tabView.position == 0))
+                val isFirstPage = tabView.position == 0
+                appbarBehavior?.isExpandable = isFirstPage
+                //appbar.setExpanded(isFirstPage)
+            }
+
+            override fun onTabUnSelected(tabView: MSlidingTabLayout.TabView) {
+            }
+        })
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+            var scrollState: Int = 0
+
+            override fun onPageScrollStateChanged(state: Int) {
+                scrollState = state
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                if (position == 0){
+                    val start = SystemClock.elapsedRealtime()
+                    val offset = -positionOffset * appbar.totalScrollRange
+                    Log.v("MMMAAA", "onPageScrolled position:$position," +
+                        " positionOffset:$positionOffset, offset:$offset, scrollState:$scrollState")
+                    appbarBehavior?.setAppbarOffset(coordinator, appbar, offset.toInt())
+                    Log.v("MMMAAA", "onPageScrolled: time:" + (SystemClock.elapsedRealtime() - start))
+                }
+            }
+            override fun onPageSelected(position: Int) {
+
             }
         })
     }

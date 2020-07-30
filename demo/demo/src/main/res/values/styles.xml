@@ -29,5 +29,6 @@
 
         <item name="tab_bottomDivider">@drawable/bg_sliding_tab_bottom_line</item>
         <item name="tab_maskRight">@drawable/fg_sliding_tab_mask</item>
+        <item name="android:clipToPadding">false</item>
     </style>
 </resources>
