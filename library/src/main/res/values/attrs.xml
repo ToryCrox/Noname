@@ -15,4 +15,73 @@
     <declare-styleable name="ResizingText">
         <attr name="resizing_text_min_size" format="dimension"/>
     </declare-styleable>
+
+
+
+    <declare-styleable name="MTabLayout">
+        <attr format="color" name="mtabIndicatorColor"/>
+        <attr format="dimension" name="mtabIndicatorHeight"/>
+        <attr format="dimension" name="mtabContentStart"/>
+        <attr format="reference" name="mtabBackground"/>
+
+        <attr format="reference" name="mtabIndicator"/>
+        <attr name="mtabIndicatorGravity" format="enum">
+            <enum name="bottom" value="0"/>
+            <enum name="center" value="1"/>
+            <enum name="top" value="2"/>
+            <enum name="stretch" value="3"/>
+        </attr>
+        <attr format="integer" name="mtabIndicatorAnimationDuration"/>
+        <attr format="boolean" name="mtabIndicatorFullWidth"/>
+        <attr name="mtabMode">
+            <enum name="scrollable" value="0"/>
+            <enum name="fixed" value="1"/>
+            <enum name="auto" value="2"/>
+        </attr>
+        <!-- Gravity constant for tabs. -->
+        <attr name="mtabGravity">
+            <enum name="fill" value="0"/>
+            <enum name="center" value="1"/>
+        </attr>
+        <!-- Whether to display tab labels horizontally inline with icons, or underneath icons. -->
+        <attr format="boolean" name="mtabInlineLabel"/>
+        <!-- The minimum width for tabs. -->
+        <attr format="dimension" name="mtabMinWidth"/>
+        <!-- The maximum width for tabs. -->
+        <attr format="dimension" name="mtabMaxWidth"/>
+        <!-- A reference to a TextAppearance style to be applied to tabs. -->
+        <attr format="reference" name="mtabTextAppearance"/>
+        <!-- The default text color to be applied to tabs. -->
+        <attr format="color" name="mtabTextColor"/>
+        <!-- {@deprecated Instead, provide a ColorStateList to the tabTextColor attribute with a
+             selected color set.}  -->
+        <attr format="color" name="mtabSelectedTextColor"/>
+        <!-- The preferred padding along the start edge of tabs. -->
+        <attr format="dimension" name="mtabPaddingStart"/>
+        <!-- The preferred padding along the top edge of tabs. -->
+        <attr format="dimension" name="mtabPaddingTop"/>
+        <!-- The preferred padding along the end edge of tabs. -->
+        <attr format="dimension" name="mtabPaddingEnd"/>
+        <!-- The preferred padding along the bottom edge of tabs. -->
+        <attr format="dimension" name="mtabPaddingBottom"/>
+        <!-- The preferred padding along all edges of tabs. -->
+        <attr format="dimension" name="mtabPadding"/>
+        <!-- Tint to apply to tab icons, if present. This can be a color state list or a color. -->
+        <attr format="color" name="mtabIconTint"/>
+        <!-- Blending mode to apply to tab icons. -->
+        <attr name="mtabIconTintMode">
+            <enum name="src_over" value="3"/>
+            <enum name="src_in" value="5"/>
+            <enum name="src_atop" value="9"/>
+            <enum name="multiply" value="14"/>
+            <enum name="screen" value="15"/>
+            <enum name="add" value="16"/>
+        </attr>
+        <!-- Ripple color for the tabs. This may be a color state list, if the desired ripple color
+             should be stateful.-->
+        <attr format="color" name="mtabRippleColor"/>
+        <!-- Whether to use unbounded ripple effect for tabs, or if ripple should instead be bound to
+             tab item bounds. -->
+        <attr format="boolean" name="mtabUnboundedRipple"/>
+    </declare-styleable>
 </resources>

@@ -1,4 +1,4 @@
-package com.tory.noname.main;
+package com.tory.noname.main.ui;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -36,7 +36,7 @@ import com.tory.noname.ss.SsListFragment;
 
 import java.util.List;
 
-public class MainActivity extends BaseActivity
+public class NavMainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout mDrawerLayout;
@@ -51,14 +51,14 @@ public class MainActivity extends BaseActivity
 
     public static final int MSG_WHAT_SHOW_FRAGMENT = 1;
 
-    private static class MainActivityHandler extends WeekHandler<MainActivity>{
+    private static class MainActivityHandler extends WeekHandler<NavMainActivity>{
 
-        public MainActivityHandler(MainActivity activity) {
+        public MainActivityHandler(NavMainActivity activity) {
             super(activity);
         }
 
         @Override
-        public void handleMessage(MainActivity activity, Message msg) {
+        public void handleMessage(NavMainActivity activity, Message msg) {
             switch (msg.what){
                 case MSG_WHAT_SHOW_FRAGMENT:{
                     int id = msg.arg1;
@@ -81,7 +81,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public int bindLayout() {
-        return R.layout.activity_main;
+        return R.layout.activity_nav_main;
     }
 
     @Override
@@ -98,7 +98,7 @@ public class MainActivity extends BaseActivity
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
         mNavigationView.getHeaderView(0).findViewById(R.id.avatar).setOnClickListener(v -> {
-            PictureSelector.create(MainActivity.this)
+            PictureSelector.create(NavMainActivity.this)
                     .openGallery(PictureMimeType.ofImage())
                     .isCamera(false)
                     .loadImageEngine(GlideEngine.createGlideEngine())

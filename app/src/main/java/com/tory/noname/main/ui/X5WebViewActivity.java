@@ -1,4 +1,4 @@
-package com.tory.noname.main;
+package com.tory.noname.main.ui;
 
 import android.graphics.PixelFormat;
 import android.view.WindowManager;

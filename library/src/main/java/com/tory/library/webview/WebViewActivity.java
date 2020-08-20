@@ -1,5 +1,6 @@
 package com.tory.library.webview;
 
+import android.os.Bundle;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -8,17 +9,19 @@ import android.webkit.WebViewClient;
 import com.tory.library.R;
 import com.tory.library.base.BaseWebViewActivity;
 
+import org.jetbrains.annotations.Nullable;
+
 
 public class WebViewActivity extends BaseWebViewActivity<WebView> {
 
     @Override
-    public int bindLayout() {
+    public int getLayoutId() {
         return R.layout.activity_web_view;
     }
 
     @Override
-    public void initView() {
-        super.initView();
+    public void initView(@Nullable Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
         mWebView.setWebViewClient(new MyWebViewClient());
         mWebView.setWebChromeClient(new MyWebChromeClient());
         setToolbarTitle("页面加载中……");

@@ -53,7 +53,7 @@ public class BgmlistFragment extends BaseListFragment {
     }
 
     @Override
-    protected PagerAdapter createPageAdpater() {
+    protected PagerAdapter createPageAdapter() {
         return new BgmFragmentPagerAdapter(getChildFragmentManager());
     }
 

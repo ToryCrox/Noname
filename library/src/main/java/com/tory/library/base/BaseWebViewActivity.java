@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.tory.library.R;
 import com.tory.library.log.LogUtils;
 import com.tory.library.utils.Utilities;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @Author: Tory
@@ -31,7 +34,7 @@ public abstract class BaseWebViewActivity<V extends View> extends BaseActivity{
     @SuppressLint("WrongViewCast")
     @CallSuper
     @Override
-    public void initView() {
+    public void initView(@Nullable Bundle savedInstanceState) {
         mUrl = getIntent().getStringExtra(Utilities.WEB_URL);
         mProgressBar = (ProgressBar) findViewById(R.id.progressbar);
         mProgressBar.setMax(100);
@@ -45,7 +48,7 @@ public abstract class BaseWebViewActivity<V extends View> extends BaseActivity{
     }
 
     @Override
-    public void doBusiness() {
+    public void initData(@Nullable Bundle savedInstanceState) {
         loadUrl(mUrl);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -86,7 +89,7 @@ public abstract class BaseWebViewActivity<V extends View> extends BaseActivity{
 
     protected void receivedTitle(String title) {
         initNavIcon();
-        mToolbar.setTitle(title);
+        getToolbar().setTitle(title);
         mSwipeRefreshLayout.setRefreshing(false);
     }
 

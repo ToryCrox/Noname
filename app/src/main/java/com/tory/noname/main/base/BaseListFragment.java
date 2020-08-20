@@ -45,10 +45,10 @@ public abstract class BaseListFragment extends BaseFragment {
 
         mTabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        PagerAdapter tabPageAdapter = createPageAdpater();
+        PagerAdapter tabPageAdapter = createPageAdapter();
         mViewPager.setAdapter(tabPageAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
-    protected abstract PagerAdapter createPageAdpater();
+    protected abstract PagerAdapter createPageAdapter();
 }

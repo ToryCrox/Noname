@@ -1,6 +1,7 @@
 package com.tory.library.webview;
 
 import android.graphics.PixelFormat;
+import android.os.Bundle;
 import android.view.WindowManager;
 
 import com.tencent.smtt.export.external.extension.interfaces.IX5WebViewExtension;
@@ -11,16 +12,18 @@ import com.tencent.smtt.sdk.WebViewClient;
 import com.tory.library.R;
 import com.tory.library.base.BaseWebViewActivity;
 
+import org.jetbrains.annotations.Nullable;
+
 public class X5WebViewActivity extends BaseWebViewActivity<WebView> {
 
     @Override
-    public int bindLayout() {
+    public int getLayoutId() {
         return R.layout.activity_web_view_x5;
     }
 
     @Override
-    public void initView() {
-        super.initView();
+    public void initView(@Nullable Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
         getWindow().setFormat(PixelFormat.TRANSLUCENT);//（这个对宿主没什么影响，建议声明）
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
                 | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);

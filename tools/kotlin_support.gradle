@@ -2,13 +2,21 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+
+android {
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+
+}
+
 dependencies{
     implementation libraries.kotlinJdk
     implementation libraries.kotlinReflect
     implementation libraries.androidxKtx
-}
-
-androidExtensions {
-    experimental = true
 }
 

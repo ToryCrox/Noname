@@ -56,16 +56,19 @@
         <item name="android:paddingRight">0dp</item>
     </style>
 
-    <style name="PreferenceThemeCustom" >
+    <style name="PreferenceThemeCustom">
         <item name="preferenceScreenStyle">@style/PreferenceCustom.PreferenceScreen</item>
         <item name="preferenceFragmentCompatStyle">@style/PreferenceFragmentCustom</item>
         <item name="preferenceCategoryStyle">@style/PreferenceCustom.Category</item>
         <item name="preferenceStyle">@style/PreferenceCustom</item>
         <item name="preferenceInformationStyle">@style/PreferenceCustom.Information</item>
         <item name="checkBoxPreferenceStyle">@style/PreferenceCustom.CheckBoxPreference</item>
-        <item name="switchPreferenceCompatStyle">@style/PreferenceCustom.SwitchPreferenceCompat</item>
+        <item name="switchPreferenceCompatStyle">@style/PreferenceCustom.SwitchPreferenceCompat
+        </item>
         <item name="dialogPreferenceStyle">@style/PreferenceCustom.DialogPreference</item>
-        <item name="editTextPreferenceStyle">@style/PreferenceCustom.DialogPreference.EditTextPreference</item>
+        <item name="editTextPreferenceStyle">
+            @style/PreferenceCustom.DialogPreference.EditTextPreference
+        </item>
         <item name="preferenceFragmentListStyle">@style/PreferenceFragmentListCustom</item>
 
         <item name="android:textAppearanceLarge">?attr/textAppearanceListItem</item>
@@ -74,4 +77,21 @@
         <item name="android:listPreferredItemPaddingEnd">16dp</item>
     </style>
     <!--preference compat style end-->
+
+
+    <style name="MTabLayoutStyle" parent="android:Widget">
+        <item name="android:background">@null</item>
+        <item name="tabIconTint">@null</item>
+        <item name="tabMaxWidth">@dimen/design_tab_max_width</item>
+        <item name="tabIndicatorAnimationDuration">@integer/design_tab_indicator_anim_duration_ms</item>
+        <item name="tabIndicatorColor">?attr/colorAccent</item>
+        <item name="tabIndicatorGravity">bottom</item>
+        <item name="tabIndicator">@drawable/mtrl_tabs_default_indicator</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+        <item name="tabTextAppearance">@style/TextAppearance.Design.Tab</item>
+        <item name="tabTextColor">@null</item>
+        <item name="tabRippleColor">?attr/colorControlHighlight</item>
+        <item name="tabUnboundedRipple">false</item>
+    </style>
 </resources>

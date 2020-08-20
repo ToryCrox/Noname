@@ -56,7 +56,7 @@ public class CategoryHomeFragment extends BaseListFragment{
     }
 
     @Override
-    protected PagerAdapter createPageAdpater() {
+    protected PagerAdapter createPageAdapter() {
         return new BiliHomePagerAdpager(getChildFragmentManager());
     }
 

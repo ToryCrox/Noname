@@ -19,7 +19,7 @@ public class GankListFragment extends BaseListFragment {
     }
 
     @Override
-    protected PagerAdapter createPageAdpater() {
+    protected PagerAdapter createPageAdapter() {
         mTitles = Constance.Gank.TAGS.clone();
         return new TabFragmentPagerAdapter(getChildFragmentManager(),mTitles);
     }
