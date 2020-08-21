@@ -76,6 +76,15 @@ dependencies {
 
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.3.6'
 
+    // koin 依赖注入
+    implementation "org.koin:koin-android:${libVersions.koin}"
+    implementation "org.koin:koin-android-viewmodel:${libVersions.koin}"
+    // 可使用协程并可以观察生命周期的ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${libVersions.lifecycleKtxVersion}"
+
+    // 协程
+    implementation libraries.kotlinCoroutineCore
+    implementation libraries.kotlinCoroutineAndroid
 
     testImplementation libraries.junit
 
