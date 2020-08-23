@@ -9,11 +9,14 @@ import android.text.Spanned
 import android.text.style.LineHeightSpan
 import android.util.Log
 import androidx.annotation.Px
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.whenCreated
 import com.tory.library.base.BaseActivity
 import com.tory.library.extension.dpToPx
 import com.tory.library.widget.span.ParagraphSpacingSpan
 import com.tory.noname.R
 import kotlinx.android.synthetic.main.activity_text_test.*
+import kotlinx.coroutines.launch
 
 /**
  * Author: xutao
@@ -42,6 +45,11 @@ class TextTestActivity: BaseActivity() {
         val text = ParagraphSpacingSpan.getSpacingSpannable(textParagraph, dpToPx(10))
         textView.text = text
 
+        lifecycleScope.launch {
+            whenCreated {
+
+            }
+        }
 
     }
 }

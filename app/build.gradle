@@ -33,7 +33,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //支持多个dex文件构建应用程序
-    implementation project(':library')
+    implementation project(':base:common')
 
     //support相关包
     implementation libraries.appcompat
@@ -81,6 +81,7 @@ dependencies {
     implementation "org.koin:koin-android-viewmodel:${libVersions.koin}"
     // 可使用协程并可以观察生命周期的ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${libVersions.lifecycleKtxVersion}"
+    implementation libraries.lifecycleKtx
 
     // 协程
     implementation libraries.kotlinCoroutineCore

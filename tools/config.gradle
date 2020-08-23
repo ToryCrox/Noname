@@ -55,9 +55,11 @@ ext {
             //jetpack
             navigationKtx           : "androidx.navigation:navigation-fragment-ktx:$navigationVersion",
             navigationUiKtx         : "androidx.navigation:navigation-ui-ktx:$navigationVersion",
+            //liveData
             livedataKtx             : "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleKtxVersion",
             // viewModel
             viewmodelKtx            : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleKtxVersion",
+            lifecycleKtx            : "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleKtxVersion",
             lifecycleExtensions     : "androidx.lifecycle:lifecycle-extensions:$lifecycleKtxVersion",
 
             okhttp3                 : "com.squareup.okhttp3:okhttp:3.10.0",
