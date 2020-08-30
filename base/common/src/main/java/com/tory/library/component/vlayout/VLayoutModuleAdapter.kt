@@ -11,7 +11,6 @@ import com.alibaba.android.vlayout.LayoutHelper
 import com.alibaba.android.vlayout.layout.LinearLayoutHelper
 import com.tory.library.component.CommonViewHolder
 import com.tory.library.component.base.ExtendGridLayoutHelper
-import com.tory.library.component.vlayout.VLayoutDelegateAdapter
 import com.tory.library.component.vlayout.VLayoutDelegateInnerAdapter
 import com.tory.library.log.LogUtils
 
@@ -26,7 +25,7 @@ import com.tory.library.log.LogUtils
  * 2020/4/7 xutao 1.0
  * Why & What is modified:
  */
-open class DuModuleAdapter(
+open class VLayoutModuleAdapter(
     private val calDiff: Boolean = false,
     private val adapterIndex: Int = 0,
     private val layoutHelper: LayoutHelper? = null
@@ -66,7 +65,7 @@ open class DuModuleAdapter(
                 spanSizeLookup = object : ExtendGridLayoutHelper.SpanSizeLookup() {
                     override fun setStartPosition(startPosition: Int) {
                         super.setStartPosition(startPosition)
-                        this@DuModuleAdapter.mStartPosition = startPosition
+                        this@VLayoutModuleAdapter.mStartPosition = startPosition
                     }
 
                     override fun getSpanSize(position: Int): Int {
