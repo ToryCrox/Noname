@@ -1,6 +1,8 @@
 include ':app'
 include ':base:common'
 
+include ":module:koin"
+
 
 //include ':demo:debug'
 //include ':demo:lightphoto'
@@ -17,4 +19,5 @@ include ':base:common'
 //include ':demo:webview'
 //include 'demo:rv'
 //include 'demo:diskcache'
-include 'demo:demo'
+include 'demo:hilt'
+

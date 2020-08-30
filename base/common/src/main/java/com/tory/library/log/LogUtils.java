@@ -1,13 +1,15 @@
 package com.tory.library.log;
 
 import androidx.annotation.NonNull;
+
 import android.util.Log;
 
 public class LogUtils {
+    private static final String TAG = "NoName";
 
     private static ILog sLog = new LogImpl();
 
-    public static void setThemeLog(@NonNull ILog log){
+    public static void setThemeLog(@NonNull ILog log) {
         sLog = log;
     }
 
@@ -17,6 +19,10 @@ public class LogUtils {
 
     public static void d(String TAG, String msg) {
         sLog.d(TAG, msg);
+    }
+
+    public static void d(String msg) {
+        d(TAG, msg);
     }
 
     public static void i(String TAG, String msg) {
@@ -32,6 +38,9 @@ public class LogUtils {
     }
 
     public static void e(String TAG, String msg, Throwable e) {
+        sLog.e(TAG, msg, e);
+    }
+    public static void e(String msg, Throwable e) {
         sLog.e(TAG, msg, e);
     }
 
@@ -59,7 +68,7 @@ public class LogUtils {
 
         @Override
         public void e(String TAG, String msg, Throwable e) {
-            Log.e(TAG , msg, e);
+            Log.e(TAG, msg, e);
         }
     }
 }

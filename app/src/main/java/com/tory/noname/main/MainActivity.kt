@@ -1,20 +1,16 @@
 package com.tory.noname.main
 
-import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.shizhuang.duapp.modules.du_mall_common.views.MallRVAdapter
+import com.shizhuang.duapp.common.component.module.ModuleDividerModel
+import com.shizhuang.duapp.common.component.module.NormalModuleAdapter
+import com.shizhuang.duapp.common.component.module.joinTo
 import com.tory.library.base.BaseActivity
+import com.tory.module.hilt.KoinDemoActivity
 import com.tory.noname.R
 import com.tory.noname.main.ui.NavMainActivity
 import com.tory.noname.model.RedirectModel
 import com.tory.noname.views.RedirectView
-import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -30,9 +26,14 @@ import kotlinx.android.synthetic.main.activity_main.*
  */
 class MainActivity: BaseActivity() {
 
-    val listAdapter = MallRVAdapter()
+    val listAdapter = NormalModuleAdapter()
 
     override fun getLayoutId(): Int = R.layout.activity_main
+
+    override fun initToolbar() {
+        super.initToolbar()
+        setDisplayHomeAsUpEnabled(false)
+    }
 
     override fun initView(savedInstanceState: Bundle?) {
         listAdapter.register { RedirectView(it.context) }
@@ -41,9 +42,10 @@ class MainActivity: BaseActivity() {
 
         val list = listOf(
             RedirectModel("NavMainActivity", NavMainActivity::class.java),
-            RedirectModel("TextTestActivity", TextTestActivity::class.java)
+            RedirectModel("TextTestActivity", TextTestActivity::class.java),
+            RedirectModel("Koin", KoinDemoActivity::class.java)
         )
-        listAdapter.appendItems(list)
+        listAdapter.appendItems(ModuleDividerModel().joinTo(list))
     }
 
 }

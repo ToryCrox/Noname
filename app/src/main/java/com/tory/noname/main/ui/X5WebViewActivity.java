@@ -1,6 +1,7 @@
 package com.tory.noname.main.ui;
 
 import android.graphics.PixelFormat;
+import android.os.Bundle;
 import android.view.WindowManager;
 
 import com.tencent.smtt.sdk.WebChromeClient;
@@ -8,18 +9,17 @@ import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 import com.tory.noname.R;
-import com.tory.noname.main.base.BaseWebViewActivity;
 
 public class X5WebViewActivity extends BaseWebViewActivity<WebView> {
 
     @Override
-    public int bindLayout() {
+    public int getLayoutId() {
         return R.layout.activity_web_view_x5;
     }
 
     @Override
-    public void initView() {
-        super.initView();
+    public void initView(Bundle bundle) {
+        super.initView(bundle);
         getWindow().setFormat(PixelFormat.TRANSLUCENT);//（这个对宿主没什么影响，建议声明）
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
                 | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -34,7 +34,7 @@ public class X5WebViewActivity extends BaseWebViewActivity<WebView> {
     }
 
     @Override
-    protected boolean canGoBanck() {
+    protected boolean canGoBack() {
         return mWebView.canGoBack();
     }
 

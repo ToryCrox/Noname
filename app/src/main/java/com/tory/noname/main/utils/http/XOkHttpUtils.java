@@ -8,10 +8,10 @@ import android.util.Log;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.tory.library.log.LogUtils;
+import com.tory.library.utils.AppUtils;
 import com.tory.library.utils.FileUtils;
 import com.tory.library.utils.Md5Util;
 import com.tory.library.utils.NetUtils;
-import com.tory.noname.MApplication;
 import com.tory.noname.main.utils.L;
 
 import java.io.File;
@@ -68,7 +68,7 @@ public class XOkHttpUtils {
     }
 
     private XOkHttpUtils() {
-        mContext = MApplication.getInstance().getApplicationContext();
+        mContext = AppUtils.getContext();
         mHandler = new Handler(Looper.getMainLooper());
         OkHttpClient.Builder builder = new OkHttpClient().newBuilder()
                 .connectTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)

@@ -45,7 +45,8 @@ public final class ManifestParser {
         try {
             clazz = Class.forName(className);
         } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException("Unable to find AppLifeModule implementation", e);
+            throw new IllegalArgumentException("Unable to find AppLifeModule implementation," +
+                    " className:" + className, e);
         }
 
         Object module;

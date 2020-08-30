@@ -2,8 +2,10 @@ package com.tory.noname.main.ui;
 
 import android.os.Bundle;
 
+import com.tory.library.base.BaseActivity;
 import com.tory.noname.R;
-import com.tory.noname.main.base.BaseActivity;
+
+import org.jetbrains.annotations.Nullable;
 
 public class SettingActivity extends BaseActivity {
 
@@ -19,18 +21,12 @@ public class SettingActivity extends BaseActivity {
     }
 
     @Override
-    public int bindLayout() {
+    public int getLayoutId() {
         return R.layout.activity_content_main;
     }
 
     @Override
-    public void initView() {
-
-
-    }
-
-    @Override
-    public void doBusiness() {
+    public void initView(@Nullable Bundle savedInstanceState) {
 
     }
 }

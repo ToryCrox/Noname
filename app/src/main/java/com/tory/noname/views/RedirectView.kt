@@ -3,8 +3,8 @@ package com.tory.noname.views
 import android.content.Context
 import android.content.Intent
 import android.util.AttributeSet
+import com.shizhuang.duapp.common.component.module.AbsModuleView
 import com.tory.noname.R
-import com.tory.noname.mm.AbsView
 import com.tory.noname.model.RedirectModel
 import kotlinx.android.synthetic.main.item_redirect_view.view.*
 
@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.item_redirect_view.view.*
  */
 class RedirectView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : AbsView<RedirectModel>(context, attrs, defStyleAttr) {
+) : AbsModuleView<RedirectModel>(context, attrs, defStyleAttr) {
 
     override fun getLayoutId() = R.layout.item_redirect_view
 

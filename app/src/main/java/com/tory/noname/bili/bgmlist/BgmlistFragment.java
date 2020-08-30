@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -18,8 +19,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.tory.library.base.BaseActivity;
 import com.tory.noname.R;
-import com.tory.noname.main.base.BaseActivity;
 import com.tory.noname.main.base.BaseListFragment;
 
 import java.util.Calendar;
@@ -124,7 +125,7 @@ public class BgmlistFragment extends BaseListFragment {
 
             }
         });
-        spinner.setSupportBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+        ViewCompat.setBackgroundTintList(spinner, ColorStateList.valueOf(Color.WHITE));
         return spinner;
     }
 

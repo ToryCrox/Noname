@@ -23,8 +23,8 @@ import android.widget.Spinner;
 import java.util.List;
 
 import com.google.android.material.tabs.TabLayout;
+import com.tory.library.base.BaseActivity;
 import com.tory.noname.R;
-import com.tory.noname.main.base.BaseActivity;
 import com.tory.noname.main.utils.L;
 
 import java.util.Arrays;

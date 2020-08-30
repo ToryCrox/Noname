@@ -1,11 +1,12 @@
 package com.tory.noname.bili;
 
 import android.content.Intent;
+import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import com.tory.library.base.BaseActivity;
 import com.tory.noname.R;
-import com.tory.noname.main.base.BaseActivity;
 import com.tory.noname.bili.bean.CategoryMeta;
 import com.tory.noname.bili.bgmlist.BgmlistFragment;
 import com.tory.noname.main.utils.L;
@@ -22,15 +23,13 @@ public class CategoryHomeActivity extends BaseActivity {
     private CategoryMeta mCate;
 
     @Override
-    public int bindLayout() {
+    public int getLayoutId() {
         return R.layout.activity_content_main;
     }
 
     @Override
-    public void initView() {
-        setToolbarScrolled(true);
-        setDisplayHomeAsUpEnabled(true);
-        setToolbarBackpress();
+    public void initView(Bundle bundle) {
+
 
         Intent intent = getIntent();
         mCate = intent.getParcelableExtra(ARG_CATE);
@@ -43,11 +42,6 @@ public class CategoryHomeActivity extends BaseActivity {
             showFragment(BgmlistFragment.FRAGMENT_TAG,true,false);
         }
         setToolbarTitle(mCate.typename);
-    }
-
-    @Override
-    public void doBusiness() {
-
     }
 
     @Override

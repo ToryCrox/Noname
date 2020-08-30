@@ -1,6 +1,8 @@
 package com.tory.library.utils;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -11,6 +13,8 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -20,6 +24,17 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 public class AppUtils {
+
+    @SuppressLint("StaticFieldLeak")
+    private static Context context;
+
+    public static Context getContext() {
+        return context;
+    }
+
+    public static void init(@NonNull Application application) {
+        context = application;
+    }
 
     public static String getAppName(Context context, String packageName) {
         PackageManager pm = context.getPackageManager();
@@ -216,7 +231,7 @@ public class AppUtils {
 
     public static void killProcesses(Context context, int pid, String processName) {
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        String packageName ;
+        String packageName;
         try {
             if (!processName.contains(":")) {
                 packageName = processName;
@@ -266,7 +281,7 @@ public class AppUtils {
                     BufferedReader bufferedReader = new BufferedReader(
                             new InputStreamReader(m_process.getErrorStream()),
                             8192);
-                    String ls_1 ;
+                    String ls_1;
                     try {
                         while ((ls_1 = bufferedReader.readLine()) != null) {
                             sberr.append(ls_1).append("\n");

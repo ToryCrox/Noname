@@ -1,0 +1,35 @@
+apply plugin: 'com.android.application'
+
+apply from: "$project.rootDir/tools/basic.gradle"
+apply from: "$project.rootDir/tools/kotlin_support.gradle"
+apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
+
+
+android {
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //支持多个dex文件构建应用程序
+    implementation project(':base:common')
+
+    // 可使用协程并可以观察生命周期的ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${libVersions.lifecycleKtxVersion}"
+    implementation libraries.lifecycleKtx
+
+    implementation libraries.retrofit
+
+    implementation "com.google.dagger:hilt-android:2.28-alpha"
+    kapt "com.google.dagger:hilt-android-compiler:2.28-alpha"
+    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha02'
+
+}

@@ -11,8 +11,8 @@ import android.util.Log
 import androidx.annotation.Px
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenCreated
+import com.shizhuang.duapp.common.extension.dp
 import com.tory.library.base.BaseActivity
-import com.tory.library.extension.dpToPx
 import com.tory.library.widget.span.ParagraphSpacingSpan
 import com.tory.noname.R
 import kotlinx.android.synthetic.main.activity_text_test.*
@@ -42,7 +42,7 @@ class TextTestActivity: BaseActivity() {
             * 可互操作：您可以在 Kotlin 代码中调用 Java 代码，或者在 Java 代码中调用 Kotlin 代码。Kotlin 可完全与 Java 编程语言互操作，因此您可以根据需要在项目中添加任意数量的 Kotlin 代码。
            *  结构化并发：Kotlin 协程让异步代码像阻塞代码一样易于使用。协程可大幅简化后台任务管理，例如网络调用、本地数据访问等任务的管理。
         """.trimIndent()
-        val text = ParagraphSpacingSpan.getSpacingSpannable(textParagraph, dpToPx(10))
+        val text = ParagraphSpacingSpan.getSpacingSpannable(textParagraph, 10.dp())
         textView.text = text
 
         lifecycleScope.launch {

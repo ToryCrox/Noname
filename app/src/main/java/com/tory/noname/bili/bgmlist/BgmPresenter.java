@@ -1,10 +1,10 @@
 package com.tory.noname.bili.bgmlist;
 
 import com.alibaba.fastjson.JSONObject;
+import com.tory.library.utils.AppUtils;
 import com.tory.library.utils.FileUtils;
 import com.tory.library.utils.Md5Util;
 import com.tory.library.utils.SpHelper;
-import com.tory.noname.MApplication;
 import com.tory.noname.main.utils.L;
 import com.tory.noname.main.utils.http.XOkHttpUtils;
 
@@ -48,11 +48,11 @@ public class BgmPresenter {
     private Set<OnBgmlistLoadCompeletListener> listeners = new HashSet<>();
 
     public void saveFilterState(boolean mWeekDayFiter) {
-        SpHelper.getInstance(MApplication.getInstance()).put(SP_WEEKDAY_FITER, mWeekDayFiter);
+        SpHelper.getInstance(AppUtils.getContext()).put(SP_WEEKDAY_FITER, mWeekDayFiter);
     }
 
     public boolean getFilterState() {
-        return SpHelper.getInstance(MApplication.getInstance()).getBoolean(SP_WEEKDAY_FITER);
+        return SpHelper.getInstance(AppUtils.getContext()).getBoolean(SP_WEEKDAY_FITER);
     }
 
     public interface OnBgmlistLoadCompeletListener {
@@ -123,7 +123,7 @@ public class BgmPresenter {
     }
 
     private String getCacheFile() {
-        return FileUtils.getCacheDir(MApplication.getInstance())
+        return FileUtils.getCacheDir(AppUtils.getContext())
                 + File.separator + Md5Util.digest(getUrl());
     }
 

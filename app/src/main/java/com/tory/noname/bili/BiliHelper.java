@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.util.SparseIntArray;
 
 import com.alibaba.fastjson.JSONObject;
-import com.tory.noname.MApplication;
+import com.tory.library.utils.AppUtils;
 import com.tory.noname.R;
 import com.tory.noname.bili.apis.BiliApis;
 import com.tory.noname.bili.bean.CategoryMeta;
@@ -129,7 +129,7 @@ public class BiliHelper {
 
 
     public static CategoryMeta getCategoryInfo(int tid){
-        CategoryMeta root = buildCate(MApplication.getInstance());
+        CategoryMeta root = buildCate(AppUtils.getContext());
         List<CategoryMeta> cates = root.child;
         for(CategoryMeta cate: cates){
             if(cate.tid == tid){

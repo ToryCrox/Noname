@@ -16,4 +16,34 @@
         <item>#18cfec</item>
     </array>
     <!-- for colorpicker end-->
+
+    <color name="primary">#4CAF50</color>
+    <color name="primary_dark">#388E3C</color>
+    <color name="primary_light">#C8E6C9</color>
+    <color name="accent">#FF9800</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#BDBDBD</color>
+
+
+    <color name="colorPrimary">@color/primary</color>
+    <color name="colorPrimaryDark">@color/primary_dark</color>
+    <color name="colorAccent">@color/accent</color>
+
+    <color name="color_text_primary_dark">#FF000000</color><!--用于标题、价格等一级文字颜色-->
+    <color name="color_text_primary">#FF14151A
+    </color><!--用于正文内容等一级文字信息，品牌背景色，按钮Icon选中态、品宣、重要实色图标、线性图标-->
+    <color name="color_text_secondary">#FF2B2C3C</color><!--用于辅助说明，提示等二级文字信息-->
+    <color name="color_text_tertiary">#FF7F7F8E</color><!--用于辅助说明，提示等三级文字信息-->
+
+    <color name="color_gray_primary">#FFAAAABB</color><!--用于未点击、置灰状态-->
+    <color name="color_gray_disable">#FFC7C7D7</color><!--用于次要点击、未选中状态-->
+
+    <color name="color_text_primary_inverse">#FFFFFFFF</color><!--深色背景下的文字颜色-->
+    <color name="color_text_primary_inverse_disable">#B2FFFFFF</color><!--深色背景下的文字不可用颜色-->
+
+    <color name="color_divider">#FFF1F1F5</color><!--用于分割线-->
+    <color name="color_background_primary">#FFF5F5F9</color><!--用于背景色-->
+    <color name="color_background_white">#FFFFFFFF</color><!--用于背景色-->
 </resources>

@@ -28,14 +28,31 @@ dependencies {
     api libraries.preference
     api libraries.palette
     api libraries.swiperefreshlayout
+    api libraries.constraintLayout
+    api libraries.activityKtx
+    api libraries.fragmentKtx
+
+
     implementation libraries.glide
     implementation libraries.rxjava
     implementation libraries.rxandroid
+    //okhttp
+    api libraries.okhttp3
+    api libraries.okhttp3Logging
+
+    //retrofit
+    api libraries.retrofit
+    api libraries.adapterRxjava
+
+    //gson
     api libraries.gson
+    api libraries.converterGson
 
     implementation libraries.okhttp3
     implementation libraries.okhttp3Logging
     implementation libraries.multitype
+
+    api libraries.vlayout
 
     api 'com.tencent.tbs.tbssdk:sdk:43697'
 }

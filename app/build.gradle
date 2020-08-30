@@ -34,6 +34,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //支持多个dex文件构建应用程序
     implementation project(':base:common')
+    implementation project(':module:koin')
 
     //support相关包
     implementation libraries.appcompat
@@ -47,17 +48,6 @@ dependencies {
     implementation libraries.rxjava
     implementation libraries.rxandroid
 
-    //okhttp
-    implementation libraries.okhttp3
-    implementation libraries.okhttp3Logging
-
-    //retrofit
-    implementation libraries.retrofit
-    implementation libraries.adapterRxjava
-
-    //gson
-    implementation libraries.gson
-    implementation libraries.converterGson
     //glide
     implementation libraries.glide
     implementation libraries.glideOkhttp3

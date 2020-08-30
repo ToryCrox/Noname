@@ -1,23 +1,23 @@
 package com.tory.noname.main.ui;
 
+import android.os.Bundle;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.tory.noname.R;
-import com.tory.noname.main.base.BaseWebViewActivity;
 
 public class WebViewActivity extends BaseWebViewActivity<WebView> {
 
     @Override
-    public int bindLayout() {
+    public int getLayoutId() {
         return R.layout.activity_web_view;
     }
 
     @Override
-    public void initView() {
-        super.initView();
+    public void initView(Bundle bundle) {
+        super.initView(bundle);
         mWebView.setWebViewClient(new MyWebViewClient());
         mWebView.setWebChromeClient(new MyWebChromeClient());
         setToolbarTitle("页面加载中……");
@@ -36,7 +36,7 @@ public class WebViewActivity extends BaseWebViewActivity<WebView> {
     }
 
     @Override
-    protected boolean canGoBanck() {
+    protected boolean canGoBack() {
         return mWebView != null && mWebView.canGoBack();
     }
 

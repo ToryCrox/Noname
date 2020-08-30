@@ -2,7 +2,7 @@ package com.tory.noname.bili;
 
 import android.content.Context;
 
-import com.tory.noname.MApplication;
+import com.tory.library.utils.AppUtils;
 import com.tory.library.utils.SpHelper;
 
 /**
@@ -28,7 +28,7 @@ public class BiliSetting {
     public static BiliSetting getInstance(){
         if(sInstance == null){
             synchronized (SpHelper.class){
-                sInstance = new BiliSetting(MApplication.getInstance());
+                sInstance = new BiliSetting(AppUtils.getContext());
             }
         }
         return sInstance;

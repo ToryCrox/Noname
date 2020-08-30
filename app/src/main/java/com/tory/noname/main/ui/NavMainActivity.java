@@ -1,6 +1,7 @@
 package com.tory.noname.main.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,22 +18,26 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.tory.library.base.BaseActivity;
 import com.tory.library.base.WeekHandler;
 import com.tory.library.utils.DensityUtils;
+import com.tory.library.utils.SystemBarUtils;
 import com.tory.noname.R;
 import com.tory.noname.bili.PartitionListFragment;
 import com.tory.noname.gank.GankListFragment;
-import com.tory.noname.main.base.BaseActivity;
 import com.tory.noname.main.utils.GlideEngine;
 import com.tory.noname.main.utils.L;
 import com.tory.library.utils.SettingHelper;
 import com.tory.library.utils.Utilities;
 import com.tory.noname.ss.SsListFragment;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -80,17 +85,20 @@ public class NavMainActivity extends BaseActivity
     }
 
     @Override
-    public int bindLayout() {
+    protected void setThemeColor() {
+        SystemBarUtils.translucentStatusBar(this);
+    }
+
+    @Override
+    public int getLayoutId() {
         return R.layout.activity_nav_main;
     }
 
     @Override
-    public void initView() {
-        setToolbarScrolled(true);
-
+    public void initView(@Nullable Bundle savedInstanceState) {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open,
+                this, mDrawerLayout, getToolbar(), R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -111,11 +119,27 @@ public class NavMainActivity extends BaseActivity
     }
 
     @Override
-    public void doBusiness() {
+    public void initData(@Nullable Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
         mSettingHelper = SettingHelper.getInstance(this);
         initMenu();
         initTagMenuIds();
         initDefalutFragment();
+    }
+
+    protected void setToolbarScrolled(boolean scrolled){
+
+        if(getToolbar() != null && getToolbar().getLayoutParams() instanceof AppBarLayout.LayoutParams){
+            AppBarLayout.LayoutParams lp = (AppBarLayout.LayoutParams) getToolbar().getLayoutParams();
+            if(scrolled){
+                lp.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+                        |AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+            }else{
+                lp.setScrollFlags(0);
+            }
+
+            getToolbar().setLayoutParams(lp);
+        }
     }
 
     private void initMenu() {

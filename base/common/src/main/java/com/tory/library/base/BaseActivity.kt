@@ -1,5 +1,6 @@
 package com.tory.library.base
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.os.TraceCompat
 import androidx.fragment.app.Fragment
 import com.tory.library.R
+import com.tory.library.utils.SystemBarUtils
 
 abstract class BaseActivity : AppCompatActivity() {
     @JvmField
@@ -29,9 +31,13 @@ abstract class BaseActivity : AppCompatActivity() {
         initData(savedInstanceState)
     }
 
-    protected fun setThemeColor() {}
-    protected fun initToolbar() {
-        toolbar = findViewById<View>(R.id.toolbar) as Toolbar?
+    protected open fun setThemeColor() {
+        SystemBarUtils.setStatusBarColor(this, Color.WHITE)
+        SystemBarUtils.setStatusBarDarkMode(this, true)
+        SystemBarUtils.setNavigationBarDarkMode(this, true)
+    }
+    protected open fun initToolbar() {
+        toolbar = findViewById<Toolbar>(R.id.toolbar)
         if (toolbar != null) {
             setSupportActionBar(toolbar)
         }
@@ -96,11 +102,11 @@ abstract class BaseActivity : AppCompatActivity() {
         return supportFragmentManager
     }
 
-    fun getFragmentContainer(tag: String): Int {
+    open fun getFragmentContainer(tag: String): Int {
         throw IllegalStateException("Unexpected fragmentContainer: $tag")
     }
 
-    fun createNewFragmentForTag(tag: String): Fragment {
+    open fun createNewFragmentForTag(tag: String): Fragment {
         throw IllegalStateException("Unexpected fragment: $tag")
     }
 

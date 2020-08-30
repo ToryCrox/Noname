@@ -2,6 +2,7 @@
 
 package com.tory.library.extension
 
+import android.content.ContextWrapper
 import android.graphics.Outline
 import android.graphics.Paint
 import android.graphics.Rect
@@ -13,9 +14,14 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.shizhuang.duapp.common.extension.color
+import com.shizhuang.duapp.common.extension.formatString
 
 /**
  * Created by joe on 2019-09-18.
@@ -32,6 +38,25 @@ inline fun View.getString(@StringRes messageRes: Int): String {
 
 inline fun View.formatString(@StringRes messageRes: Int, vararg args: Any?): String {
     return context.formatString(messageRes, *args)
+}
+
+inline fun View.appCompatActivity(): AppCompatActivity {
+    return checkNotNull(safeAppCompatActivity())
+}
+
+inline fun View.safeAppCompatActivity(): AppCompatActivity? {
+    var context = context
+    if (context is AppCompatActivity) {
+        return context
+    } else {
+        while (context is ContextWrapper) {
+            if (context is AppCompatActivity) {
+                return context
+            }
+            context = context.baseContext
+        }
+    }
+    return null
 }
 
 inline fun EditText.getContent(): String {
@@ -192,4 +217,73 @@ inline fun View.isChildFrom(parent: ViewGroup): Boolean {
         p = p.parent
     }
     return false
+}
+
+typealias DrawerStateChanged = (newState: Int) -> Unit
+typealias DrawerSlide = (drawerView: View, slideOffset: Float) -> Unit
+typealias DrawerClosed = (drawerView: View) -> Unit
+typealias DrawerOpened = (drawerView: View) -> Unit
+
+inline fun DrawerLayout.addDrawerListener(
+    crossinline onDrawerStateChanged: DrawerStateChanged = {},
+    crossinline onDrawerSlide: DrawerSlide = { _, _ -> Unit },
+    crossinline onDrawerClosed: DrawerClosed = {},
+    crossinline onDrawerOpened: DrawerOpened = {}
+) {
+    this.addDrawerListener(object : DrawerLayout.DrawerListener {
+        override fun onDrawerStateChanged(newState: Int) = onDrawerStateChanged.invoke(newState)
+
+        override fun onDrawerSlide(drawerView: View, slideOffset: Float) =
+            onDrawerSlide.invoke(drawerView, slideOffset)
+
+        override fun onDrawerClosed(drawerView: View) = onDrawerClosed.invoke(drawerView)
+
+        override fun onDrawerOpened(drawerView: View) = onDrawerOpened.invoke(drawerView)
+    })
+}
+
+inline fun DrawerLayout.doOnDrawerStateChanged(crossinline onDrawerStateChanged: DrawerStateChanged) {
+    addDrawerListener(onDrawerStateChanged = onDrawerStateChanged)
+}
+
+inline fun DrawerLayout.doOnDrawerSlide(crossinline onDrawerSlide: DrawerSlide) {
+    addDrawerListener(onDrawerSlide = onDrawerSlide)
+}
+
+inline fun DrawerLayout.doOnDrawerClosed(crossinline onDrawerClosed: DrawerClosed) {
+    addDrawerListener(onDrawerClosed = onDrawerClosed)
+}
+
+inline fun DrawerLayout.doOnDrawerOpened(crossinline onDrawerOpened: DrawerOpened) {
+    addDrawerListener(onDrawerOpened = onDrawerOpened)
+}
+
+typealias RVScrollStateChanged = (recyclerView: RecyclerView, newState: Int) -> Unit
+typealias RVScrolled = (recyclerView: RecyclerView, dx: Int, dy: Int) -> Unit
+
+inline fun RecyclerView.addOnScrollListener(
+    crossinline scrollStateChanged: RVScrollStateChanged = { _, _ -> Unit },
+    crossinline scrolled: RVScrolled = { _, _, _ -> Unit }
+) {
+    addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            scrollStateChanged.invoke(recyclerView, newState)
+        }
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            scrolled.invoke(recyclerView, dx, dy)
+        }
+    })
+}
+
+inline fun RecyclerView.doOnScrollStateChanged(
+    crossinline stateChange: RVScrollStateChanged
+) {
+    addOnScrollListener(scrollStateChanged = stateChange)
+}
+
+inline fun RecyclerView.doOnScrolled(
+    crossinline scrolled: RVScrolled
+) {
+    addOnScrollListener(scrolled = scrolled)
 }

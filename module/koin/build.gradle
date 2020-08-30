@@ -1,0 +1,32 @@
+apply plugin: 'com.android.library'
+
+apply from: "$project.rootDir/tools/basic.gradle"
+apply from: "$project.rootDir/tools/kotlin_support.gradle"
+
+
+
+android {
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //支持多个dex文件构建应用程序
+    implementation project(':base:common')
+
+    // koin 依赖注入
+    implementation "org.koin:koin-android:${libVersions.koin}"
+    implementation "org.koin:koin-android-viewmodel:${libVersions.koin}"
+    // 可使用协程并可以观察生命周期的ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${libVersions.lifecycleKtxVersion}"
+    implementation libraries.lifecycleKtx
+
+    implementation libraries.retrofit
+
+}
