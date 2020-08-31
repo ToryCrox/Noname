@@ -21,3 +21,8 @@ include ":module:koin"
 //include 'demo:diskcache'
 include 'demo:hilt'
 
+include 'dmzj:app'
+include 'dmzj:dbase'
+include 'dmzj:home'
+include 'dmzj:comic'
+

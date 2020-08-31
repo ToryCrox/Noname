@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tory.dmzj.home">
+
+
+    <application>
+
+        <meta-data android:name="com.tory.dmzj.home.ComicAppLife" android:value="AppLifeModule"/>
+
+        <activity android:name=".module.commic_detail.ComicDetailActivity" />
+    </application>
+
+</manifest>

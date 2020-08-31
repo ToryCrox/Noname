@@ -69,7 +69,7 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    fun showFragment(tag: String, show: Boolean, executeImmediately: Boolean) {
+    fun showFragment(tag: String, show: Boolean = true, executeImmediately: Boolean = false) {
         TraceCompat.beginSection("showFragment - $tag")
         val fm = supportFragmentManager
         var fragment = fm.findFragmentByTag(tag)

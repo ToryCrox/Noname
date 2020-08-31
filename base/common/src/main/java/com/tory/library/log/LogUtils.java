@@ -33,6 +33,10 @@ public class LogUtils {
         sLog.w(TAG, msg);
     }
 
+    public static void w(String msg) {
+        sLog.w(TAG, msg);
+    }
+
     public static void e(String TAG, String msg) {
         sLog.e(TAG, msg);
     }
