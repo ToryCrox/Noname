@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/btnChapter"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="@color/color_text_secondary"
+    android:padding="4dp"
+    android:maxLength="2"
+    android:ellipsize="end"
+    android:minHeight="48dp"
+    app:cornerRadius="2dp">
+
+</com.google.android.material.button.MaterialButton>

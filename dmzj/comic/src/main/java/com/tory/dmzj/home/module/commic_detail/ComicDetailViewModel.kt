@@ -3,6 +3,7 @@ package com.tory.dmzj.home.module.commic_detail
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shizhuang.duapp.common.component.module.ModuleDividerModel
 import com.tory.dmzj.home.api.ComicRepo
 import kotlinx.coroutines.launch
 
@@ -19,7 +20,6 @@ import kotlinx.coroutines.launch
  */
 class ComicDetailViewModel: ViewModel() {
 
-
     val result: MutableLiveData<List<Any>> = MutableLiveData()
 
     fun fetchData(id: Int) {
@@ -27,7 +27,10 @@ class ComicDetailViewModel: ViewModel() {
             val model = ComicRepo.getComicDetail(id)
             val list = mutableListOf<Any>()
             list.add(model.toHeader())
-
+            list.add(ModuleDividerModel())
+            list.add(model.toDesc())
+            list.add(ModuleDividerModel())
+            list.addAll(model.chapters?.flatMap { it.list.orEmpty() }.orEmpty())
             result.value = list
         }
     }

@@ -27,9 +27,9 @@
     <color name="divider">#BDBDBD</color>
 
 
-    <color name="colorPrimary">@color/primary</color>
-    <color name="colorPrimaryDark">@color/primary_dark</color>
-    <color name="colorAccent">@color/accent</color>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#6200EE</color>
+    <color name="colorAccent">#6200EE</color>
 
     <color name="color_text_primary_dark">#FF000000</color><!--用于标题、价格等一级文字颜色-->
     <color name="color_text_primary">#FF14151A

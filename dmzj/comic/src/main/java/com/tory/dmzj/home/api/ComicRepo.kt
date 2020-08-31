@@ -19,15 +19,12 @@ object ComicRepo {
 
     val service = NetHelper.retrofit.create(ComicService::class.java)
 
-    suspend fun getRecommendList() = withContext(Dispatchers.IO) {
+    suspend fun getRecommendList() =
         service.getRecommendList()
-    }
 
-    suspend fun getRecommendUpdate(cateId: Int) = withContext(Dispatchers.IO) {
+    suspend fun getRecommendUpdate(cateId: Int) =
         service.getRecommendUpdate(cateId)
-    }
 
-    suspend fun getComicDetail(id: Int) = withContext(Dispatchers.IO) {
+    suspend fun getComicDetail(id: Int) =
         service.getComicDetail(id)
-    }
 }

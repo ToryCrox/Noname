@@ -1,4 +1,4 @@
-include ':app'
+//include ':app'
 include ':base:common'
 
 include ":module:koin"
@@ -19,7 +19,7 @@ include ":module:koin"
 //include ':demo:webview'
 //include 'demo:rv'
 //include 'demo:diskcache'
-include 'demo:hilt'
+//include 'demo:hilt'
 
 include 'dmzj:app'
 include 'dmzj:dbase'

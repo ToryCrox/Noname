@@ -11,10 +11,10 @@ ext {
     ]
     //定义各版本号
     configs = [
-            compileSdkVersion: 28,
+            compileSdkVersion: 29,
             buildToolsVersion: "28.0.3",
             miniSdkVersion   : 21,
-            targetSdkVersion : 28
+            targetSdkVersion : 29
     ]
     javaSourceCompatibility = JavaVersion.VERSION_1_8
 
