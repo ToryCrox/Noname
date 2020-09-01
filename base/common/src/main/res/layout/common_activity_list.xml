@@ -7,6 +7,6 @@
 
     <include layout="@layout/include_toolbar" />
 
-    <include layout="@layout/include_base_list" />
+    <include layout="@layout/include_base_refresh_list" />
 
 </LinearLayout>

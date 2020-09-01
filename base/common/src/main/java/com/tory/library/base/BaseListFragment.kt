@@ -2,7 +2,6 @@ package com.tory.library.base
 
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.shizhuang.duapp.common.component.module.NormalModuleAdapter
@@ -20,7 +19,7 @@ abstract class BaseListFragment : BaseFragment() {
     protected val listAdapter = NormalModuleAdapter()
 
     override fun getLayoutId(): Int {
-        return R.layout.include_base_list
+        return R.layout.include_base_refresh_list
     }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {

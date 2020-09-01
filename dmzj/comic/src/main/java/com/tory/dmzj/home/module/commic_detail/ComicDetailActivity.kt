@@ -10,6 +10,7 @@ import com.shizhuang.duapp.common.component.module.GroupMargin
 import com.shizhuang.duapp.common.extension.dp
 import com.tory.dmzj.home.RouterTable
 import com.tory.dmzj.home.views.ComicChapterItemView
+import com.tory.dmzj.home.views.ComicChapterTitleView
 import com.tory.dmzj.home.views.ComicDetailDescView
 import com.tory.dmzj.home.views.ComicDetailHeaderView
 import com.tory.library.base.VLayoutListActivity
@@ -41,6 +42,7 @@ class ComicDetailActivity: VLayoutListActivity() {
     override fun registerViews() {
         listAdapter.register { ComicDetailHeaderView(it.context) }
         listAdapter.register { ComicDetailDescView(it.context) }
+        listAdapter.register { ComicChapterTitleView(it.context) }
         listAdapter.register(gridSize = 4, groupType = "ComicChapter",
                 groupMargin = GroupMargin(4.dp())) { ComicChapterItemView(it.context) }
     }
@@ -52,8 +54,12 @@ class ComicDetailActivity: VLayoutListActivity() {
 
         viewModel.result.observe(this, Observer {
             listAdapter.setItems(it.orEmpty())
+            refreshLayout.isRefreshing = false
         })
-
+        refreshLayout.setOnRefreshListener {
+            viewModel.fetchData(id)
+        }
+        refreshLayout.isRefreshing = true
         viewModel.fetchData(id)
     }
 }

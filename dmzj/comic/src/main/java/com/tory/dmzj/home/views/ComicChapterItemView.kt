@@ -2,11 +2,12 @@ package com.tory.dmzj.home.views
 
 import android.content.Context
 import android.util.AttributeSet
-import com.google.android.material.button.MaterialButton
+import androidx.fragment.app.FragmentActivity
 import com.shizhuang.duapp.common.component.module.AbsModuleView
-import com.shizhuang.duapp.common.extension.dp
 import com.tory.dmzj.home.R
+import com.tory.dmzj.home.dialog.ComicChapterAllDialog
 import com.tory.dmzj.home.model.ComicChapterItem
+import com.tory.dmzj.home.model.ComicChapterItemModel
 import kotlinx.android.synthetic.main.view_commic_chapter_item.view.*
 
 /**
@@ -16,18 +17,27 @@ import kotlinx.android.synthetic.main.view_commic_chapter_item.view.*
  */
 class ComicChapterItemView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : AbsModuleView<ComicChapterItem>(context, attrs, defStyleAttr) {
+) : AbsModuleView<ComicChapterItemModel>(context, attrs, defStyleAttr) {
 
-    init {
-        //setPadding(2.dp(), 2.dp(), 2.dp(), 0.dp())
-    }
 
     override fun getLayoutId(): Int {
         return R.layout.view_commic_chapter_item
     }
 
-    override fun onChanged(model: ComicChapterItem) {
+    override fun onChanged(model: ComicChapterItemModel) {
         super.onChanged(model)
-        btnChapter.text = model.chapterTitle
+        if (model.isMore) {
+            btnChapter.text = "..."
+            btnChapter.setOnClickListener {
+                val chapters = model.allChapter ?: return@setOnClickListener
+                ComicChapterAllDialog.newInstance(chapters)
+                        .show((context as FragmentActivity).supportFragmentManager, "ComicChapterAllDialog.")
+            }
+        } else {
+            btnChapter.text = model.item.chapterTitle
+            btnChapter.setOnClickListener {
+
+            }
+        }
     }
 }
