@@ -27,7 +27,9 @@ object NetHelper {
     private const val BASE_URL = "http://v3api.dmzj.com/"
     private val API_IMAGE_BASE = "http://images.dmzj.com/"
     private val API_IMAGE_BASE_HTTPS = "https://images.dmzj.com/"
-    private val DMZJ_IMAGES = arrayOf(API_IMAGE_BASE, API_IMAGE_BASE_HTTPS)
+    private val API_IMAGE_BASE_AVATAR = "https://avatar.dmzj.com"
+    private val DMZJ_IMAGES = arrayOf(API_IMAGE_BASE,
+        API_IMAGE_BASE_HTTPS, API_IMAGE_BASE_AVATAR)
 
     private val UID = 100013896
 
@@ -57,7 +59,7 @@ object NetHelper {
             LogUtils.w("DMZJInterceptor intercept origUrl:$origUrl")
             for (dmzjImage in DMZJ_IMAGES) {
                 if (!origUrl.isNullOrEmpty() && origUrl.startsWith(dmzjImage)) {
-                    builder.header("Referer", dmzjImage)
+                    builder.header("Referer", API_IMAGE_BASE)
                 }
             }
             val isDmzj = headers.get("dmzj")

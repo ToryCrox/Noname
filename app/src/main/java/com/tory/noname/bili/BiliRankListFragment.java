@@ -66,8 +66,8 @@ public class BiliRankListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         initData();
-        mTabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
-        mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        // mTabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
+        // mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
         PagerAdapter tabPageAdapter = new BiliFragmentPagerAdapter(getChildFragmentManager(),mTitles);
         mViewPager.setAdapter(tabPageAdapter);
         mTabLayout.setupWithViewPager(mViewPager);

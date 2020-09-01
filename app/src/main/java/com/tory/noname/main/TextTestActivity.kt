@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenCreated
 import com.shizhuang.duapp.common.extension.dp
 import com.tory.library.base.BaseActivity
+import com.tory.library.widget.span.AlignImageSpan
 import com.tory.library.widget.span.ParagraphSpacingSpan
 import com.tory.noname.R
 import kotlinx.android.synthetic.main.activity_text_test.*
@@ -45,11 +46,26 @@ class TextTestActivity: BaseActivity() {
         val text = ParagraphSpacingSpan.getSpacingSpannable(textParagraph, 10.dp())
         textView.text = text
 
-        lifecycleScope.launch {
-            whenCreated {
+        val builder = SpannableStringBuilder()
+        val spanLeft = AlignImageSpan(this, R.drawable.ic_product_tag_paren_left,
+            AlignImageSpan.ALIGN_ASCENT, transY = 1.dp())
+        val spanRight = AlignImageSpan(this, R.drawable.ic_product_tag_paren_right,
+            AlignImageSpan.ALIGN_BASELINE, transX = -1.dp())
+        builder.append("#", spanLeft, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+        builder.append("MOSHCHINO热度榜 No.1")
+        builder.append("#", spanRight, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+        textView.text = builder
 
+        val tags = arrayOf("得物APP专供", "限量款", "联名款")
+        val tagSpan = SpannableStringBuilder()
+        tags.forEachIndexed { index, tag ->
+            if (index != 0) {
+                tagSpan.append("", AlignImageSpan(this, R.drawable.ic_product_tag_divider,
+                    AlignImageSpan.ALIGN_CENTER), Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
             }
+            tagSpan.append(tag)
         }
+        textView.text = tagSpan
 
     }
 }
