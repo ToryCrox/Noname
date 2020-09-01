@@ -5,11 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shizhuang.duapp.common.component.module.ModuleDividerModel
 import com.tory.dmzj.home.api.ComicRepo
+import com.tory.dmzj.home.api.CommentRepo
 import com.tory.dmzj.home.model.ComicChapterItem
 import com.tory.dmzj.home.model.ComicChapterItemModel
 import com.tory.dmzj.home.model.ComicChapterTitleModel
 import com.tory.dmzj.home.model.ComicDetailModel
+import com.tory.library.log.LogUtils
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 /**
  * Author: xutao
@@ -30,6 +33,14 @@ class ComicDetailViewModel: ViewModel() {
         viewModelScope.launch {
             val model = ComicRepo.getComicDetail(id)
             result.value = handleData(model)
+
+            try {
+                val comment = CommentRepo.getLatestComment(id)
+                LogUtils.d("getLatestComment $comment")
+            } catch (e: Exception) {
+                LogUtils.e("getLatestComment", e)
+            }
+
         }
     }
 

@@ -3,6 +3,7 @@ package com.tory.dmzj.home.api
 import com.tory.dmzj.home.NetHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.http.Query
 
 /**
  * Author: xutao
@@ -15,16 +16,10 @@ import kotlinx.coroutines.withContext
  * 2020/8/30 xutao 1.0
  * Why & What is modified:
  */
-object ComicRepo {
+object CommentRepo {
 
-    private val service = NetHelper.retrofit.create(ComicService::class.java)
+    private val service = NetHelper.commentRetrofit.create(CommentService::class.java)
 
-    suspend fun getRecommendList() =
-        service.getRecommendList()
-
-    suspend fun getRecommendUpdate(cateId: Int) =
-        service.getRecommendUpdate(cateId)
-
-    suspend fun getComicDetail(id: Int) =
-        service.getComicDetail(id)
+    suspend fun getLatestComment(id: Int,  pageIndex: Int = 1, limit: Int = 10) =
+        service.getLatestComment(id, pageIndex, limit)
 }

@@ -30,6 +30,7 @@ dependencies {
     //支持多个dex文件构建应用程序
     implementation project(':base:common')
 
+    implementation libraries.okhttp3Logging
     implementation libraries.arouterApi
     kapt libraries.arouterProcessor
 

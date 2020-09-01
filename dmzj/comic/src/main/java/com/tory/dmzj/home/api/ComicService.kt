@@ -32,7 +32,7 @@ interface ComicService {
     suspend fun getRecommendUpdate(@Query("category_id") cateId: Int)
         : BaseResponse<RecommendModel>
 
-    @GET("/comic/comic_{id}.json")
+    @GET("comic/comic_{id}.json")
     suspend fun getComicDetail(@Path("id") id: Int)
         : ComicDetailModel
 }
