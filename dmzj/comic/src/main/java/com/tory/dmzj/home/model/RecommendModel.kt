@@ -3,6 +3,10 @@ package com.tory.dmzj.home.model
 
 import com.google.gson.annotations.SerializedName
 
+data class RecommendMapModel(
+    val map: Map<Int, RecommendModel>? = null
+)
+
 data class RecommendModel(
     @SerializedName("category_id")
     val categoryId: Int = 0, // 46

@@ -1,17 +1,13 @@
 package com.tory.dmzj.home.module.commic_detail
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.shizhuang.duapp.common.component.module.ModuleDividerModel
+import com.shizhuang.duapp.common.component.module.joinTo
+import com.tory.dmzj.home.BaseViewModel
 import com.tory.dmzj.home.api.ComicRepo
 import com.tory.dmzj.home.api.CommentRepo
-import com.tory.dmzj.home.model.ComicChapterItem
-import com.tory.dmzj.home.model.ComicChapterItemModel
-import com.tory.dmzj.home.model.ComicChapterTitleModel
-import com.tory.dmzj.home.model.ComicDetailModel
+import com.tory.dmzj.home.model.*
 import com.tory.library.log.LogUtils
-import kotlinx.coroutines.launch
 import java.lang.Exception
 
 /**
@@ -25,32 +21,47 @@ import java.lang.Exception
  * 2020/8/31 xutao 1.0
  * Why & What is modified:
  */
-class ComicDetailViewModel: ViewModel() {
+class ComicDetailViewModel: BaseViewModel() {
 
-    val result: MutableLiveData<List<Any>> = MutableLiveData()
+    val resultList: MutableLiveData<List<Any>> = MutableLiveData()
+    private var detailModel: ComicDetailModel? = null
+    private var commentCollectModel: CommentCollectModel? = null
 
     fun fetchData(id: Int) {
-        viewModelScope.launch {
+        launchOnUI {
             val model = ComicRepo.getComicDetail(id)
-            result.value = handleData(model)
-
-            try {
-                val comment = CommentRepo.getLatestComment(id)
-                LogUtils.d("getLatestComment $comment")
-            } catch (e: Exception) {
-                LogUtils.e("getLatestComment", e)
+            if (model == null) {
+                LogUtils.w("getComicDetail error")
+                return@launchOnUI
             }
+            detailModel = model
+            handleResult()
 
+            commentCollectModel = CommentRepo.getLatestComment(id)
+            handleResult()
         }
     }
 
-    private fun handleData(model: ComicDetailModel): List<Any>{
+    private fun handleResult(){
+        val model: ComicDetailModel = detailModel ?: return
         val result = mutableListOf<Any>()
         result.add(model.toHeader())
         result.add(ModuleDividerModel())
         result.add(model.toDesc())
         result.add(ModuleDividerModel())
-        result.addAll(model.chapters?.flatMap { chapter->
+        result.addAll(flatChapters(model))
+
+        commentCollectModel?.let {
+            result.addAll(flatComment(it))
+        }
+
+
+
+        resultList.value = result
+    }
+
+    private fun flatChapters(model: ComicDetailModel): List<Any> {
+        return model.chapters?.flatMap { chapter->
             val list = chapter.list.orEmpty().map { ComicChapterItemModel(it) }
             val title = ComicChapterTitleModel(chapter.title.orEmpty())
             val ll = if (list.size <= 12){
@@ -62,9 +73,14 @@ class ComicDetailViewModel: ViewModel() {
             ls.add(title)
             ls.addAll(ll)
             ls
-        }.orEmpty())
+        }.orEmpty()
+    }
 
-        return result
+    private fun flatComment(model: CommentCollectModel): List<Any> {
+        val comments = model.comments?.mapNotNull { it.value }
+                ?.map { CommentMainModel(it) }.orEmpty()
+
+        return ModuleDividerModel().joinTo(comments, true, true)
     }
 
 }

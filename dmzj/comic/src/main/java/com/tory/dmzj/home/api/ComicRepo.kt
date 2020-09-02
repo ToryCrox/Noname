@@ -20,11 +20,11 @@ object ComicRepo {
     private val service = NetHelper.retrofit.create(ComicService::class.java)
 
     suspend fun getRecommendList() =
-        service.getRecommendList()
+        service.getRecommendList().body()
 
     suspend fun getRecommendUpdate(cateId: Int) =
-        service.getRecommendUpdate(cateId)
+        service.getRecommendUpdate(cateId).body()
 
     suspend fun getComicDetail(id: Int) =
-        service.getComicDetail(id)
+        service.getComicDetail(id).body()
 }

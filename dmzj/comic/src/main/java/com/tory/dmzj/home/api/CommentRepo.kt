@@ -21,5 +21,5 @@ object CommentRepo {
     private val service = NetHelper.commentRetrofit.create(CommentService::class.java)
 
     suspend fun getLatestComment(id: Int,  pageIndex: Int = 1, limit: Int = 10) =
-        service.getLatestComment(id, pageIndex, limit)
+        service.getLatestComment(id, pageIndex, limit).body()
 }

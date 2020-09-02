@@ -36,7 +36,7 @@ public class ThreadUtils {
     }
 
     public static void executeDelayed(@NonNull Runnable runnable, int delay){
-        postMain(() -> execute(runnable),(long) delay);
+        postMainThread(() -> execute(runnable),(long) delay);
     }
 
     /**
@@ -44,8 +44,8 @@ public class ThreadUtils {
      *
      * @param runnable
      */
-    public static void postMain(Runnable runnable) {
-        postMain(runnable, 0L);
+    public static void postMainThread(Runnable runnable) {
+        postMainThread(runnable, 0L);
     }
 
     /**
@@ -53,7 +53,7 @@ public class ThreadUtils {
      *
      * @param runnable
      */
-    public static void postMain(Runnable runnable, long delayMillis) {
+    public static void postMainThread(Runnable runnable, long delayMillis) {
         if (runnable == null) {
             return;
         }

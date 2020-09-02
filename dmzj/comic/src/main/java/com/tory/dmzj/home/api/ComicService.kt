@@ -4,6 +4,7 @@ import com.tory.dmzj.home.model.BaseResponse
 import com.tory.dmzj.home.model.ComicDetailHeaderModel
 import com.tory.dmzj.home.model.ComicDetailModel
 import com.tory.dmzj.home.model.RecommendModel
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
@@ -25,14 +26,14 @@ interface ComicService {
 
     @Headers("dmzj: true")
     @GET("recommend_index_androids.json")
-    suspend fun getRecommendList(): List<RecommendModel>
+    suspend fun getRecommendList(): Response<List<RecommendModel>>
 
     @Headers("dmzj: true", "user: true")
     @GET("recommend/batchUpdate")
     suspend fun getRecommendUpdate(@Query("category_id") cateId: Int)
-        : BaseResponse<RecommendModel>
+        : Response<BaseResponse<RecommendModel>>
 
     @GET("comic/comic_{id}.json")
     suspend fun getComicDetail(@Path("id") id: Int)
-        : ComicDetailModel
+        : Response<ComicDetailModel>
 }

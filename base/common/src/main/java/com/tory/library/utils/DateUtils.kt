@@ -16,7 +16,7 @@ import java.util.Locale
  * Why & What is modified:
  */
 object DateUtils {
-    val dateFormat = SimpleDateFormat("", Locale.getDefault())
+    private val dateFormat = SimpleDateFormat("", Locale.getDefault())
 
     fun format(pattern: String, timeStamp: Long): String {
         dateFormat.applyPattern(pattern)

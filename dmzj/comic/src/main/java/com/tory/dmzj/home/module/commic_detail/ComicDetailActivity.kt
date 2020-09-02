@@ -9,10 +9,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.shizhuang.duapp.common.component.module.GroupMargin
 import com.shizhuang.duapp.common.extension.dp
 import com.tory.dmzj.home.RouterTable
-import com.tory.dmzj.home.views.ComicChapterItemView
-import com.tory.dmzj.home.views.ComicChapterTitleView
-import com.tory.dmzj.home.views.ComicDetailDescView
-import com.tory.dmzj.home.views.ComicDetailHeaderView
+import com.tory.dmzj.home.views.*
 import com.tory.library.base.VLayoutListActivity
 
 /**
@@ -45,6 +42,8 @@ class ComicDetailActivity: VLayoutListActivity() {
         listAdapter.register { ComicChapterTitleView(it.context) }
         listAdapter.register(gridSize = 4, groupType = "ComicChapter",
                 groupMargin = GroupMargin(4.dp())) { ComicChapterItemView(it.context) }
+
+        listAdapter.register { CommentMainView(it.context) }
     }
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -52,7 +51,7 @@ class ComicDetailActivity: VLayoutListActivity() {
         ARouter.getInstance().inject(this)
         title = detailTitle
 
-        viewModel.result.observe(this, Observer {
+        viewModel.resultList.observe(this, Observer {
             listAdapter.setItems(it.orEmpty())
             refreshLayout.isRefreshing = false
         })

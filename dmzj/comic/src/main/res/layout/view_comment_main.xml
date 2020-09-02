@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.tory.library.widget.CircleImageView
+        android:id="@+id/itemAvatar"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/itemNickName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/itemAvatar"
+        tools:text="绯天一红叶"/>
+
+    <TextView
+        android:id="@+id/itemUpdateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_text_tertiary"
+        android:textSize="10dp"
+        android:layout_marginTop="2dp"
+        tools:text="10小时前"
+        app:layout_constraintTop_toBottomOf="@id/itemNickName"
+        app:layout_constraintStart_toStartOf="@id/itemNickName"/>
+
+    <TextView
+        android:id="@+id/itemContent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_text_tertiary"
+        android:textSize="14dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        tools:text="10小时前"
+        app:layout_constraintTop_toBottomOf="@id/itemUpdateTime"
+        app:layout_constraintStart_toStartOf="@id/itemNickName"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,9 +22,9 @@ data class CommentItemModel(
     @SerializedName("content")
     val content: String? = null, // 太少了啊
     @SerializedName("create_time")
-    val createTime: String? = null, // 1598894835
+    val createTime: Long = 0, // 1598894835
     @SerializedName("id")
-    val id: String? = null, // 30071694
+    val id: Long = 0, // 30071694
     @SerializedName("is_goods")
     val isGoods: String? = null, // 0
     @SerializedName("like_amount")
@@ -41,4 +41,12 @@ data class CommentItemModel(
     val sex: String? = null, // 1
     @SerializedName("upload_images")
     val uploadImages: String? = null
+)
+
+data class CommentMainModel(
+        val data: CommentItemModel
+)
+
+data class CommentSubModel(
+        val data: CommentItemModel
 )
