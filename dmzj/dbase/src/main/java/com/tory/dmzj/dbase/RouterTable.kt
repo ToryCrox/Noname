@@ -15,4 +15,5 @@ object RouterTable {
 
     const val COMIC_MAIN_PAGE = "/comic/mainPage"
     const val COMIC_DETAIL_PAGE = "/comic/detailPage"
+    const val COMIC_SEARCH_PAGE = "/comic/searchPage"
 }

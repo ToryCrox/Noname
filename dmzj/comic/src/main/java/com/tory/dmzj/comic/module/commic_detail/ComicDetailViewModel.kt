@@ -25,7 +25,6 @@ class ComicDetailViewModel: BaseViewModel() {
 
     val resultList: MutableLiveData<List<Any>> = MutableLiveData()
     val detailTitle: MutableLiveData<String> = MutableLiveData()
-    val loadStatus: MutableLiveData<LoadStatus> = MutableLiveData()
 
     val limit = 10
     private var detailModel: ComicDetailModel? = null

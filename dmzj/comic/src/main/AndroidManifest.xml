@@ -8,6 +8,7 @@
         <meta-data android:name="com.tory.dmzj.comic.ComicAppLife" android:value="AppLifeModule"/>
 
         <activity android:name=".module.commic_detail.ComicDetailActivity" />
+        <activity android:name=".module.search.CommitSearchActivity" />
     </application>
 
 </manifest>

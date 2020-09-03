@@ -5,4 +5,4 @@ package com.tory.dmzj.dbase
  * @create 2020/9/3
  * @Describe
  */
-class LoadStatus(val refresh: Boolean, val canLoadMore: Boolean)
+data class LoadStatus(val refresh: Boolean, val canLoadMore: Boolean)

@@ -1,6 +1,7 @@
 package com.tory.dmzj.comic.api
 
 import com.tory.dmzj.comic.model.ComicDetailModel
+import com.tory.dmzj.comic.model.ComicSearchItemModel
 import com.tory.dmzj.comic.model.RecommendModel
 import com.tory.dmzj.dbase.model.BaseResponse
 import retrofit2.Response
@@ -31,7 +32,13 @@ interface ComicService {
     suspend fun getRecommendUpdate(@Query("category_id") cateId: Int)
         : Response<BaseResponse<RecommendModel>>
 
+    @Headers("dmzj: true")
     @GET("comic/comic_{id}.json")
     suspend fun getComicDetail(@Path("id") id: Int)
         : Response<ComicDetailModel>
+
+    @Headers("dmzj: true")
+    @GET("search/show/0/{key}/{pageIndex}.json")
+    suspend fun searchComic(@Path("key") key: String,@Path("pageIndex") pageIndex: Int)
+        : Response<List<ComicSearchItemModel>>
 }

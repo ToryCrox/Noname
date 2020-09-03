@@ -40,6 +40,7 @@ abstract class VLayoutListActivity : BaseActivity() {
         recyclerView.adapter = adapter
         initLoadMoreHelper()
 
+        refreshLayout.isEnabled = enableRefresh()
         refreshLayout.setOnRefreshListener {
             startRefresh()
         }
@@ -47,15 +48,21 @@ abstract class VLayoutListActivity : BaseActivity() {
 
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
-        startRefresh()
+        if (autoRefresh()) {
+            startRefresh()
+        }
     }
 
-    private fun startRefresh() {
+    fun startRefresh() {
         refreshLayout.isRefreshing = true
         doRefresh()
     }
 
     abstract fun registerViews()
+
+    open fun autoRefresh(): Boolean = true
+
+    open fun enableRefresh(): Boolean = true
 
     open fun enablePreloadMore(): Boolean = false
 

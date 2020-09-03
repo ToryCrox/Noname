@@ -1,5 +1,6 @@
 package com.tory.dmzj.dbase
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tory.library.utils.diskcache.DiskCacheManager
@@ -14,6 +15,8 @@ import kotlinx.coroutines.withContext
  * @Describe
  */
 open class BaseViewModel: ViewModel() {
+
+    val loadStatus: MutableLiveData<LoadStatus> = MutableLiveData()
 
     fun launchOnUI(block: suspend CoroutineScope.() -> Unit) {
         viewModelScope.launch { block() }

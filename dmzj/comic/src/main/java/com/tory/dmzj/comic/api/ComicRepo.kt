@@ -25,4 +25,7 @@ object ComicRepo {
 
     suspend fun getComicDetail(id: Int) =
         service.getComicDetail(id).body()
+
+    suspend fun searchComic(key: String, pageIndex: Int) =
+            service.searchComic(key, pageIndex).body()
 }

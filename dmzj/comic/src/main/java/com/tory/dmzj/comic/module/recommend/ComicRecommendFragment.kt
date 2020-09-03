@@ -24,8 +24,8 @@ import com.tory.library.log.LogUtils
  * 2020/8/30 xutao 1.0
  * Why & What is modified:
  */
-@Route(path = RouterTable.COMIC_MAIN_PAGE)
-class ComicMainFragment : VLayoutListFragment() {
+
+class ComicRecommendFragment : VLayoutListFragment() {
     val viewModel: RecommendViewModel by viewModels()
 
     override fun registerViews() {
@@ -49,5 +49,12 @@ class ComicMainFragment : VLayoutListFragment() {
         }
         refreshLayout.isRefreshing = true
         viewModel.fetchData()
+    }
+
+    companion object {
+
+        fun newInstance(): ComicRecommendFragment {
+            return ComicRecommendFragment()
+        }
     }
 }
