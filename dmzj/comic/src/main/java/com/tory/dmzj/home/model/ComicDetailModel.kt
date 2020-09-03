@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ComicDetailModel(
         @SerializedName("id")
-        val id: Int? = null, // 28653
+        val id: Long = 0, // 28653
         @SerializedName("islong")
         val islong: Int? = null, // 2
         @SerializedName("direction")
@@ -64,6 +64,7 @@ data class ComicDetailModel(
         val isDot: String? = null // 0
 ) {
     fun toHeader(): ComicDetailHeaderModel = ComicDetailHeaderModel(
+            id = id,
             title = title.orEmpty(),
             cover = cover.orEmpty(),
             authors = authors.orEmpty(),
@@ -81,6 +82,7 @@ data class ComicDetailModel(
 
 
 data class ComicDetailHeaderModel(
+        val id: Long = 0,
         val title: String = "", // 祭品公主与兽之王
         val cover: String? = null, // https://images.dmzj.com/webpic/12/jpgzyszw20200420.jpg
         val authors: List<ComicAuthor> = emptyList(),

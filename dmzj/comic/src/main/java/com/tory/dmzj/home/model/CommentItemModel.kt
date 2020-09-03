@@ -48,5 +48,7 @@ data class CommentMainModel(
 )
 
 data class CommentSubModel(
-        val data: CommentItemModel
+        val data: CommentItemModel,
+        val isFirst: Boolean,
+        val isLast: Boolean
 )

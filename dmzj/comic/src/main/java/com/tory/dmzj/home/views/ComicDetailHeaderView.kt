@@ -39,6 +39,7 @@ class ComicDetailHeaderView @JvmOverloads constructor(
             .transform(CenterCrop(), GlideTransforms.round)
             .into(itemCover)
 
+        itemId.text = model.id.toString()
         itemAuthors.text = model.authors.joinToString(" ") { it.tagName.orEmpty() }
         itemTypes.text = model.types.joinToString(" ") { it.tagName.orEmpty() }
         itemHot.text = "人气: ${model.hotNum}"

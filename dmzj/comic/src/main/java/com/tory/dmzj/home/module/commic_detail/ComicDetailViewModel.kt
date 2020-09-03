@@ -2,6 +2,8 @@ package com.tory.dmzj.home.module.commic_detail
 
 import androidx.lifecycle.MutableLiveData
 import com.shizhuang.duapp.common.component.module.ModuleDividerModel
+import com.shizhuang.duapp.common.component.module.ModuleEmptyContentModel
+import com.shizhuang.duapp.common.component.module.ModuleEmptyModel
 import com.shizhuang.duapp.common.component.module.joinTo
 import com.tory.dmzj.home.BaseViewModel
 import com.tory.dmzj.home.api.ComicRepo
@@ -77,10 +79,34 @@ class ComicDetailViewModel: BaseViewModel() {
     }
 
     private fun flatComment(model: CommentCollectModel): List<Any> {
-        val comments = model.comments?.mapNotNull { it.value }
-                ?.map { CommentMainModel(it) }.orEmpty()
+        val comments = mutableListOf<Any>()
+        val commentItems = model.comments.orEmpty()
+        for (ids in model.commentIds.orEmpty()) {
+            val idList = ids.split(",")
+            if (idList.isEmpty()){
+                continue
+            }
+            val mId = idList[0]
+            val mainItem = commentItems[mId] ?:continue
+            comments.add(CommentMainModel(mainItem))
+            val subIds = idList.subList(1, idList.size)
+            val subItems = subIds.mapNotNull { commentItems[it] }
+            subItems.forEachIndexed { index, item ->
+                comments.add(CommentSubModel(item, isFirst = index == 0,
+                        isLast = index == subItems.size -1))
+            }
+            comments.add(ModuleEmptyModel())
+            comments.add(ModuleDividerModel())
+        }
+        if (comments.isNotEmpty()){
+            comments.add(0, ModuleDividerModel())
+        }
+        return comments
 
-        return ModuleDividerModel().joinTo(comments, true, true)
+//        val comments = model.comments?.mapNotNull { it.value }
+//                ?.map { CommentMainModel(it) }.orEmpty()
+//
+//        return ModuleDividerModel().joinTo(comments, true, true)
     }
 
 }

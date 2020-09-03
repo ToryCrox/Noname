@@ -15,6 +15,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/itemId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/color_text_secondary"
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@id/itemCover"
+        app:layout_constraintEnd_toEndOf="@id/itemCover"
+        app:layout_constraintTop_toBottomOf="@id/itemCover"
+        tools:text="尾田"/>
+
+    <TextView
         android:id="@+id/itemAuthors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

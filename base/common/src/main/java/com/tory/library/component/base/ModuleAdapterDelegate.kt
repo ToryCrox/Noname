@@ -8,13 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.collection.ArrayMap
 import androidx.core.os.TraceCompat
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tory.library.BuildConfig
 import com.tory.library.R
+import com.tory.library.adapter.BaseLoadMoreBinder
+import com.tory.library.adapter.DefaultAdapterWrapper
 import com.tory.library.log.LogUtils
-import java.lang.IllegalStateException
 import java.lang.reflect.Constructor
 
 /**
@@ -38,6 +40,11 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
     private var isDebug: Boolean = BuildConfig.DEBUG
     private var recyclerView: RecyclerView? = null
 
+    /**
+     * 加载更多监听器
+     */
+    private val onLoadMoreListener: DefaultAdapterWrapper.OnLoadMoreListener? = null
+
     init {
         register { MallEmptyView(it.context) }
         register { MallSpaceView(it.context) }
@@ -52,6 +59,7 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
             ModuleEmptyContentView(it.context)
         }
     }
+
 
     fun setDebug(enable: Boolean) {
         this.isDebug = enable
