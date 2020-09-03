@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.tory.library.component.base.OnLoadMoreListener
 
 /**
  * 通用Adapter，适用于非vLayout
@@ -138,6 +139,12 @@ class NormalModuleAdapter(private val calDiff: Boolean = false) :
         } else {
             notifyItemRemoved(index)
         }
+    }
+
+    override fun setLoadMoreListener(listener: OnLoadMoreListener?) {
+    }
+
+    override fun setLoadMoreEnable(enable: Boolean) {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MCommonViewHolder {

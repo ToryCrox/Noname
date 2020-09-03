@@ -52,14 +52,28 @@ class ComicDetailActivity: VLayoutListActivity() {
         ARouter.getInstance().inject(this)
         title = detailTitle
 
+        viewModel.detailTitle.observe(this, Observer {
+            title = it
+        })
         viewModel.resultList.observe(this, Observer {
             listAdapter.setItems(it.orEmpty())
-            refreshLayout.isRefreshing = false
+
         })
-        refreshLayout.setOnRefreshListener {
-            viewModel.fetchData(id)
-        }
-        refreshLayout.isRefreshing = true
-        viewModel.fetchData(id)
+        viewModel.loadStatus.observe(this, Observer {
+            it ?: return@Observer
+            setRefreshAndLoadMoreState(it.refresh, it.canLoadMore)
+        })
+    }
+
+    override fun enablePreloadMore(): Boolean = true
+
+    override fun doRefresh() {
+        super.doRefresh()
+        viewModel.fetchData(id, true)
+    }
+
+    override fun doLoadMore() {
+        super.doLoadMore()
+        viewModel.fetchData(id, false)
     }
 }

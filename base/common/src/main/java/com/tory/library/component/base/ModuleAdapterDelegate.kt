@@ -16,6 +16,7 @@ import com.tory.library.BuildConfig
 import com.tory.library.R
 import com.tory.library.adapter.BaseLoadMoreBinder
 import com.tory.library.adapter.DefaultAdapterWrapper
+import com.tory.library.component.base.OnLoadMoreListener
 import com.tory.library.log.LogUtils
 import java.lang.reflect.Constructor
 
@@ -43,7 +44,8 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
     /**
      * 加载更多监听器
      */
-    private val onLoadMoreListener: DefaultAdapterWrapper.OnLoadMoreListener? = null
+    private var onLoadMoreListener: OnLoadMoreListener? = null
+    private var loadMoreEnable: Boolean = false
 
     init {
         register { MallEmptyView(it.context) }
@@ -72,6 +74,17 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
     fun detachFromRecyclerView() {
         this.recyclerView = null
     }
+
+
+    fun setLoadMoreListener(listener: OnLoadMoreListener?) {
+        loadMoreEnable = listener != null
+        onLoadMoreListener = listener
+    }
+
+    fun setLoadMoreEnable(enable: Boolean) {
+        loadMoreEnable = enable
+    }
+
     /**
      * 注册类型
      */
@@ -103,26 +116,26 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
         checkRegister(clazzType)
         registerGroupType(null, clazzType)
         val viewType = ViewType(
-            clazzType) { parent -> createView(viewClz, parent) }
+                clazzType) { parent -> createView(viewClz, parent) }
         addViewType(viewType)
     }
 
     inline fun <reified V, reified M : Any> register(
-        gridSize: Int = 1,
-        groupType: String? = null,
-        poolSize: Int = -1,
-        groupMargin: GroupMargin? = null,
-        crossinline creator: (ViewGroup) -> V
+            gridSize: Int = 1,
+            groupType: String? = null,
+            poolSize: Int = -1,
+            groupMargin: GroupMargin? = null,
+            crossinline creator: (ViewGroup) -> V
     ) where V : IModuleView<M>, V : View {
         val clazzType = M::class.java
         checkRegister(clazzType)
         registerGroupType(groupType, clazzType)
         val margin = transformMargin(groupMargin)
         val viewType = ViewType(
-            clazzType,
-            gridSize = gridSize,
-            poolSize = poolSize,
-            margin = margin) { parent -> creator(parent) }
+                clazzType,
+                gridSize = gridSize,
+                poolSize = poolSize,
+                margin = margin) { parent -> creator(parent) }
         addViewType(viewType)
     }
 
@@ -142,10 +155,10 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
     }
 
     fun <V : View> createView(clazz: Class<V>, parent: ViewGroup):
-        View {
+            View {
         return try {
             val constructor = getConstructor(
-                clazz)
+                    clazz)
             constructor.newInstance(parent.context)
         } catch (e: Exception) {
             if (isDebug) {
@@ -164,15 +177,15 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
         val model = dataAdapter.getItem(position)
         if (model == null && isDebug) {
             throw IllegalArgumentException("getItemViewType can not found view type for position: $position," +
-                " please check you register the Model")
+                    " please check you register the Model")
         } else if (model == null) {
             return TYPE_NONE
         }
         val viewType = getViewTypeIndex(model.javaClass)
         if (viewType < 1 && isDebug) {
             throw IllegalArgumentException("getItemViewType can not found view type " +
-                "for ${model.javaClass.name} model: $model," +
-                " please check you register the Model")
+                    "for ${model.javaClass.name} model: $model," +
+                    " please check you register the Model")
         }
         return viewType
     }
@@ -226,15 +239,15 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
             }
         } else { // 默认LayoutParams
             view.layoutParams = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT)
+                    ViewGroup.LayoutParams.WRAP_CONTENT)
         }
 
         if (isDebug) {
             val timeSpent = SystemClock.elapsedRealtime() - startTime
             debugViewCount.put(viewType, debugViewCount[viewType] + 1)
             LogUtils.d("$TAG createView viewType:$viewType, " +
-                "view:${view.javaClass.simpleName}, viewCount:${debugViewCount[viewType]}," +
-                " timeSpent: ${timeSpent}ms")
+                    "view:${view.javaClass.simpleName}, viewCount:${debugViewCount[viewType]}," +
+                    " timeSpent: ${timeSpent}ms")
         }
         TraceCompat.endSection()
 
@@ -242,10 +255,10 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
     }
 
     fun bindHolder(
-        view: View,
-        viewHolder: RecyclerView.ViewHolder,
-        viewType: Int,
-        rvAdapter: IModuleAdapter
+            view: View,
+            viewHolder: RecyclerView.ViewHolder,
+            viewType: Int,
+            rvAdapter: IModuleAdapter
     ) {
         view.setTag(MALL_ITEM_HOLDER_TAG, object : IRvItemHolder {
             override fun getLayoutPosition(): Int = viewHolder.adapterPosition - rvAdapter.getStartPosition()
@@ -278,7 +291,7 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
         if (isDebug) {
             val timeSpent = SystemClock.elapsedRealtime() - startTime
             LogUtils.d("$TAG bindView position:$position groupPosition:${view.groupPosition}" +
-                ", view:${view.javaClass.simpleName} timeSpent: ${timeSpent}ms")
+                    ", view:${view.javaClass.simpleName} timeSpent: ${timeSpent}ms")
         }
         TraceCompat.endSection()
     }
@@ -359,7 +372,7 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
 
         fun <V> getConstructor(clazz: Class<V>, dataClz: Class<*>? = null): Constructor<V> {
             val cKey = CKey(clazz,
-                dataClz)
+                    dataClz)
             val constructor = CONSTRUCTOR_CACHE[cKey]
             if (constructor != null) {
                 return constructor as Constructor<V>
@@ -420,17 +433,17 @@ interface IDataAdapter {
  * 组件类型
  */
 class ViewType<T : Any>(
-    val type: Class<T>,
-    val gridSize: Int = 1,
-    val poolSize: Int = -1,
-    val margin: Point? = null,
-    val viewCreator: IViewCreator
+        val type: Class<T>,
+        val gridSize: Int = 1,
+        val poolSize: Int = -1,
+        val margin: Point? = null,
+        val viewCreator: IViewCreator
 )
 
 class GroupMargin(
-    val all: Int = 0,
-    val start: Int = 0,
-    val end: Int = 0
+        val all: Int = 0,
+        val start: Int = 0,
+        val end: Int = 0
 )
 
 typealias IViewCreator = (parent: ViewGroup) -> View
@@ -466,8 +479,8 @@ class RvDiffCallback(private val oldList: List<Any>, private val newList: List<A
     override fun getNewListSize(): Int = newList.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-        oldList.getOrNull(oldItemPosition) == newList.getOrNull(newItemPosition)
+            oldList.getOrNull(oldItemPosition) == newList.getOrNull(newItemPosition)
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-        oldList.getOrNull(oldItemPosition) == newList.getOrNull(newItemPosition)
+            oldList.getOrNull(oldItemPosition) == newList.getOrNull(newItemPosition)
 }

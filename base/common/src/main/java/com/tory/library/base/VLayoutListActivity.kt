@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.alibaba.android.vlayout.VirtualLayoutManager
-import com.shizhuang.duapp.common.component.module.NormalModuleAdapter
 import com.shizhuang.duapp.common.component.module.VLayoutModuleAdapter
 import com.tory.library.R
+import com.tory.library.component.loadmore.LoadMoreHelper
 import com.tory.library.component.vlayout.VLayoutDelegateAdapter
 
 /**
@@ -20,9 +20,10 @@ import com.tory.library.component.vlayout.VLayoutDelegateAdapter
  * 2020/8/30 xutao 1.0
  * Why & What is modified:
  */
-abstract class VLayoutListActivity: BaseActivity() {
+abstract class VLayoutListActivity : BaseActivity() {
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var refreshLayout: SwipeRefreshLayout
+    private var loadMoreHelper: LoadMoreHelper? = null
     protected val listAdapter = VLayoutModuleAdapter()
 
     override fun getLayoutId(): Int = R.layout.common_activity_list
@@ -37,7 +38,55 @@ abstract class VLayoutListActivity: BaseActivity() {
         adapter.addAdapter(listAdapter)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
+        initLoadMoreHelper()
+
+        refreshLayout.setOnRefreshListener {
+            startRefresh()
+        }
+    }
+
+    override fun initData(savedInstanceState: Bundle?) {
+        super.initData(savedInstanceState)
+        startRefresh()
+    }
+
+    private fun startRefresh() {
+        refreshLayout.isRefreshing = true
+        doRefresh()
     }
 
     abstract fun registerViews()
+
+    open fun enablePreloadMore(): Boolean = false
+
+    open fun getPreloadMoreThreshold(): Int = 1
+
+    open fun doRefresh() = Unit
+
+    open fun doLoadMore() = Unit
+
+    open fun setRefreshAndLoadMoreState(isRefresh: Boolean, canLoadMore: Boolean) {
+        if (isRefresh) {
+            refreshLayout.isRefreshing = false
+        }
+        if (canLoadMore) {
+            loadMoreHelper?.hasMoreDataToLoad("more")
+        } else {
+            loadMoreHelper?.stopLoadMore()
+        }
+    }
+
+    private fun initLoadMoreHelper() {
+        val preloadMore = enablePreloadMore()
+        if (preloadMore) {
+            LoadMoreHelper.newInstance({
+                doLoadMore()
+            }, getPreloadMoreThreshold()).apply {
+                initLoadMoreView(recyclerView)
+                loadMoreHelper = this
+            }
+        }
+    }
+
+
 }

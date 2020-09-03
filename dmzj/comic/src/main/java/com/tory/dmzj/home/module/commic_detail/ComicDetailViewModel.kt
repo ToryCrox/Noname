@@ -2,15 +2,13 @@ package com.tory.dmzj.home.module.commic_detail
 
 import androidx.lifecycle.MutableLiveData
 import com.shizhuang.duapp.common.component.module.ModuleDividerModel
-import com.shizhuang.duapp.common.component.module.ModuleEmptyContentModel
 import com.shizhuang.duapp.common.component.module.ModuleEmptyModel
-import com.shizhuang.duapp.common.component.module.joinTo
 import com.tory.dmzj.home.BaseViewModel
+import com.tory.dmzj.home.LoadStatus
 import com.tory.dmzj.home.api.ComicRepo
 import com.tory.dmzj.home.api.CommentRepo
 import com.tory.dmzj.home.model.*
 import com.tory.library.log.LogUtils
-import java.lang.Exception
 
 /**
  * Author: xutao
@@ -26,21 +24,39 @@ import java.lang.Exception
 class ComicDetailViewModel: BaseViewModel() {
 
     val resultList: MutableLiveData<List<Any>> = MutableLiveData()
+    val detailTitle: MutableLiveData<String> = MutableLiveData()
+    val loadStatus: MutableLiveData<LoadStatus> = MutableLiveData()
+
+    val limit = 10
     private var detailModel: ComicDetailModel? = null
-    private var commentCollectModel: CommentCollectModel? = null
+    private var commentCollectModels: MutableList<CommentCollectModel> = mutableListOf()
 
-    fun fetchData(id: Int) {
+    fun fetchData(id: Int, isRefresh : Boolean) {
         launchOnUI {
-            val model = ComicRepo.getComicDetail(id)
-            if (model == null) {
-                LogUtils.w("getComicDetail error")
-                return@launchOnUI
+            if (isRefresh) {
+                val model = ComicRepo.getComicDetail(id)
+                if (model == null) {
+                    LogUtils.w("getComicDetail error")
+                    loadStatus.value = LoadStatus(isRefresh, false)
+                    return@launchOnUI
+                }
+                detailModel = model
+                detailTitle.value = model.title
+                handleResult()
             }
-            detailModel = model
-            handleResult()
-
-            commentCollectModel = CommentRepo.getLatestComment(id)
-            handleResult()
+            if (isRefresh) {
+                commentCollectModels.clear()
+            }
+            val pageIndex = commentCollectModels.size + 1
+            val model = CommentRepo.getLatestComment(id, pageIndex = pageIndex, limit = limit)
+            if (model != null){
+                commentCollectModels.add(model)
+                handleResult()
+                loadStatus.value = LoadStatus(isRefresh, model.commentIds.orEmpty().size >= limit)
+            } else {
+                LogUtils.w("can not find comments")
+                loadStatus.value = LoadStatus(isRefresh, false)
+            }
         }
     }
 
@@ -53,11 +69,7 @@ class ComicDetailViewModel: BaseViewModel() {
         result.add(ModuleDividerModel())
         result.addAll(flatChapters(model))
 
-        commentCollectModel?.let {
-            result.addAll(flatComment(it))
-        }
-
-
+        result.addAll(commentCollectModels.flatMap { flatComment(it) })
 
         resultList.value = result
     }
@@ -95,7 +107,9 @@ class ComicDetailViewModel: BaseViewModel() {
                 comments.add(CommentSubModel(item, isFirst = index == 0,
                         isLast = index == subItems.size -1))
             }
-            comments.add(ModuleEmptyModel())
+            if (subItems.isNotEmpty()) {
+                comments.add(ModuleEmptyModel())
+            }
             comments.add(ModuleDividerModel())
         }
         if (comments.isNotEmpty()){

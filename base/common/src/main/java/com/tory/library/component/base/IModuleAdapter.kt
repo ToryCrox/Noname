@@ -2,6 +2,7 @@ package com.shizhuang.duapp.common.component.module
 
 import android.content.Context
 import androidx.recyclerview.widget.GridLayoutManager
+import com.tory.library.component.base.OnLoadMoreListener
 
 /**
  * Author: xutao
@@ -78,4 +79,9 @@ interface IModuleAdapter {
      * 刷新指定的元素
      */
     fun refresh(oldItem: Any, newItem: Any? = oldItem)
+
+
+    fun setLoadMoreListener(listener: OnLoadMoreListener?)
+
+    fun setLoadMoreEnable(enable: Boolean)
 }

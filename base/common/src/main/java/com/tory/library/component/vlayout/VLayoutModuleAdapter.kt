@@ -11,6 +11,7 @@ import com.alibaba.android.vlayout.LayoutHelper
 import com.alibaba.android.vlayout.layout.LinearLayoutHelper
 import com.tory.library.component.CommonViewHolder
 import com.tory.library.component.base.ExtendGridLayoutHelper
+import com.tory.library.component.base.OnLoadMoreListener
 import com.tory.library.component.vlayout.VLayoutDelegateInnerAdapter
 import com.tory.library.log.LogUtils
 
@@ -160,6 +161,12 @@ open class VLayoutModuleAdapter(
         } else {
             notifyItemRemoved(index)
         }
+    }
+
+    override fun setLoadMoreListener(listener: OnLoadMoreListener?) {
+    }
+
+    override fun setLoadMoreEnable(enable: Boolean) {
     }
 
     override fun getItemViewType(position: Int): Int {
