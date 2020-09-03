@@ -3,6 +3,7 @@ package com.tory.dmzj.home
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.launcher.ARouter
+import com.tory.dmzj.dbase.RouterTable
 import com.tory.library.base.BaseActivity
 import com.tory.library.log.LogUtils
 

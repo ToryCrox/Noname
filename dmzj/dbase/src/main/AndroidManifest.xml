@@ -5,9 +5,9 @@
 
     <application>
 
-        <meta-data android:name="com.tory.dmzj.home.DbaseAppLife" android:value="AppLifeModule"/>
+        <meta-data android:name="com.tory.dmzj.dbase.DbaseAppLife" android:value="AppLifeModule"/>
         <meta-data
-            android:name="com.tory.dmzj.home.glide.OkHttpGlideModule"
+            android:name="com.tory.dmzj.dbase.glide.OkHttpGlideModule"
             android:value="GlideModule"/>
 
     </application>
