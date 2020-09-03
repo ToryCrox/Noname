@@ -34,6 +34,7 @@ class ComicSearchItemView @JvmOverloads constructor(
                 .load(model.cover)
                 .transform(CenterCrop(), GlideTransforms.round)
                 .into(itemCover)
+        itemTitle.text = model.title
         itemAuthors.text = model.authors
         itemTypes.text = model.types
         itemLastName.text = model.lastName

@@ -17,15 +17,25 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/itemAuthors"
+        android:id="@+id/itemTitle"
         tools:text="尾田"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:textColor="@color/color_text_secondary"
-        android:textSize="15dp"
+        android:textSize="18dp"
         app:layout_constraintStart_toEndOf="@id/itemCover"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/itemAuthors"
+        tools:text="尾田"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_text_secondary"
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@id/itemTitle"
+        app:layout_constraintTop_toBottomOf="@id/itemTitle" />
 
     <TextView
         android:id="@+id/itemTypes"
@@ -35,7 +45,7 @@
         android:layout_marginTop="2dp"
         android:textColor="@color/color_text_secondary"
         android:textSize="15dp"
-        app:layout_constraintStart_toStartOf="@id/itemAuthors"
+        app:layout_constraintStart_toStartOf="@id/itemTitle"
         app:layout_constraintTop_toBottomOf="@id/itemAuthors" />
 
     <TextView
@@ -46,7 +56,7 @@
         android:layout_marginTop="2dp"
         android:textColor="@color/color_text_secondary"
         android:textSize="15dp"
-        app:layout_constraintStart_toStartOf="@id/itemAuthors"
+        app:layout_constraintStart_toStartOf="@id/itemTitle"
         app:layout_constraintTop_toBottomOf="@id/itemTypes" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
