@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.alibaba.android.vlayout.VirtualLayoutManager
 import com.shizhuang.duapp.common.component.module.VLayoutModuleAdapter
+import com.shizhuang.duapp.common.extension.color
 import com.tory.library.R
 import com.tory.library.component.loadmore.LoadMoreHelper
 import com.tory.library.component.vlayout.VLayoutDelegateAdapter
@@ -31,6 +32,7 @@ abstract class VLayoutListActivity : BaseActivity() {
     override fun initView(savedInstanceState: Bundle?) {
         recyclerView = findViewById(R.id.recyclerView)
         refreshLayout = findViewById(R.id.refreshLayout)
+        refreshLayout.setColorSchemeColors(color(R.color.colorPrimary))
         registerViews()
 
         val layoutManager = VirtualLayoutManager(this)

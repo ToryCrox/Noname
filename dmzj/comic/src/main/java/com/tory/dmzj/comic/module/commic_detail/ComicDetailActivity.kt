@@ -44,6 +44,7 @@ class ComicDetailActivity: VLayoutListActivity() {
                 groupMargin = GroupMargin(4.dp())) { ComicChapterItemView(it.context) }
 
         listAdapter.register { CommentMainView(it.context) }
+        listAdapter.register { CommentImageView(it.context) }
         listAdapter.register { CommentSubView(it.context) }
     }
 

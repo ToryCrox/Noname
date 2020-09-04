@@ -4,7 +4,7 @@ import android.util.ArrayMap
 import androidx.lifecycle.MediatorLiveData
 import com.shizhuang.duapp.common.component.module.ModuleSpaceModel
 import com.tory.dmzj.comic.ComicConstant
-import com.tory.dmzj.comic.api.ComicRepo
+import com.tory.dmzj.comic.api.ComicRepository
 import com.tory.dmzj.comic.model.RecommendBannerModel
 import com.tory.dmzj.comic.model.RecommendMapModel
 import com.tory.dmzj.comic.model.RecommendModel
@@ -50,13 +50,13 @@ class RecommendViewModel : BaseViewModel() {
             fetchCache()
 
             val list = async {
-                ComicRepo.getRecommendList()
+                ComicRepository.getRecommendList()
             }
             val orderItem = async {
-                ComicRepo.getRecommendUpdate(ComicConstant.CATE_ID_ORDER)
+                ComicRepository.getRecommendUpdate(ComicConstant.CATE_ID_ORDER)
             }
             val likeItem = async {
-                ComicRepo.getRecommendUpdate(ComicConstant.CATE_ID_MAY_LIKE)
+                ComicRepository.getRecommendUpdate(ComicConstant.CATE_ID_MAY_LIKE)
             }
             val rList = list.await().orEmpty()
             for (recommendModel in rList) {

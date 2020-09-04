@@ -31,6 +31,7 @@ object NetHelper {
     private val API_IMAGE_BASE = "http://images.dmzj.com/"
     private val API_IMAGE_BASE_HTTPS = "https://images.dmzj.com/"
     private val API_IMAGE_BASE_AVATAR = "https://avatar.dmzj.com/"
+     val COMMENT_IMAGE_BASE_URL = "http://images.dmzj.com/commentImg/"
     private val DMZJ_IMAGES = arrayOf(API_IMAGE_BASE,
             API_IMAGE_BASE_HTTPS, API_IMAGE_BASE_AVATAR)
 

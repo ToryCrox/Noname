@@ -55,11 +55,11 @@ data class ComicDetailModel(
         @SerializedName("is_need_login")
         val isNeedLogin: Int? = null, // 0
         @SerializedName("url_links")
-        val urlLinks: List<String>? = null,
+        val urlLinks: List<UrlLinkModel>? = null,
         @SerializedName("isHideChapter")
         val isHideChapter: String? = null, // 0
         @SerializedName("dh_url_links")
-        val dhUrlLinks: List<DhUrlLink>? = null,
+        val dhUrlLinks: List<UrlLinkModel>? = null,
         @SerializedName("is_dot")
         val isDot: String? = null // 0
 ) {

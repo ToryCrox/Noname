@@ -3,7 +3,7 @@ package com.tory.dmzj.comic.module.search
 import androidx.lifecycle.MutableLiveData
 import com.shizhuang.duapp.common.component.module.ModuleDividerModel
 import com.shizhuang.duapp.common.component.module.joinTo
-import com.tory.dmzj.comic.api.ComicRepo
+import com.tory.dmzj.comic.api.ComicRepository
 import com.tory.dmzj.comic.model.ComicSearchItemModel
 import com.tory.dmzj.dbase.BaseViewModel
 import com.tory.dmzj.dbase.LoadStatus
@@ -26,7 +26,7 @@ class ComicSearchViewModel: BaseViewModel() {
                 resList.clear()
             }
             val pageIndex = resList.size
-            val list = ComicRepo.searchComic(key, pageIndex)
+            val list = ComicRepository.searchComic(key, pageIndex)
             if (list == null){
                 loadStatus.value = LoadStatus(isRefresh, false)
                 return@launchOnUI
