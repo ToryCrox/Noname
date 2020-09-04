@@ -1,7 +1,6 @@
 package com.tory.dmzj.comic.module.recommend
 
 import android.util.ArrayMap
-import androidx.lifecycle.MediatorLiveData
 import com.shizhuang.duapp.common.component.module.ModuleSpaceModel
 import com.tory.dmzj.comic.ComicConstant
 import com.tory.dmzj.comic.api.ComicRepository
@@ -28,8 +27,6 @@ class RecommendViewModel : BaseViewModel() {
     val topicCate = arrayOf(93, 48, 53, 55)
 
     private val recommendMap = ArrayMap<Int, RecommendModel>()
-
-    val result: MediatorLiveData<List<Any>> = MediatorLiveData<List<Any>>()
 
     private var isReadCache = false
 
@@ -85,6 +82,6 @@ class RecommendViewModel : BaseViewModel() {
             }
         }
 
-        result.value = list
+        resultList.value = list
     }
 }

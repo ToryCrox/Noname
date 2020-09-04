@@ -23,7 +23,6 @@ import com.tory.library.log.LogUtils
  */
 class ComicDetailViewModel: BaseViewModel() {
 
-    val resultList: MutableLiveData<List<Any>> = MutableLiveData()
     val detailTitle: MutableLiveData<String> = MutableLiveData()
 
     val limit = 10

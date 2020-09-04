@@ -7,7 +7,7 @@ import com.shizhuang.duapp.common.component.module.AbsModuleView
 import com.tory.dmzj.comic.R
 import com.tory.dmzj.comic.dialog.ComicChapterAllDialog
 import com.tory.dmzj.comic.model.ComicChapterItemModel
-import kotlinx.android.synthetic.main.view_commic_chapter_item.view.*
+import kotlinx.android.synthetic.main.view_comic_chapter_item.view.*
 
 /**
  * @author tory
@@ -20,7 +20,7 @@ class ComicChapterItemView @JvmOverloads constructor(
 
 
     override fun getLayoutId(): Int {
-        return R.layout.view_commic_chapter_item
+        return R.layout.view_comic_chapter_item
     }
 
     override fun onChanged(model: ComicChapterItemModel) {

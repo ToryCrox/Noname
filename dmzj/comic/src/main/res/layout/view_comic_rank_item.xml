@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/selectableItemBackground"
+    android:padding="16dp">
+
+
+    <ImageView
+        android:id="@+id/itemCover"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="3:4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/itemTitle"
+        tools:text="尾田"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/color_text_secondary"
+        android:textSize="18dp"
+        app:layout_constraintStart_toEndOf="@id/itemCover"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/itemAuthors"
+        tools:text="尾田"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_text_secondary"
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@id/itemTitle"
+        app:layout_constraintTop_toBottomOf="@id/itemTitle" />
+
+    <TextView
+        android:id="@+id/itemTypes"
+        tools:text="热血 冒险"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/color_text_secondary"
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@id/itemTitle"
+        app:layout_constraintTop_toBottomOf="@id/itemAuthors" />
+
+    <TextView
+        android:id="@+id/itemLastTime"
+        tools:text="热血 冒险"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/color_text_secondary"
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@id/itemTitle"
+        app:layout_constraintTop_toBottomOf="@id/itemTypes" />
+
+    <TextView
+        android:id="@+id/itemRank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

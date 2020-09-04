@@ -1,6 +1,5 @@
 package com.tory.dmzj.comic.module.search
 
-import androidx.lifecycle.MutableLiveData
 import com.shizhuang.duapp.common.component.module.ModuleDividerModel
 import com.shizhuang.duapp.common.component.module.joinTo
 import com.tory.dmzj.comic.api.ComicRepository
@@ -15,7 +14,6 @@ import com.tory.dmzj.dbase.LoadStatus
  */
 class ComicSearchViewModel: BaseViewModel() {
 
-    val result = MutableLiveData<List<Any>>()
 
     val resList = mutableListOf<List<ComicSearchItemModel>>()
 
@@ -33,7 +31,7 @@ class ComicSearchViewModel: BaseViewModel() {
             }
             resList.add(list)
 
-            result.value = ModuleDividerModel().joinTo(resList.flatten())
+            resultList.value = ModuleDividerModel().joinTo(resList.flatten())
             loadStatus.value = LoadStatus(isRefresh, list.isNotEmpty())
 
         }

@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.alibaba.android.arouter.facade.annotation.Route
 import com.tory.dmzj.comic.views.RecommendBannerView
 import com.tory.dmzj.comic.views.RecommendComicView
 import com.tory.dmzj.comic.views.RecommendTitleView
 import com.tory.dmzj.comic.views.RecommendTopicView
-import com.tory.dmzj.dbase.RouterTable
 import com.tory.library.base.VLayoutListFragment
 import com.tory.library.log.LogUtils
 
@@ -40,7 +38,7 @@ class ComicRecommendFragment : VLayoutListFragment() {
         super.initView(view, savedInstanceState)
 
         LogUtils.d("ComicMainFragment initView")
-        viewModel.result.observe(this, Observer {
+        viewModel.resultList.observe(this, Observer {
             listAdapter.setItems(it.orEmpty())
             refreshLayout.isRefreshing = false
         })

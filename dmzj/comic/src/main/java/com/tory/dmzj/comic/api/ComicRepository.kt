@@ -49,4 +49,11 @@ object ComicRepository : BaseRepository() {
      */
     suspend fun searchComic(key: String, pageIndex: Int) =
         safeApiCall { service.searchComic(key, pageIndex).body() }
+
+    /**
+     * 排行
+     */
+    suspend fun getRankList(pageIndex: Int) = safeApiCall {
+        service.getRankList(pageIndex = pageIndex).body()
+    }
 }

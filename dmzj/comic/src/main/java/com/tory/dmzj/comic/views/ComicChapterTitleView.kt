@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import com.shizhuang.duapp.common.component.module.AbsModuleView
 import com.tory.dmzj.comic.R
 import com.tory.dmzj.comic.model.ComicChapterTitleModel
-import kotlinx.android.synthetic.main.view_commic_chapter_title.view.*
+import kotlinx.android.synthetic.main.view_comic_chapter_title.view.*
 
 /**
  * @author tory
@@ -18,7 +18,7 @@ class ComicChapterTitleView @JvmOverloads constructor(
 
 
     override fun getLayoutId(): Int {
-        return R.layout.view_commic_chapter_title
+        return R.layout.view_comic_chapter_title
     }
 
     override fun onChanged(model: ComicChapterTitleModel) {

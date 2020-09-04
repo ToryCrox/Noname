@@ -1,5 +1,6 @@
 package com.tory.dmzj.dbase
 
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,6 +18,8 @@ import kotlinx.coroutines.withContext
 open class BaseViewModel: ViewModel() {
 
     val loadStatus: MutableLiveData<LoadStatus> = MutableLiveData()
+
+    val resultList: MediatorLiveData<List<Any>> = MediatorLiveData<List<Any>>()
 
     fun launchOnUI(block: suspend CoroutineScope.() -> Unit) {
         viewModelScope.launch { block() }

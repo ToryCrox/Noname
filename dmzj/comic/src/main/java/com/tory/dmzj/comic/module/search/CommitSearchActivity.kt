@@ -38,7 +38,7 @@ class CommitSearchActivity: VLayoutListActivity() {
             LogUtils.d(TAG, "loadStatus $it")
             setRefreshAndLoadMoreState(it.refresh, it.canLoadMore)
         })
-        viewModel.result.observe(this, Observer {
+        viewModel.resultList.observe(this, Observer {
             listAdapter.setItems(it.orEmpty())
         })
     }

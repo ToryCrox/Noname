@@ -11,7 +11,7 @@ import com.tory.dmzj.comic.model.ComicSearchItemModel
 import com.tory.dmzj.dbase.RouterTable
 import com.tory.dmzj.dbase.glide.GlideTransforms
 import com.tory.library.log.LogUtils
-import kotlinx.android.synthetic.main.view_commic_search_item.view.*
+import kotlinx.android.synthetic.main.view_comic_search_item.view.*
 
 /**
  * @author tory
@@ -23,7 +23,7 @@ class ComicSearchItemView @JvmOverloads constructor(
 ) : AbsModuleView<ComicSearchItemModel>(context, attrs, defStyleAttr) {
 
     override fun getLayoutId(): Int {
-        return R.layout.view_commic_search_item
+        return R.layout.view_comic_search_item
     }
 
     override fun onChanged(model: ComicSearchItemModel) {
