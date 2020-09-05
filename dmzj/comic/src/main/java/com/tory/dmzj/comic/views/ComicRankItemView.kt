@@ -46,6 +46,7 @@ class ComicRankItemView @JvmOverloads constructor(
         val updateStr = DateUtils.format("yyyy-MM-dd",
             model.lastUpdatetime * 1000L)
         itemLastTime.text = "$updateStr ${model.status}"
+        itemRankIndex.text = model.rankIndex.toString()
 
         setOnClickListener {
             ARouter.getInstance()

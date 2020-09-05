@@ -83,5 +83,7 @@
         <!-- Whether to use unbounded ripple effect for tabs, or if ripple should instead be bound to
              tab item bounds. -->
         <attr format="boolean" name="mtabUnboundedRipple"/>
+
+        <attr format="dimension" name="mtabTextSize"/>
     </declare-styleable>
 </resources>

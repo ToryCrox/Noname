@@ -60,6 +60,8 @@ dependencies {
 
     api libraries.vlayout
 
+    api libraries.subsamplingImageView
+
     api 'com.tencent.tbs.tbssdk:sdk:43697'
 }
 

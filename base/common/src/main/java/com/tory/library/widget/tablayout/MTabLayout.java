@@ -460,7 +460,7 @@ public class MTabLayout extends HorizontalScrollView {
     }
 
     public MTabLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, R.attr.tabStyle);
+        this(context, attrs, 0);
     }
 
     public MTabLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -517,18 +517,22 @@ public class MTabLayout extends HorizontalScrollView {
         // Text colors/sizes come from the text appearance first
         final TypedArray ta =
                 context.obtainStyledAttributes(
-                        tabTextAppearance, androidx.appcompat.R.styleable.TextAppearance);
+                        tabTextAppearance, R.styleable.TextAppearance);
         try {
             tabTextSize =
                     ta.getDimensionPixelSize(
-                            androidx.appcompat.R.styleable.TextAppearance_android_textSize, 0);
+                            R.styleable.TextAppearance_android_textSize, 0);
             tabTextColors =
                     MaterialResources.getColorStateList(
                             context,
-                            ta,
-                            androidx.appcompat.R.styleable.TextAppearance_android_textColor);
+                            ta, R.styleable.TextAppearance_android_textColor);
         } finally {
             ta.recycle();
+        }
+
+        if (a.hasValue(R.styleable.MTabLayout_mtabTextSize)) {
+            tabTextSize = a.getDimensionPixelSize(R.styleable.MTabLayout_mtabTextSize,
+                    (int)tabTextSize);
         }
 
         if (a.hasValue(R.styleable.MTabLayout_mtabTextColor)) {

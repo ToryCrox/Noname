@@ -93,6 +93,7 @@
         <item name="mtabTextColor">@null</item>
         <item name="mtabRippleColor">?attr/colorControlHighlight</item>
         <item name="mtabUnboundedRipple">false</item>
-        <item name="mtabIndicatorFullWidth">true</item>
+        <item name="mtabIndicatorFullWidth">false</item>
+        <item name="mtabMinWidth">48dp</item>
     </style>
 </resources>

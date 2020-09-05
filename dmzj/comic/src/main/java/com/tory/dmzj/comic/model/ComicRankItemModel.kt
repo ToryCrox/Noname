@@ -26,4 +26,7 @@ data class ComicRankItemModel(
     val title: String,
     @SerializedName("types")
     val types: String
-)
+) {
+    @Transient
+    var rankIndex: Int = 0
+}

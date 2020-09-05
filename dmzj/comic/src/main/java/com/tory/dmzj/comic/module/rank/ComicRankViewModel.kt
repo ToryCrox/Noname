@@ -1,5 +1,7 @@
 package com.tory.dmzj.comic.module.rank
 
+import com.shizhuang.duapp.common.component.module.ModuleDividerModel
+import com.shizhuang.duapp.common.component.module.joinTo
 import com.tory.dmzj.comic.api.ComicRepository
 import com.tory.dmzj.comic.model.ComicRankItemModel
 import com.tory.dmzj.dbase.BaseViewModel
@@ -34,9 +36,13 @@ class ComicRankViewModel: BaseViewModel() {
                rankListData.clear()
            }
            rankListData.add(rankData)
-           resultList.value = rankListData.flatMap { it }
+           var index = 1
+           val rankModels = rankListData.flatMap { it.map {
+               it.rankIndex = index ++
+               it
+           } }
+           resultList.value = ModuleDividerModel().joinTo(rankModels)
            loadStatus.value = LoadStatus(isRefresh, rankData.isNotEmpty())
-
        }
 
    }

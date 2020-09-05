@@ -8,6 +8,8 @@ import com.tory.dmzj.comic.R
 import com.tory.dmzj.comic.model.CommentImageModel
 import com.tory.dmzj.comic.model.CommentImagesModel
 import com.tory.library.log.LogUtils
+import com.tory.library.model.PicItemModel
+import com.tory.library.ui.pics.PicsHelper
 import kotlinx.android.synthetic.main.view_comment_image.view.*
 
 /**
@@ -35,6 +37,10 @@ class CommentImageView @JvmOverloads constructor(
         Glide.with(this)
             .load(model.getImageUrl(true))
             .into(itemImage)
+
+        setOnClickListener {
+            PicsHelper.launch(context, listOf(PicItemModel(model.getImageUrl(false))))
+        }
     }
 
 

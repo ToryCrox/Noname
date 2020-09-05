@@ -12,6 +12,7 @@
         android:theme="@style/MAppTheme">
 
 
+        <activity android:name=".ui.pics.PicsActivity" />
     </application>
 
 </manifest>
