@@ -22,5 +22,6 @@ data class PicsModel(
 
 @Parcelize
 data class PicItemModel(
-    val url: String
+    val url: String,
+    val previewUrl: String? = null
 ):Parcelable

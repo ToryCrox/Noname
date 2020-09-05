@@ -1,5 +1,7 @@
 package com.tory.dmzj.dbase
 
+import android.annotation.SuppressLint
+import com.tory.dmzj.dbase.net.ProxySSLSocketFactory
 import com.tory.library.log.LogUtils
 import okhttp3.Headers
 import okhttp3.Interceptor
@@ -8,8 +10,22 @@ import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
+import java.net.InetSocketAddress
+import java.net.Proxy
+import java.net.ProxySelector
+import java.net.SocketAddress
+import java.net.URI
+import java.security.SecureRandom
+import java.security.cert.CertificateException
+import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
-
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.SSLContext
+import javax.net.ssl.SSLSession
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 /**
  * Author: xutao
@@ -31,38 +47,66 @@ object NetHelper {
     private val API_IMAGE_BASE = "http://images.dmzj.com/"
     private val API_IMAGE_BASE_HTTPS = "https://images.dmzj.com/"
     private val API_IMAGE_BASE_AVATAR = "https://avatar.dmzj.com/"
-     val COMMENT_IMAGE_BASE_URL = "http://images.dmzj.com/commentImg/"
+    val COMMENT_IMAGE_BASE_URL = "http://images.dmzj.com/commentImg/"
     private val DMZJ_IMAGES = arrayOf(API_IMAGE_BASE,
-            API_IMAGE_BASE_HTTPS, API_IMAGE_BASE_AVATAR)
-
+        API_IMAGE_BASE_HTTPS, API_IMAGE_BASE_AVATAR)
     private val UID = 100013896
+    private val BASE_URL_KONACHAN = "https://konachan.com/"
+    private val BASE_URL_YANDE = "https://yande.re/"
+    private val PROXY_URLS = arrayOf(BASE_URL_KONACHAN,
+        BASE_URL_YANDE, "yande.re")
+
+    var httpProxy: Proxy = Proxy(Proxy.Type.HTTP,
+        InetSocketAddress("127.0.0.1", 10808))
+    var socketProxy: Proxy = Proxy(Proxy.Type.HTTP,
+        InetSocketAddress("127.0.0.1", 10809))
 
     val okHttpClient: OkHttpClient by lazy {
         val logInterceptor = HttpLoggingInterceptor()
         logInterceptor.level = HttpLoggingInterceptor.Level.BODY
         OkHttpClient.Builder()
-                .connectTimeout(DEFAULT_CONNECT_TIMEOUT, TimeUnit.SECONDS)
-                .readTimeout(DEFAULT_READ_TIMEOUT, TimeUnit.SECONDS)
-                .writeTimeout(DEFAULT_WRITE_TIMEOUT, TimeUnit.SECONDS)
-                .addInterceptor(DMZJInterceptor())
-                .addNetworkInterceptor(logInterceptor)
-                .build()
+            .connectTimeout(DEFAULT_CONNECT_TIMEOUT, TimeUnit.SECONDS)
+            .readTimeout(DEFAULT_READ_TIMEOUT, TimeUnit.SECONDS)
+            .writeTimeout(DEFAULT_WRITE_TIMEOUT, TimeUnit.SECONDS)
+            .addInterceptor(DMZJInterceptor())
+            .addNetworkInterceptor(logInterceptor)
+            //.sslSocketFactory(ProxySSLSocketFactory(socketProxy, createSSLSocketFactory()), TrustAllManager())
+            .sslSocketFactory(createSSLSocketFactory(), TrustAllManager())
+            .hostnameVerifier(TrustAllHostnameVerifier())
+            .proxySelector(MProxyProxySelector())
+            .build()
     }
     val retrofit: Retrofit by lazy {
         Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+            .baseUrl(BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
     }
-
     val commentRetrofit: Retrofit by lazy {
         Retrofit.Builder()
-                .baseUrl(BASE_COMMENT_URL)
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+            .baseUrl(BASE_COMMENT_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
     }
+    val konachanRetrofit: Retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL_KONACHAN)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    val yandeRetrofit: Retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL_YANDE)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+
 
     private class DMZJInterceptor : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
@@ -80,11 +124,11 @@ object NetHelper {
             val isDmzj = headers.get("dmzj")
             if (isDmzj?.toLowerCase()?.trim() == "true") {
                 val dmzjBuilder = request.url().newBuilder()
-                        .addQueryParameter("terminal_model", "MI 9")
-                        .addQueryParameter("channel", "Android")
-                        .addQueryParameter("_debug", "0")
-                        .addQueryParameter("version", "2.7.031")
-                        .addQueryParameter("timestamp", (System.currentTimeMillis() / 1000).toString())
+                    .addQueryParameter("terminal_model", "MI 9")
+                    .addQueryParameter("channel", "Android")
+                    .addQueryParameter("_debug", "0")
+                    .addQueryParameter("version", "2.7.031")
+                    .addQueryParameter("timestamp", (System.currentTimeMillis() / 1000).toString())
                 if (headers.get("user")?.toLowerCase()?.trim() == "true") {
                     dmzjBuilder.addQueryParameter("uid", UID.toString())
                 }
@@ -94,6 +138,64 @@ object NetHelper {
             }
 
             return chain.proceed(builder.build())
+        }
+    }
+
+    private class MProxyProxySelector : ProxySelector() {
+        var defaultSelector: ProxySelector = ProxySelector.getDefault()
+
+        override fun select(uri: URI?): MutableList<Proxy> {
+            val url = uri?.toString().orEmpty()
+            val isProxy = PROXY_URLS.any { url.contains(it) }
+            LogUtils.w("MProxyProxySelector select url:$url, isProxy:$isProxy")
+            if (isProxy) {
+                val list = mutableListOf<Proxy>()
+                list.add(httpProxy)
+                list.add(socketProxy)
+                list.addAll(defaultSelector.select(uri))
+                return mutableListOf(socketProxy)
+            }
+            return defaultSelector.select(uri)
+        }
+
+        override fun connectFailed(uri: URI?, sa: SocketAddress?, ioe: IOException?) {
+            defaultSelector.connectFailed(uri, sa, ioe)
+        }
+    }
+
+    /**
+     * 默认信任所有的证书
+     *
+     * @return
+     */
+    @SuppressLint("TrulyRandom")
+    private fun createSSLSocketFactory(): SSLSocketFactory? {
+        var sSLSocketFactory: SSLSocketFactory? = null
+        try {
+            val sc: SSLContext = SSLContext.getInstance("TLS")
+            sc.init(null, arrayOf<TrustManager>(TrustAllManager()),
+                SecureRandom())
+            sSLSocketFactory = sc.getSocketFactory()
+        } catch (e: Exception) {
+        }
+        return sSLSocketFactory
+    }
+
+    private class TrustAllManager : X509TrustManager {
+        override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+        }
+
+        override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+        }
+
+        override fun getAcceptedIssuers(): Array<X509Certificate>? {
+            return arrayOf();
+        }
+    }
+
+    private class TrustAllHostnameVerifier : HostnameVerifier {
+        override fun verify(hostname: String?, session: SSLSession?): Boolean {
+            return true
         }
     }
 }

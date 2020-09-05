@@ -28,6 +28,7 @@ dependencies {
 
     implementation project(':dmzj:home')
     implementation project(':dmzj:comic')
+    implementation project(':dmzj:agallery')
 
 }
 

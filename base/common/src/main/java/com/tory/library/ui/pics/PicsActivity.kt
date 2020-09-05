@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.target.CustomViewTarget
 import com.bumptech.glide.request.target.ImageViewTarget
@@ -23,6 +25,7 @@ import com.tory.library.R
 import com.tory.library.base.BaseActivity
 import com.tory.library.component.CommonViewHolder
 import com.tory.library.extension.inflate
+import com.tory.library.log.LogUtils
 import com.tory.library.model.PicItemModel
 import com.tory.library.model.PicsModel
 import com.tory.library.utils.SystemBarUtils
@@ -63,13 +66,13 @@ class PicsActivity: BaseActivity() {
 
         val (items, index) = picsModel
 
-        viewPager.adapter = PicsViewPageAdapter(items)
-//        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-//            override fun onPageSelected(position: Int) {
-//                super.onPageSelected(position)
-//                pageIndexText.text = "${position + 1}/${items.size}"
-//            }
-//        })
+        viewPager.adapter = PicsPageAdapter(items)
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                pageIndexText.text = "${position + 1}/${items.size}"
+            }
+        })
         viewPager.setCurrentItem(index, false)
         pageIndexText.text = "${index + 1}/${items.size}"
         //viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
@@ -122,11 +125,19 @@ class PicsActivity: BaseActivity() {
             val picItem = picItems.getOrNull(position) ?: return
             val photoView = holder.photoView
             photoView.isEnabled = true
+
+            LogUtils.d("bind pics: $picItem")
+            val thumbnailRequest = if (!picItem.previewUrl.isNullOrEmpty()) {
+                Glide.with( photoView )
+                    .asFile()
+                    .load(picItem.previewUrl)
+            } else null
             Glide.with(photoView).asFile()
                 .load(picItem.url)
+                .thumbnail(thumbnailRequest)
                 .into(object : CustomViewTarget<SubsamplingScaleImageView, File>(photoView) {
                     override fun onResourceReady(resource: File, transition: Transition<in File>?) {
-                        photoView.setImage(ImageSource.uri(Uri.fromFile(resource)))
+                        view.setImage(ImageSource.uri(Uri.fromFile(resource)))
                     }
 
                     override fun onLoadFailed(errorDrawable: Drawable?) {

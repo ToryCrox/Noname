@@ -25,7 +25,7 @@ abstract class VLayoutListActivity : BaseActivity() {
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var refreshLayout: SwipeRefreshLayout
     private var loadMoreHelper: LoadMoreHelper? = null
-    protected val listAdapter = VLayoutModuleAdapter()
+    protected val listAdapter = VLayoutModuleAdapter(calDiff = true)
 
     override fun getLayoutId(): Int = R.layout.common_activity_list
 

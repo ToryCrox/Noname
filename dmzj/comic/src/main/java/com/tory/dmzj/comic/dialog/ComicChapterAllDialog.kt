@@ -18,6 +18,7 @@ import com.tory.dmzj.comic.model.ComicChapterTitleModel
 import com.tory.dmzj.comic.views.ComicChapterItemView
 import com.tory.dmzj.comic.views.ComicChapterTitleView
 import com.tory.dmzj.home.R
+import com.tory.library.base.BaseBottomSheetDialogFragment
 import com.tory.library.component.vlayout.VLayoutDelegateAdapter
 
 /**
@@ -25,20 +26,18 @@ import com.tory.library.component.vlayout.VLayoutDelegateAdapter
  * @create 2020/9/1
  * @Describe
  */
-class ComicChapterAllDialog: BottomSheetDialogFragment() {
+class ComicChapterAllDialog: BaseBottomSheetDialogFragment() {
 
     val listAdapter = VLayoutModuleAdapter()
     protected lateinit var recyclerView: RecyclerView
-    protected lateinit var refreshLayout: SwipeRefreshLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.include_base_refresh_list, container, false)
+        return inflater.inflate(R.layout.include_base_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(com.tory.library.R.id.recyclerView)
-        refreshLayout = view.findViewById(com.tory.library.R.id.refreshLayout)
         registerViews()
         val layoutManager = VirtualLayoutManager(view.context)
         val adapter = VLayoutDelegateAdapter(layoutManager)

@@ -34,6 +34,13 @@ class ComicMainFragment: BaseFragment() {
                     .build(RouterTable.COMIC_SEARCH_PAGE)
                     .navigation(requireContext())
         }
+
+        ivSearch.setOnLongClickListener {
+            ARouter.getInstance()
+                .build(RouterTable.AGALLERY_MAIN)
+                .navigation(requireContext())
+            return@setOnLongClickListener true
+        }
     }
 
 

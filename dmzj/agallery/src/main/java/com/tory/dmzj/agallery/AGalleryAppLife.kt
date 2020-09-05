@@ -1,4 +1,7 @@
-package com.tory.dmzj.dbase
+package com.tory.dmzj.agallery
+
+import com.alibaba.android.arouter.launcher.ARouter
+import com.tory.library.applife.AppLife
 
 /**
  * Author: xutao
@@ -11,11 +14,10 @@ package com.tory.dmzj.dbase
  * 2020/8/30 xutao 1.0
  * Why & What is modified:
  */
-object RouterTable {
+class AGalleryAppLife: AppLife() {
 
-    const val COMIC_MAIN_PAGE = "/comic/mainPage"
-    const val COMIC_DETAIL_PAGE = "/comic/detailPage"
-    const val COMIC_SEARCH_PAGE = "/comic/searchPage"
+    override fun onCreate() {
+        super.onCreate()
 
-    const val AGALLERY_MAIN = "/gallery/main"
+    }
 }

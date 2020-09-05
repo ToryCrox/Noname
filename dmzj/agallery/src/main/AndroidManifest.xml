@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tory.dmzj.agallery">
+
+
+    <application>
+
+        <meta-data
+            android:name="com.tory.dmzj.agallery.AGalleryAppLife"
+            android:value="AppLifeModule" />
+
+
+        <activity android:name=".ui.activity.GalleryMainActivity" />
+    </application>
+
+</manifest>

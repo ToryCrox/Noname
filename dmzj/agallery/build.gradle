@@ -29,11 +29,10 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //支持多个dex文件构建应用程序
     implementation project(':base:common')
+    implementation project(':dmzj:dbase')
 
-    implementation libraries.okhttp3Logging
     implementation libraries.arouterApi
-
-    kapt libraries.glideCompiler
+    kapt libraries.arouterProcessor
 }
 
 

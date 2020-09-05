@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.alibaba.android.vlayout.LayoutHelper
 import com.alibaba.android.vlayout.VirtualLayoutManager
 import com.shizhuang.duapp.common.component.module.VLayoutModuleAdapter
 import com.tory.library.R
@@ -25,7 +26,7 @@ abstract class VLayoutListFragment : BaseFragment() {
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var refreshLayout: SwipeRefreshLayout
     private var loadMoreHelper: LoadMoreHelper? = null
-    protected val listAdapter = VLayoutModuleAdapter()
+    protected val listAdapter = createModuleAdapter()
 
     override fun getLayoutId(): Int = R.layout.include_base_refresh_list
 
@@ -56,6 +57,9 @@ abstract class VLayoutListFragment : BaseFragment() {
             startRefresh()
         }
     }
+
+    open fun createModuleAdapter() = VLayoutModuleAdapter(calDiff = true)
+
 
     fun startRefresh() {
         refreshLayout.isRefreshing = true

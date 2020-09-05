@@ -25,4 +25,5 @@ include 'dmzj:app'
 include 'dmzj:dbase'
 include 'dmzj:home'
 include 'dmzj:comic'
+include 'dmzj:agallery'
 
