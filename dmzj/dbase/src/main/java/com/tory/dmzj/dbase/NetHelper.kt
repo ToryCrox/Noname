@@ -44,6 +44,7 @@ object NetHelper {
     private const val DEFAULT_WRITE_TIMEOUT = 20L
     private const val BASE_URL = "http://v3api.dmzj.com/"
     private const val BASE_COMMENT_URL = "http://v3comment.dmzj.com"
+    private const val BASE_USER_URL = "https://user.dmzj.com/"
     private val API_IMAGE_BASE = "http://images.dmzj.com/"
     private val API_IMAGE_BASE_HTTPS = "https://images.dmzj.com/"
     private val API_IMAGE_BASE_AVATAR = "https://avatar.dmzj.com/"
@@ -90,6 +91,14 @@ object NetHelper {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+    val userRetrofit: Retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_USER_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
     val konachanRetrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL_KONACHAN)

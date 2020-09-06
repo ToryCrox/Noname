@@ -62,6 +62,8 @@ dependencies {
 
     api libraries.subsamplingImageView
 
+    api libraries.mmkv
+
     api 'com.tencent.tbs.tbssdk:sdk:43697'
 }
 

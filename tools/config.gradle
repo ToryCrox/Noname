@@ -124,6 +124,8 @@ ext {
             espresso                : 'androidx.test.espresso:espresso-core:3.1.0',
 
             floatingpermissioncompat: 'com.aleaf.android:floatingpermissioncompat:1.1',
-            subsamplingImageView    : "com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0"
+            subsamplingImageView    : "com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0",
+
+            mmkv                    : "com.tencent:mmkv-static:1.2.2"
     ]
 }
