@@ -25,7 +25,7 @@ class CommentSubView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : AbsModuleView<CommentSubModel>(context, attrs, defStyleAttr) {
 
-    val colorPrimary = context.color(R.color.colorPrimary)
+    private val colorPrimary = context.color(R.color.colorPrimary)
 
     override fun getLayoutId(): Int {
         return R.layout.view_comment_sub_item

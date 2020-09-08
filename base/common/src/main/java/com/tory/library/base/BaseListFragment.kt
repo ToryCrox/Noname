@@ -26,6 +26,7 @@ abstract class BaseListFragment : BaseFragment() {
         recyclerView = view.findViewById(R.id.recyclerView)
         refreshLayout = view.findViewById(R.id.refreshLayout)
         registerViews()
+        recyclerView.itemAnimator = null
         recyclerView.adapter = listAdapter
         recyclerView.layoutManager = listAdapter.getGridLayoutManager(view.context)
     }

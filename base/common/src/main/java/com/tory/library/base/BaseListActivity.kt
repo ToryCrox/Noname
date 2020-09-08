@@ -29,9 +29,9 @@ abstract class BaseListActivity: BaseActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         refreshLayout = findViewById(R.id.refreshLayout)
         registerViews()
+        recyclerView.itemAnimator = null
         recyclerView.adapter = listAdapter
         recyclerView.layoutManager = listAdapter.getGridLayoutManager(this)
-
     }
 
 

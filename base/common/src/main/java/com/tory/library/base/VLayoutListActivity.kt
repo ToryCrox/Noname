@@ -38,6 +38,7 @@ abstract class VLayoutListActivity : BaseActivity() {
         val layoutManager = VirtualLayoutManager(this)
         val adapter = VLayoutDelegateAdapter(layoutManager)
         adapter.addAdapter(listAdapter)
+        recyclerView.itemAnimator = null
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
         initLoadMoreHelper()

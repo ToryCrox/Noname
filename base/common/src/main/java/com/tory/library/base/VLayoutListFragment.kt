@@ -37,6 +37,7 @@ abstract class VLayoutListFragment : BaseFragment() {
         val layoutManager = VirtualLayoutManager(view.context)
         val adapter = VLayoutDelegateAdapter(layoutManager)
         adapter.addAdapter(listAdapter)
+        recyclerView.itemAnimator = null
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
 

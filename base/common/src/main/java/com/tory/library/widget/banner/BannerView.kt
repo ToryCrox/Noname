@@ -1,9 +1,7 @@
 package com.tory.library.widget.banner
 
 import android.content.Context
-import android.text.TextUtils
 import android.util.AttributeSet
-import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -15,9 +13,9 @@ import com.bumptech.glide.Glide
 import com.shizhuang.duapp.modules.rn.views.banner.BannerAdapter
 import com.shizhuang.duapp.modules.rn.views.banner.BannerModel
 import com.shizhuang.duapp.modules.rn.views.loopviewpager.LoopViewPager
-import com.tory.library.base.addLifecycleObserver
+import com.tory.library.extension.addLifecycleObserver
 import com.tory.library.log.LogUtils
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Author: xutao

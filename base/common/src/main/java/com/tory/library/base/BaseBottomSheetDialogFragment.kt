@@ -23,7 +23,7 @@ import com.tory.library.utils.DensityUtils
  * 2020/9/5 xutao 1.0
  * Why & What is modified:
  */
-open class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
+open class BaseBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
 
     private var mBottomSheetBehavior: BottomSheetBehavior<FrameLayout>? = null
@@ -48,7 +48,7 @@ open class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
             val behavior: BottomSheetBehavior<FrameLayout> = baseDialog.behavior
             mBottomSheetBehavior = behavior
             //behavior.addBottomSheetCallback(mBottomSheetBehaviorCallback)
-            val peekHeight = DensityUtils.getScreenH(context)*2/3
+            val peekHeight = DensityUtils.getScreenH(context) * 3 / 4
             LogUtils.d("BaseBottomSheetDialogFragment peekHeight:$peekHeight")
             mBottomSheetBehavior?.setPeekHeight(peekHeight)
         }
@@ -56,7 +56,7 @@ open class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        val peekHeight = DensityUtils.getScreenH(context)*2/3
+        val peekHeight = DensityUtils.getScreenH(context) * 3 / 4
         dialog?.window?.let {
             val lp = it.attributes
             lp.height = peekHeight
