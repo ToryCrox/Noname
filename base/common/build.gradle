@@ -64,7 +64,10 @@ dependencies {
 
     api libraries.mmkv
 
+    api 'com.google.android:flexbox:1.1.1'
+
     api 'com.tencent.tbs.tbssdk:sdk:43697'
+
 }
 
 apply from : "local_maven.gradle"

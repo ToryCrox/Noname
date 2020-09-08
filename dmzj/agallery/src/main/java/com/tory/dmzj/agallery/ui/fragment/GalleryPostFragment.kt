@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.alibaba.android.vlayout.LayoutHelper
 import com.alibaba.android.vlayout.layout.StaggeredGridLayoutHelper
 import com.shizhuang.duapp.common.component.module.VLayoutModuleAdapter
 import com.tory.dmzj.agallery.ui.views.GalleryImageView
@@ -24,7 +23,7 @@ import com.tory.library.log.LogUtils
  */
 class GalleryPostFragment: VLayoutListFragment() {
 
-    val viewModel: GalleryPostViewModel by viewModels()
+    private val viewModel: GalleryPostViewModel by viewModels()
 
     override fun createModuleAdapter(): VLayoutModuleAdapter {
         return VLayoutModuleAdapter(calDiff = true,
