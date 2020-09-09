@@ -6,6 +6,7 @@
     style="@style/Widget.MaterialComponents.Button"
     android:layout_width="wrap_content"
     android:layout_height="40dp"
+    android:textAllCaps="false"
     app:elevation="0dp"
     app:cornerRadius="10dp">
 

@@ -1,9 +1,7 @@
 package com.tory.dmzj.agallery.ui.fragment
 
-import com.tencent.smtt.utils.l
 import com.tory.dmzj.agallery.api.GalleryRepository
 import com.tory.dmzj.agallery.ui.model.GalleryImageModel
-import com.tory.dmzj.dbase.BaseRepository
 import com.tory.dmzj.dbase.BaseViewModel
 import com.tory.dmzj.dbase.LoadStatus
 
@@ -18,7 +16,7 @@ import com.tory.dmzj.dbase.LoadStatus
  * 2020/9/5 xutao 1.0
  * Why & What is modified:
  */
-class GalleryPostViewModel : BaseViewModel() {
+class GalleryPostViewModel(var tag: String = "") : BaseViewModel() {
 
     private val responseData: MutableList<List<GalleryImageModel>> = mutableListOf()
 
@@ -26,7 +24,7 @@ class GalleryPostViewModel : BaseViewModel() {
         launchOnUI {
 
             val pageIndex = if (isRefresh) 1 else responseData.size + 1
-           val list = GalleryRepository.getPost(page = pageIndex)
+           val list = GalleryRepository.getPost(page = pageIndex, tags = tag)
             if (!list.isNullOrEmpty()){
                 responseData.add(list)
                 val allList = responseData.flatten()

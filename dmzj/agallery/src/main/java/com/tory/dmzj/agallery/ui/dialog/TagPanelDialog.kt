@@ -5,10 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import com.alibaba.android.arouter.launcher.ARouter
 import com.tory.dmzj.agallery.R
 import com.tory.dmzj.agallery.ui.model.GalleryTagListModel
+import com.tory.dmzj.dbase.RouterTable
 
 import com.tory.library.base.BaseBottomSheetDialogFragment
+import com.tory.library.extension.click
 import com.tory.library.extension.inflate
 import kotlinx.android.synthetic.main.dialog_gallery_tag_panel.*
 import kotlinx.android.synthetic.main.item_gallery_tag.view.*
@@ -30,10 +33,16 @@ class TagPanelDialog : BaseBottomSheetDialogFragment() {
         val model: GalleryTagListModel = arguments?.getParcelable<GalleryTagListModel>(KEY_MODEL)
                 ?: return
 
-        model.list.forEach {
+        model.list.forEach { item ->
             val tagView = tagPanelLayout.inflate(R.layout.item_gallery_tag, false)
-            tagView.itemTagBtn.text = it.text
+            tagView.itemTagBtn.text = item.text
             tagPanelLayout.addView(tagView)
+
+            tagView.click {
+                ARouter.getInstance().build(RouterTable.AGALLERY_LIST)
+                        .withString("galleryTag", item.text)
+                        .navigation(requireActivity())
+            }
         }
     }
 

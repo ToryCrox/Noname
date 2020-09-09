@@ -2,6 +2,7 @@ package com.tory.dmzj.agallery.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.alibaba.android.vlayout.layout.StaggeredGridLayoutHelper
@@ -21,13 +22,13 @@ import com.tory.library.log.LogUtils
  * 2020/9/5 xutao 1.0
  * Why & What is modified:
  */
-class GalleryPostFragment: VLayoutListFragment() {
+class GalleryPostFragment : VLayoutListFragment() {
 
     private val viewModel: GalleryPostViewModel by viewModels()
 
     override fun createModuleAdapter(): VLayoutModuleAdapter {
         return VLayoutModuleAdapter(calDiff = true,
-            layoutHelper = StaggeredGridLayoutHelper(2))
+                layoutHelper = StaggeredGridLayoutHelper(2))
     }
 
     override fun registerViews() {
@@ -44,6 +45,8 @@ class GalleryPostFragment: VLayoutListFragment() {
         viewModel.resultList.observe(this, Observer {
             listAdapter.setItems(it.orEmpty())
         })
+        val tag = arguments?.getString(KEY_TAG).orEmpty()
+        viewModel.tag = tag
     }
 
 
@@ -62,11 +65,15 @@ class GalleryPostFragment: VLayoutListFragment() {
         return true
     }
 
+
     companion object {
         const val TAG = "GalleryPostFragment"
+        const val KEY_TAG = "KEY_TAG"
 
-        fun newInstance(): GalleryPostFragment {
-            return GalleryPostFragment()
+        fun newInstance(tag: String = ""): GalleryPostFragment {
+            return GalleryPostFragment().also {
+                it.arguments = bundleOf(KEY_TAG to tag)
+            }
         }
     }
 }
