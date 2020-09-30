@@ -1,4 +1,4 @@
-package com.tory.dmzj.agallery.ui.model
+package com.tory.dmzj.dbase.gallery
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

@@ -1,7 +1,6 @@
 package com.tory.dmzj.dbase
 
 import android.annotation.SuppressLint
-import com.tory.dmzj.dbase.net.ProxySSLSocketFactory
 import com.tory.library.log.LogUtils
 import okhttp3.Headers
 import okhttp3.Interceptor
@@ -11,21 +10,11 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
-import java.net.InetSocketAddress
-import java.net.Proxy
-import java.net.ProxySelector
-import java.net.SocketAddress
-import java.net.URI
+import java.net.*
 import java.security.SecureRandom
-import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
-import javax.net.ssl.HostnameVerifier
-import javax.net.ssl.SSLContext
-import javax.net.ssl.SSLSession
-import javax.net.ssl.SSLSocketFactory
-import javax.net.ssl.TrustManager
-import javax.net.ssl.X509TrustManager
+import javax.net.ssl.*
 
 /**
  * Author: xutao
@@ -58,9 +47,9 @@ object NetHelper {
         BASE_URL_YANDE, "yande.re")
 
     var httpProxy: Proxy = Proxy(Proxy.Type.HTTP,
-        InetSocketAddress("127.0.0.1", 10808))
-    var socketProxy: Proxy = Proxy(Proxy.Type.HTTP,
         InetSocketAddress("127.0.0.1", 10809))
+    var socketProxy: Proxy = Proxy(Proxy.Type.SOCKS,
+        InetSocketAddress("127.0.0.1", 10808))
 
     val okHttpClient: OkHttpClient by lazy {
         val logInterceptor = HttpLoggingInterceptor()

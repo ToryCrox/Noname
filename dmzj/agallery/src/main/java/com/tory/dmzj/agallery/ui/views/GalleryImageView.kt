@@ -9,8 +9,8 @@ import com.shizhuang.duapp.common.component.module.AbsModuleView
 import com.tory.dmzj.agallery.R
 import com.tory.dmzj.agallery.ui.dialog.TagPanelDialog
 import com.tory.dmzj.agallery.ui.model.GalleryImageModel
-import com.tory.dmzj.agallery.ui.model.GalleryTagItemModel
-import com.tory.dmzj.agallery.ui.model.GalleryTagListModel
+import com.tory.dmzj.dbase.gallery.GalleryTagItemModel
+import com.tory.dmzj.dbase.gallery.GalleryTagListModel
 import com.tory.library.model.PicItemModel
 import com.tory.library.ui.pics.PicsHelper
 import kotlinx.android.synthetic.main.view_gallery_image_item.view.*
@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.view_gallery_image_item.view.*
  * Why & What is modified:
  */
 class GalleryImageView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : AbsModuleView<GalleryImageModel>(context, attrs, defStyleAttr) {
 
 
@@ -40,10 +40,15 @@ class GalleryImageView @JvmOverloads constructor(
 
         itemImage.setImageRatio(if (model.previewWidth > 0)
             model.previewHeight.toFloat() / model.previewWidth else 1f)
+        val thumbnailRequest = if (!model.previewUrl.isNullOrEmpty()) {
+            Glide.with(this)
+                    .load(model.previewUrl)
+        } else null
         Glide.with(this)
-            .load(model.previewUrl)
-            .transition(DrawableTransitionOptions.withCrossFade())
-            .into(itemImage)
+                .load(model.sampleUrl)
+                .thumbnail(thumbnailRequest)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(itemImage)
 
         setOnClickListener {
             val items = model.allImages.orEmpty().map {

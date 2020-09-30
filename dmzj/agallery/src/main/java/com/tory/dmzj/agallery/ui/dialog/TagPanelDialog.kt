@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import com.alibaba.android.arouter.launcher.ARouter
 import com.tory.dmzj.agallery.R
-import com.tory.dmzj.agallery.ui.model.GalleryTagListModel
+import com.tory.dmzj.dbase.gallery.GalleryTagListModel
 import com.tory.dmzj.dbase.RouterTable
 
 import com.tory.library.base.BaseBottomSheetDialogFragment
