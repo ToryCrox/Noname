@@ -1,5 +1,6 @@
 //include ':app'
 include ':base:common'
+include ':base:jetbrain-annotations'
 
 //include ":module:koin"
 

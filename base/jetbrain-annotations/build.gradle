@@ -1,0 +1,10 @@
+apply plugin: 'java'
+
+
+dependencies {
+    //implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+}
+
+
+apply from : "local_maven.gradle"
