@@ -1,6 +1,6 @@
-package com.tory.module.hilt.api
+package com.tory.demo.jetpack.api
 
-import com.tory.module.hilt.model.GankApiResult
+import com.tory.demo.jetpack.model.GankApiResult
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

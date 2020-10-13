@@ -1,4 +1,4 @@
-package com.tory.module.hilt
+package com.tory.demo.jetpack
 
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
@@ -7,12 +7,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tory.library.log.LogUtils
-import com.tory.module.hilt.api.BaseModel
-import com.tory.module.hilt.api.GankRepo
-import com.tory.module.hilt.model.GankApiResult
+import com.tory.demo.jetpack.api.BaseModel
+import com.tory.demo.jetpack.api.GankRepo
+import com.tory.demo.jetpack.model.GankApiResult
 import kotlinx.coroutines.launch
 import java.lang.Exception
-import javax.inject.Inject
 
 /**
  * Author: xutao

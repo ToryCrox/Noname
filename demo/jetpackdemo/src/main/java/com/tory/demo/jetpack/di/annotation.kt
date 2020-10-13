@@ -1,4 +1,4 @@
-package com.tory.module.hilt.di
+package com.tory.demo.jetpack.di
 
 import javax.inject.Qualifier
 

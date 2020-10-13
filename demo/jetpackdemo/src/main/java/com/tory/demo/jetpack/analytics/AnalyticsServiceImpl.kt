@@ -1,8 +1,7 @@
-package com.tory.module.hilt.analytics
+package com.tory.demo.jetpack.analytics
 
 import com.tory.library.log.LogUtils
-import com.tory.module.hilt.api.GankRepo
-import com.tory.module.hilt.di.GankRetrofit
+import com.tory.demo.jetpack.api.GankRepo
 import javax.inject.Inject
 
 /**

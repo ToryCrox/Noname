@@ -1,12 +1,12 @@
-package com.tory.module.hilt.views
+package com.tory.demo.jetpack.views
 
 import android.content.Context
 import android.util.AttributeSet
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.shizhuang.duapp.common.component.module.AbsModuleView
-import com.tory.module.hilt.R
-import com.tory.module.hilt.model.GankItem
+import com.tory.demo.jetpack.R
+import com.tory.demo.jetpack.model.GankItem
 import kotlinx.android.synthetic.main.item_gank.view.*
 import java.util.regex.Pattern
 

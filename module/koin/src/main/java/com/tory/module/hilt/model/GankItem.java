@@ -1,4 +1,4 @@
-package com.tory.module.hilt.model;
+package com.tory.demo.jetpack.model;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,8 +1,7 @@
-package com.tory.module.hilt.di
+package com.tory.demo.jetpack.di
 
-import com.tory.module.hilt.api.BASE_URL
-import com.tory.module.hilt.api.GankRepo
-import com.tory.module.hilt.api.GankService
+import com.tory.demo.jetpack.api.BASE_URL
+import com.tory.demo.jetpack.api.GankService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

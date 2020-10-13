@@ -1,14 +1,12 @@
-package com.tory.module.hilt
+package com.tory.demo.jetpack
 
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import com.tory.library.base.BaseActivity
 import com.tory.library.base.BaseListActivity
-import com.tory.library.base.VLayoutListActivity
 import com.tory.library.log.LogUtils
-import com.tory.module.hilt.analytics.AnalyticsService
-import com.tory.module.hilt.views.GankItemView
+import com.tory.demo.jetpack.analytics.AnalyticsService
+import com.tory.demo.jetpack.views.GankItemView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

@@ -1,7 +1,7 @@
-package com.tory.module.hilt.di
+package com.tory.demo.jetpack.di
 
-import com.tory.module.hilt.analytics.AnalyticsService
-import com.tory.module.hilt.analytics.AnalyticsServiceImpl
+import com.tory.demo.jetpack.analytics.AnalyticsService
+import com.tory.demo.jetpack.analytics.AnalyticsServiceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

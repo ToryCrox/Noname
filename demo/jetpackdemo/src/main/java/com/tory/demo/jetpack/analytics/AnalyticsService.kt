@@ -1,4 +1,4 @@
-package com.tory.module.hilt.analytics
+package com.tory.demo.jetpack.analytics
 
 
 interface AnalyticsService {

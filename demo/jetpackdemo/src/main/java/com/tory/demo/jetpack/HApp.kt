@@ -1,4 +1,4 @@
-package com.tory.module.hilt
+package com.tory.demo.jetpack
 
 import com.tory.library.MApp
 import dagger.hilt.android.HiltAndroidApp

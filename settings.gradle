@@ -20,7 +20,7 @@ include ':base:jetbrain-annotations'
 //include ':demo:webview'
 //include 'demo:rv'
 //include 'demo:diskcache'
-//include 'demo:hilt'
+include 'demo:jetpackdemo'
 
 include 'dmzj:app'
 include 'dmzj:dbase'
