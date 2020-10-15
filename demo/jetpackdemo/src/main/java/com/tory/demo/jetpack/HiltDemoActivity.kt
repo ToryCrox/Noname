@@ -6,7 +6,10 @@ import androidx.lifecycle.Observer
 import com.tory.library.base.BaseListActivity
 import com.tory.library.log.LogUtils
 import com.tory.demo.jetpack.analytics.AnalyticsService
+import com.tory.demo.jetpack.event.HiltEvent
 import com.tory.demo.jetpack.views.GankItemView
+import com.tory.library.utils.livebus.LiveEventBus
+import com.tory.library.utils.livebus.PageEventBus
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -22,13 +25,11 @@ import javax.inject.Inject
  * Why & What is modified:
  */
 @AndroidEntryPoint
-class HiltDemoActivity: BaseListActivity() {
-
+class HiltDemoActivity : BaseListActivity() {
     val viewModel: MainViewModel by viewModels()
 
     @Inject
     lateinit var analyticsService: AnalyticsService
-
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
@@ -44,6 +45,31 @@ class HiltDemoActivity: BaseListActivity() {
 
         analyticsService.analyticsMethods()
 
+
+        PageEventBus.get(this)
+            .ofEmpty("testPageEvent")
+            .observe(this, Observer {
+                LogUtils.d("PageEventBus  testPageEvent receive: $it")
+        })
+        PageEventBus.get(this).postEmpty("testPageEvent")
+        PageEventBus.get(this)
+            .ofEmpty("testPageEvent1")
+            .observeSticky(this, Observer {
+                LogUtils.d("PageEventBus testPageEvent1 receive: $it")
+            })
+
+        PageEventBus.get(this)
+            .of(HiltEvent::class.java)
+            .observeSticky(this, Observer {
+                LogUtils.d("PageEventBus HiltEvent receive: $it")
+            })
+
+        LiveEventBus.get()
+            .of(HiltEvent::class.java)
+            .observe(this, Observer {
+                val result = 1 + 1
+                LogUtils.d("LiveEventBus HiltEvent receive: $it " + this)
+            })
     }
 
     override fun registerViews() {

@@ -25,6 +25,7 @@ import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_SETTLING;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -36,6 +37,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -92,11 +94,13 @@ import android.widget.TextView;
 
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabItem;
 import com.tory.library.R;
+import com.tory.library.log.LogUtils;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -413,6 +417,7 @@ public class MTabLayout extends HorizontalScrollView {
 
     android.graphics.PorterDuff.Mode tabIconTintMode;
     float tabTextSize;
+    float tabActiveTextSize;
     float tabTextMultiLineSize;
 
     final int tabBackgroundResId;
@@ -452,6 +457,8 @@ public class MTabLayout extends HorizontalScrollView {
     private AdapterChangeListener adapterChangeListener;
     private boolean setupViewPagerImplicitly;
 
+    private boolean mIsToggleBoldText;
+
     // Pool we use as a simple RecyclerBin
     private final Pools.Pool<TabView> tabViewPool = new Pools.SimplePool<>(12);
 
@@ -463,6 +470,7 @@ public class MTabLayout extends HorizontalScrollView {
         this(context, attrs, 0);
     }
 
+    @SuppressLint({"CustomViewStyleable", "PrivateResource"})
     public MTabLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
@@ -491,28 +499,28 @@ public class MTabLayout extends HorizontalScrollView {
         }
 
         slidingTabIndicator.setSelectedIndicatorHeight(
-                a.getDimensionPixelSize(R.styleable.MTabLayout_mtabIndicatorHeight, -1));
+                a.getDimensionPixelSize(R.styleable.MTabLayout_mTabIndicatorHeight, -1));
         slidingTabIndicator.setSelectedIndicatorColor(
-                a.getColor(R.styleable.MTabLayout_mtabIndicatorColor, 0));
+                a.getColor(R.styleable.MTabLayout_mTabIndicatorColor, 0));
         setSelectedTabIndicator(
-                MaterialResources.getDrawable(context, a, R.styleable.MTabLayout_mtabIndicator));
+                MaterialResources.getDrawable(context, a, R.styleable.MTabLayout_mTabIndicator));
         setSelectedTabIndicatorGravity(
-                a.getInt(R.styleable.MTabLayout_mtabIndicatorGravity, INDICATOR_GRAVITY_BOTTOM));
-        setTabIndicatorFullWidth(a.getBoolean(R.styleable.MTabLayout_mtabIndicatorFullWidth, true));
+                a.getInt(R.styleable.MTabLayout_mTabIndicatorGravity, INDICATOR_GRAVITY_BOTTOM));
+        setTabIndicatorFullWidth(a.getBoolean(R.styleable.MTabLayout_mTabIndicatorFullWidth, true));
 
         tabPaddingStart =
                 tabPaddingTop =
                         tabPaddingEnd =
-                                tabPaddingBottom = a.getDimensionPixelSize(R.styleable.MTabLayout_mtabPadding, 0);
+                                tabPaddingBottom = a.getDimensionPixelSize(R.styleable.MTabLayout_mTabPadding, 0);
         tabPaddingStart =
-                a.getDimensionPixelSize(R.styleable.MTabLayout_mtabPaddingStart, tabPaddingStart);
-        tabPaddingTop = a.getDimensionPixelSize(R.styleable.MTabLayout_mtabPaddingTop, tabPaddingTop);
-        tabPaddingEnd = a.getDimensionPixelSize(R.styleable.MTabLayout_mtabPaddingEnd, tabPaddingEnd);
+                a.getDimensionPixelSize(R.styleable.MTabLayout_mTabPaddingStart, tabPaddingStart);
+        tabPaddingTop = a.getDimensionPixelSize(R.styleable.MTabLayout_mTabPaddingTop, tabPaddingTop);
+        tabPaddingEnd = a.getDimensionPixelSize(R.styleable.MTabLayout_mTabPaddingEnd, tabPaddingEnd);
         tabPaddingBottom =
-                a.getDimensionPixelSize(R.styleable.MTabLayout_mtabPaddingBottom, tabPaddingBottom);
+                a.getDimensionPixelSize(R.styleable.MTabLayout_mTabPaddingBottom, tabPaddingBottom);
 
         tabTextAppearance =
-                a.getResourceId(R.styleable.MTabLayout_mtabTextAppearance, R.style.TextAppearance_Design_Tab);
+                a.getResourceId(R.styleable.MTabLayout_mTabTextAppearance, R.style.TextAppearance_Design_Tab);
 
         // Text colors/sizes come from the text appearance first
         final TypedArray ta =
@@ -530,56 +538,68 @@ public class MTabLayout extends HorizontalScrollView {
             ta.recycle();
         }
 
-        if (a.hasValue(R.styleable.MTabLayout_mtabTextSize)) {
-            tabTextSize = a.getDimensionPixelSize(R.styleable.MTabLayout_mtabTextSize,
-                    (int)tabTextSize);
-        }
-
-        if (a.hasValue(R.styleable.MTabLayout_mtabTextColor)) {
+        if (a.hasValue(R.styleable.MTabLayout_mTabTextColor)) {
             // If we have an explicit text color set, use it instead
             tabTextColors =
-                    MaterialResources.getColorStateList(context, a, R.styleable.MTabLayout_mtabTextColor);
+                    MaterialResources.getColorStateList(context, a, R.styleable.MTabLayout_mTabTextColor);
         }
 
-        if (a.hasValue(R.styleable.MTabLayout_mtabSelectedTextColor)) {
+        if (a.hasValue(R.styleable.MTabLayout_mTabSelectedTextColor)) {
             // We have an explicit selected text color set, so we need to make merge it with the
             // current colors. This is exposed so that developers can use theme attributes to set
             // this (theme attrs in ColorStateLists are Lollipop+)
-            final int selected = a.getColor(R.styleable.MTabLayout_mtabSelectedTextColor, 0);
+            final int selected = a.getColor(R.styleable.MTabLayout_mTabSelectedTextColor, 0);
             tabTextColors = createColorStateList(tabTextColors.getDefaultColor(), selected);
         }
 
         tabIconTint =
-                MaterialResources.getColorStateList(context, a, R.styleable.MTabLayout_mtabIconTint);
+                MaterialResources.getColorStateList(context, a, R.styleable.MTabLayout_mTabIconTint);
         tabIconTintMode =
-                ViewUtils.parseTintMode(a.getInt(R.styleable.MTabLayout_mtabIconTintMode, -1), null);
+                ViewUtils.parseTintMode(a.getInt(R.styleable.MTabLayout_mTabIconTintMode, -1), null);
 
         tabRippleColorStateList =
-                MaterialResources.getColorStateList(context, a, R.styleable.MTabLayout_mtabRippleColor);
+                MaterialResources.getColorStateList(context, a, R.styleable.MTabLayout_mTabRippleColor);
 
         tabIndicatorAnimationDuration =
-                a.getInt(R.styleable.MTabLayout_mtabIndicatorAnimationDuration, ANIMATION_DURATION);
+                a.getInt(R.styleable.MTabLayout_mTabIndicatorAnimationDuration, ANIMATION_DURATION);
 
         requestedTabMinWidth =
-                a.getDimensionPixelSize(R.styleable.MTabLayout_mtabMinWidth, INVALID_WIDTH);
+                a.getDimensionPixelSize(R.styleable.MTabLayout_mTabMinWidth, INVALID_WIDTH);
         requestedTabMaxWidth =
-                a.getDimensionPixelSize(R.styleable.MTabLayout_mtabMaxWidth, INVALID_WIDTH);
-        tabBackgroundResId = a.getResourceId(R.styleable.MTabLayout_mtabBackground, 0);
-        contentInsetStart = a.getDimensionPixelSize(R.styleable.MTabLayout_mtabContentStart, 0);
+                a.getDimensionPixelSize(R.styleable.MTabLayout_mTabMaxWidth, INVALID_WIDTH);
+        tabBackgroundResId = a.getResourceId(R.styleable.MTabLayout_mTabBackground, 0);
+        contentInsetStart = a.getDimensionPixelSize(R.styleable.MTabLayout_mTabContentStart, 0);
         // noinspection WrongConstant
-        mode = a.getInt(R.styleable.MTabLayout_mtabMode, MODE_FIXED);
-        tabGravity = a.getInt(R.styleable.MTabLayout_mtabGravity, GRAVITY_FILL);
-        inlineLabel = a.getBoolean(R.styleable.MTabLayout_mtabInlineLabel, false);
-        unboundedRipple = a.getBoolean(R.styleable.MTabLayout_mtabUnboundedRipple, false);
+        mode = a.getInt(R.styleable.MTabLayout_mTabMode, MODE_FIXED);
+        tabGravity = a.getInt(R.styleable.MTabLayout_mTabGravity, GRAVITY_FILL);
+        inlineLabel = a.getBoolean(R.styleable.MTabLayout_mTabInlineLabel, false);
+        unboundedRipple = a.getBoolean(R.styleable.MTabLayout_mTabUnboundedRipple, false);
+
+
+        if (a.hasValue(R.styleable.MTabLayout_mTabTextSize)) {
+            tabTextSize = a.getDimensionPixelSize(R.styleable.MTabLayout_mTabTextSize,
+                    (int)tabTextSize);
+        }
+        if (a.hasValue(R.styleable.MTabLayout_mTabActiveTextSize)) {
+            tabActiveTextSize = a.getDimensionPixelSize(R.styleable.MTabLayout_mTabActiveTextSize,
+                    (int)tabActiveTextSize);
+        } else {
+            tabActiveTextSize = tabTextSize;
+        }
+        mIsToggleBoldText = a.getBoolean(R.styleable.MTabLayout_mTabIsToggleBoldText, false);
         a.recycle();
 
-        // TODO add attr for these
+
         final Resources res = getResources();
         tabTextMultiLineSize = res.getDimensionPixelSize(R.dimen.design_tab_text_size_2line);
         scrollableTabMinWidth = res.getDimensionPixelSize(R.dimen.design_tab_scrollable_min_width);
 
         // Now apply the tab mode and gravity
         applyModeAndGravity();
+    }
+
+    public void setIsToggleBoldText(boolean isToggleBoldText) {
+        this.mIsToggleBoldText = isToggleBoldText;
     }
 
     /**
@@ -1377,15 +1397,19 @@ public class MTabLayout extends HorizontalScrollView {
         setupViewPagerImplicitly = implicitSetup;
     }
 
-    /**
-     * @deprecated Use {@link #setupWithViewPager(ViewPager)} to link a TabLayout with a ViewPager
-     * together. When that method is used, the TabLayout will be automatically updated when the
-     * {@link PagerAdapter} is changed.
-     */
-    @Deprecated
-    public void setTabsFromPagerAdapter(@Nullable final PagerAdapter adapter) {
-        setPagerAdapter(adapter, false);
+    public TabLayoutMediator setupWithViewPager2(@Nullable final ViewPager2 viewPager2,
+                                                 @NonNull TabConfigurationStrategy tabConfigurationStrategy) {
+        return setupWithViewPager2(viewPager2, tabConfigurationStrategy);
     }
+
+    public TabLayoutMediator setupWithViewPager2(@Nullable final ViewPager2 viewPager2, boolean autoRefresh,
+                                    @NonNull TabConfigurationStrategy tabConfigurationStrategy) {
+        TabLayoutMediator mediator =  new TabLayoutMediator(this, viewPager2,
+                autoRefresh, tabConfigurationStrategy);
+        mediator.attach();
+        return mediator;
+    }
+
 
     @Override
     public boolean shouldDelayChildPressedState() {
@@ -2349,6 +2373,10 @@ public class MTabLayout extends HorizontalScrollView {
             // changed
             if (textView != null) {
                 textView.setSelected(selected);
+                LogUtils.d("setSelected...." + selected +", mIsToggleBoldText:" + mIsToggleBoldText);
+                if (mIsToggleBoldText) {
+                    textView.setTypeface(selected ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT);
+                }
             }
             if (iconView != null) {
                 iconView.setSelected(selected);

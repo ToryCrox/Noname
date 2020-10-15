@@ -1,12 +1,19 @@
 package com.tory.demo.jetpack.views
 
 import android.content.Context
+import android.content.Intent
 import android.util.AttributeSet
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.shizhuang.duapp.common.component.module.AbsModuleView
+import com.shizhuang.duapp.common.component.module.groupPosition
+import com.tory.demo.jetpack.HiltDemoActivity
 import com.tory.demo.jetpack.R
+import com.tory.demo.jetpack.event.HiltEvent
 import com.tory.demo.jetpack.model.GankItem
+import com.tory.library.extension.findLifecycleOwnerNotNull
+import com.tory.library.utils.livebus.LiveEventBus
+import com.tory.library.utils.livebus.PageEventBus
 import kotlinx.android.synthetic.main.item_gank.view.*
 import java.util.regex.Pattern
 
@@ -46,7 +53,14 @@ class GankItemView @JvmOverloads constructor(
         tv_tag.text = model.type
 
         setOnClickListener {
+            when(groupPosition) {
+                0 -> PageEventBus.get(context).postEmpty("testPageEvent")
+                1 -> context.startActivity(Intent(context, HiltDemoActivity::class.java))
+                2 -> LiveEventBus.get().post(HiltEvent(model.desc.orEmpty()))
+                3 -> PageEventBus.get(context).postEmpty("testPageEvent1")
+                else -> PageEventBus.get(context).post(HiltEvent(model.desc.orEmpty()))
 
+            }
         }
     }
 

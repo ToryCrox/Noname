@@ -81,19 +81,19 @@
 
     <style name="MTabLayoutStyle" parent="android:Widget">
         <item name="android:background">@null</item>
-        <item name="mtabIconTint">@null</item>
-        <item name="mtabMaxWidth">@dimen/design_tab_max_width</item>
-        <item name="mtabIndicatorAnimationDuration">@integer/design_tab_indicator_anim_duration_ms</item>
-        <item name="mtabIndicatorColor">?attr/colorAccent</item>
-        <item name="mtabIndicatorGravity">bottom</item>
-        <item name="mtabIndicator">@drawable/mtrl_tabs_default_indicator</item>
-        <item name="mtabPaddingStart">12dp</item>
-        <item name="mtabPaddingEnd">12dp</item>
-        <item name="mtabTextAppearance">@style/TextAppearance.Design.Tab</item>
-        <item name="mtabTextColor">@null</item>
-        <item name="mtabRippleColor">?attr/colorControlHighlight</item>
-        <item name="mtabUnboundedRipple">false</item>
-        <item name="mtabIndicatorFullWidth">false</item>
-        <item name="mtabMinWidth">48dp</item>
+        <item name="mTabIconTint">@null</item>
+        <item name="mTabMaxWidth">@dimen/design_tab_max_width</item>
+        <item name="mTabIndicatorAnimationDuration">@integer/design_tab_indicator_anim_duration_ms</item>
+        <item name="mTabIndicatorColor">?attr/colorAccent</item>
+        <item name="mTabIndicatorGravity">bottom</item>
+        <item name="mTabIndicator">@drawable/mtrl_tabs_default_indicator</item>
+        <item name="mTabPaddingStart">12dp</item>
+        <item name="mTabPaddingEnd">12dp</item>
+        <item name="mTabTextAppearance">@style/TextAppearance.Design.Tab</item>
+        <item name="mTabTextColor">@null</item>
+        <item name="mTabRippleColor">?attr/colorControlHighlight</item>
+        <item name="mTabUnboundedRipple">false</item>
+        <item name="mTabIndicatorFullWidth">false</item>
+        <item name="mTabMinWidth">48dp</item>
     </style>
 </resources>

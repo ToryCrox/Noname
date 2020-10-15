@@ -7,8 +7,10 @@
     <com.tory.library.widget.tablayout.MTabLayout
         android:id="@+id/tabLayout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:mtabMode="scrollable"
+        android:layout_height="40dp"
+        app:mTabMode="scrollable"
+        app:mTabTextSize="16dp"
+        app:mTabIsToggleBoldText="true"
         app:layout_constraintEnd_toStartOf="@id/ivSearch"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
