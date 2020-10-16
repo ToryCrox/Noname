@@ -104,7 +104,7 @@
         <attr format="boolean" name="mTabUnboundedRipple"/>
         
         <attr format="dimension" name="mTabTextSize"/>
-        <attr format="dimension" name="mTabActiveTextSize"/>
+        <attr format="dimension" name="mTabSelectedTextSize"/>
         <attr format="boolean" name="mTabIsToggleBoldText"/>
     </declare-styleable>
 </resources>

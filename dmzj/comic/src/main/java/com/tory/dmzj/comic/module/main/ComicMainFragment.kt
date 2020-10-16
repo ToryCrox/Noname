@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_comic_main.*
  * @create 2020/9/4
  * @Describe
  */
-@Route(path = RouterTable.COMIC_MAIN_PAGE)
+//@Route(path = RouterTable.COMIC_MAIN_PAGE)
 class ComicMainFragment: BaseFragment() {
 
     override fun getLayoutId(): Int = R.layout.fragment_comic_main
@@ -27,6 +27,7 @@ class ComicMainFragment: BaseFragment() {
     override fun initView(view: View, savedInstanceState: Bundle?) {
         val pagerAdapter = ComicFragmentAdapter(childFragmentManager)
         viewPager.adapter = pagerAdapter
+        viewPager.setCurrentItem(1, false)
         tabLayout.setupWithViewPager(viewPager)
 
         ivSearch.setOnClickListener {
@@ -44,7 +45,7 @@ class ComicMainFragment: BaseFragment() {
     }
 
 
-    class ComicFragmentAdapter(fm: FragmentManager)
+    private class ComicFragmentAdapter(fm: FragmentManager)
         : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         override fun getItem(position: Int): Fragment {
             return if (position == 1) {
@@ -54,7 +55,7 @@ class ComicMainFragment: BaseFragment() {
             }
         }
 
-        override fun getCount(): Int = 2
+        override fun getCount(): Int = 4
 
         override fun getPageTitle(position: Int): CharSequence? {
             return when(position) {

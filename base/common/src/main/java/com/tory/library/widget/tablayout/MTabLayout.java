@@ -417,7 +417,7 @@ public class MTabLayout extends HorizontalScrollView {
 
     android.graphics.PorterDuff.Mode tabIconTintMode;
     float tabTextSize;
-    float tabActiveTextSize;
+    float tabSelectedTextSize;
     float tabTextMultiLineSize;
 
     final int tabBackgroundResId;
@@ -580,11 +580,12 @@ public class MTabLayout extends HorizontalScrollView {
             tabTextSize = a.getDimensionPixelSize(R.styleable.MTabLayout_mTabTextSize,
                     (int)tabTextSize);
         }
-        if (a.hasValue(R.styleable.MTabLayout_mTabActiveTextSize)) {
-            tabActiveTextSize = a.getDimensionPixelSize(R.styleable.MTabLayout_mTabActiveTextSize,
-                    (int)tabActiveTextSize);
+        //TODO: textScaleAnimator
+        if (a.hasValue(R.styleable.MTabLayout_mTabSelectedTextSize)) {
+            tabSelectedTextSize = a.getDimensionPixelSize(R.styleable.MTabLayout_mTabSelectedTextSize,
+                    (int) tabSelectedTextSize);
         } else {
-            tabActiveTextSize = tabTextSize;
+            tabSelectedTextSize = tabTextSize;
         }
         mIsToggleBoldText = a.getBoolean(R.styleable.MTabLayout_mTabIsToggleBoldText, false);
         a.recycle();
@@ -1399,7 +1400,7 @@ public class MTabLayout extends HorizontalScrollView {
 
     public TabLayoutMediator setupWithViewPager2(@Nullable final ViewPager2 viewPager2,
                                                  @NonNull TabConfigurationStrategy tabConfigurationStrategy) {
-        return setupWithViewPager2(viewPager2, tabConfigurationStrategy);
+        return setupWithViewPager2(viewPager2, true, tabConfigurationStrategy);
     }
 
     public TabLayoutMediator setupWithViewPager2(@Nullable final ViewPager2 viewPager2, boolean autoRefresh,
@@ -2253,6 +2254,9 @@ public class MTabLayout extends HorizontalScrollView {
 
         private int defaultMaxLines = 2;
 
+        private ValueAnimator textScaleAnimator;
+        private float animateTargetTextSize;
+
         public TabView(@NonNull Context context) {
             super(context);
             updateBackgroundDrawable(context);
@@ -2373,16 +2377,56 @@ public class MTabLayout extends HorizontalScrollView {
             // changed
             if (textView != null) {
                 textView.setSelected(selected);
-                LogUtils.d("setSelected...." + selected +", mIsToggleBoldText:" + mIsToggleBoldText);
                 if (mIsToggleBoldText) {
                     textView.setTypeface(selected ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT);
                 }
+                setTextSize(selected);
             }
             if (iconView != null) {
                 iconView.setSelected(selected);
             }
             if (customView != null) {
                 customView.setSelected(selected);
+            }
+        }
+
+        public void setTextSize(final boolean selected) {
+            if (textView == null) {
+                return;
+            }
+            float targetTextSize = selected ? tabSelectedTextSize : tabTextSize;
+            float currentTextSize = textView.getTextSize();
+            if (targetTextSize == currentTextSize) return;
+
+            if (textScaleAnimator != null && textScaleAnimator.isRunning()) {
+                if (animateTargetTextSize == targetTextSize) {
+                    return;
+                }
+                textScaleAnimator.cancel();
+            }
+            if (getWindowToken() == null
+                    || !ViewCompat.isLaidOut(this)
+                    || textView.getWidth() <= 0) {
+                setTextSize(targetTextSize);
+                return;
+            }
+            animateTargetTextSize = targetTextSize;
+            textScaleAnimator = new ValueAnimator();
+            textScaleAnimator.setFloatValues(currentTextSize, targetTextSize);
+            textScaleAnimator.setInterpolator(AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
+            textScaleAnimator.setDuration(tabIndicatorAnimationDuration * 2 / 3);
+            textScaleAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    setTextSize((Float) animation.getAnimatedValue());
+                }
+            });
+            textScaleAnimator.start();
+        }
+
+        public void setTextSize(float textSize) {
+            if (textView != null && textView.getTextSize() != textSize) {
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
             }
         }
 
@@ -2427,48 +2471,8 @@ public class MTabLayout extends HorizontalScrollView {
             // Now lets measure
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
+            //remove multi line text size change by tory
             // We need to switch the text size based on whether the text is spanning 2 lines or not
-            if (textView != null) {
-                float textSize = tabTextSize;
-                int maxLines = defaultMaxLines;
-
-                if (iconView != null && iconView.getVisibility() == VISIBLE) {
-                    // If the icon view is being displayed, we limit the text to 1 line
-                    maxLines = 1;
-                } else if (textView != null && textView.getLineCount() > 1) {
-                    // Otherwise when we have text which wraps we reduce the text size
-                    textSize = tabTextMultiLineSize;
-                }
-
-                final float curTextSize = textView.getTextSize();
-                final int curLineCount = textView.getLineCount();
-                final int curMaxLines = TextViewCompat.getMaxLines(textView);
-
-                if (textSize != curTextSize || (curMaxLines >= 0 && maxLines != curMaxLines)) {
-                    // We've got a new text size and/or max lines...
-                    boolean updateTextView = true;
-
-                    if (mode == MODE_FIXED && textSize > curTextSize && curLineCount == 1) {
-                        // If we're in fixed mode, going up in text size and currently have 1 line
-                        // then it's very easy to get into an infinite recursion.
-                        // To combat that we check to see if the change in text size
-                        // will cause a line count change. If so, abort the size change and stick
-                        // to the smaller size.
-                        final Layout layout = textView.getLayout();
-                        if (layout == null
-                                || approximateLineWidth(layout, 0, textSize)
-                                > getMeasuredWidth() - getPaddingLeft() - getPaddingRight()) {
-                            updateTextView = false;
-                        }
-                    }
-
-                    if (updateTextView) {
-                        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
-                        textView.setMaxLines(maxLines);
-                        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-                    }
-                }
-            }
         }
 
         void setTab(@Nullable final Tab tab) {
@@ -2542,6 +2546,7 @@ public class MTabLayout extends HorizontalScrollView {
                 if (tabTextColors != null) {
                     this.textView.setTextColor(tabTextColors);
                 }
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, tabTextSize);
                 updateTextAndIcon(this.textView, this.iconView);
 
                 tryUpdateBadgeAnchor();
@@ -2569,10 +2574,8 @@ public class MTabLayout extends HorizontalScrollView {
                 iconViewParent = createPreApi18BadgeAnchorRoot();
                 addView(iconViewParent, 0);
             }
-            this.iconView =
-                    (ImageView)
-                            LayoutInflater.from(getContext())
-                                    .inflate(R.layout.design_layout_tab_icon, iconViewParent, false);
+            this.iconView = (ImageView) LayoutInflater.from(getContext())
+                    .inflate(R.layout.design_layout_tab_icon, iconViewParent, false);
             iconViewParent.addView(iconView, 0);
         }
 
@@ -2582,10 +2585,8 @@ public class MTabLayout extends HorizontalScrollView {
                 textViewParent = createPreApi18BadgeAnchorRoot();
                 addView(textViewParent);
             }
-            this.textView =
-                    (TextView)
-                            LayoutInflater.from(getContext())
-                                    .inflate(R.layout.design_layout_tab_text, textViewParent, false);
+            this.textView = (TextView) LayoutInflater.from(getContext())
+                    .inflate(R.layout.design_layout_tab_text, textViewParent, false);
             textViewParent.addView(textView);
         }
 
