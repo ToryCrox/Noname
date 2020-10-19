@@ -7,8 +7,6 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-import com.tory.library.log.LogUtils;
-
 import java.util.Objects;
 
 import static androidx.lifecycle.Lifecycle.State.DESTROYED;
@@ -31,11 +29,13 @@ public class BusLiveData<T> extends MutableLiveData<T> {
         super.setValue(value);
     }
 
-    private BusObserver<? super T> getBusObserver(@NonNull Observer<? super T> observer, int latestVersion) {
+    private BusObserver<? super T> createBusObserver(@NonNull Observer<? super T> observer, int latestVersion) {
         BusObserver<? super T> busObserver = busObservers.get(observer);
         if (busObserver == null) {
             busObserver = new BusObserver(observer, latestVersion);
             busObservers.put(observer, busObserver);
+        } else {
+            throw new IllegalArgumentException("Please not register same observer " + observer);
         }
         return busObserver;
     }
@@ -45,23 +45,23 @@ public class BusLiveData<T> extends MutableLiveData<T> {
         if (owner.getLifecycle().getCurrentState() == DESTROYED) {
             return;
         }
-        super.observe(owner, getBusObserver(observer, activeVersion));
+        super.observe(owner, createBusObserver(observer, activeVersion));
     }
 
     public void observeSticky(@NonNull LifecycleOwner owner, @NonNull Observer<T> observer) {
         if (owner.getLifecycle().getCurrentState() == DESTROYED) {
             return;
         }
-        super.observe(owner, getBusObserver(observer, VERSION_START));
+        super.observe(owner, createBusObserver(observer, VERSION_START));
     }
 
     @Override
     public void observeForever(@NonNull Observer<? super T> observer) {
-        super.observeForever(getBusObserver(observer, activeVersion));
+        super.observeForever(createBusObserver(observer, activeVersion));
     }
 
     public void observeStickyForever(@NonNull Observer<T> observer) {
-        super.observeForever(getBusObserver(observer, VERSION_START));
+        super.observeForever(createBusObserver(observer, VERSION_START));
     }
 
     @Override

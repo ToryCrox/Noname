@@ -106,5 +106,10 @@
         <attr format="dimension" name="mTabTextSize"/>
         <attr format="dimension" name="mTabSelectedTextSize"/>
         <attr format="boolean" name="mTabIsToggleBoldText"/>
+
+        <attr name="mTabBottomDivider" format="reference"/>
+        <attr name="mTabBottomDividerHeight" format="dimension"/>
+        <attr name="mTabMaskLeft" format="reference"/>
+        <attr name="mTabMaskRight" format="reference"/>
     </declare-styleable>
 </resources>

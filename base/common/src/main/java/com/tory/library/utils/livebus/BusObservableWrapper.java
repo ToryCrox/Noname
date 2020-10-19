@@ -1,12 +1,17 @@
 package com.tory.library.utils.livebus;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+
+import com.tory.library.log.LogUtils;
 
 /**
  * Author: xutao
@@ -37,6 +42,7 @@ class BusObservableWrapper<T extends LiveBusEvent> implements BusObservable<T> {
         return mainHandler;
     }
 
+    @SuppressLint("WrongThread")
     @Override
     public void post(@Nullable T value) {
         if (isMainThread()) {
@@ -52,6 +58,11 @@ class BusObservableWrapper<T extends LiveBusEvent> implements BusObservable<T> {
     }
 
     @Override
+    public void postLatest(@NonNull T value) {
+        liveData.postValue(value);
+    }
+
+    @Override
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<T> observer) {
         liveData.observe(owner, observer);
     }
@@ -59,6 +70,46 @@ class BusObservableWrapper<T extends LiveBusEvent> implements BusObservable<T> {
     @Override
     public void observeSticky(@NonNull LifecycleOwner owner, @NonNull Observer<T> observer) {
         liveData.observeSticky(owner, observer);
+    }
+
+    private void observeWithView(@NonNull View view, @NonNull Observer<T> observer,
+                                 boolean isSticky) {
+        final Runnable observeTask = () -> {
+            LogUtils.d("observeWithView observe add " + observer);
+            if (isSticky) {
+                observeStickyForever(observer);
+            } else {
+                observeForever(observer);
+            }
+        };
+
+        observeTask.run();
+        view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            private boolean hasDetached = false;
+
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                if (hasDetached) {
+                    observeTask.run();
+                }
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                hasDetached = true;
+                removeObserver(observer);
+            }
+        });
+    }
+
+    @Override
+    public void observe(@NonNull View view, @NonNull Observer<T> observer) {
+        observeWithView(view, observer, false);
+    }
+
+    @Override
+    public void observeSticky(@NonNull View view, @NonNull Observer<T> observer) {
+        observeWithView(view, observer, true);
     }
 
     @Override

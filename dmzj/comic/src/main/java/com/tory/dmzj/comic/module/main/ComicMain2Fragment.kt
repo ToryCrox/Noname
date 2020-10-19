@@ -29,7 +29,7 @@ class ComicMain2Fragment: BaseFragment() {
     override fun initView(view: View, savedInstanceState: Bundle?) {
         val pagerAdapter = ComicFragmentAdapter(this)
         viewPager.adapter = pagerAdapter
-        viewPager.setCurrentItem(1, false)
+        viewPager.setCurrentItem(8, false)
         tabLayout.setupWithViewPager2(viewPager, {tab, position->
             tab.setText(getPageTitle(position))
         })
@@ -45,7 +45,7 @@ class ComicMain2Fragment: BaseFragment() {
     class ComicFragmentAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
         override fun getItemCount(): Int {
-            return 4
+            return 8
         }
 
         override fun createFragment(position: Int): Fragment {

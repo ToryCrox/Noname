@@ -25,6 +25,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.tory.library.log.LogUtils;
+
 import java.lang.ref.WeakReference;
 
 /**

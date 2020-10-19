@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.AttributeSet
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.shizhuang.duapp.common.component.module.AbsModuleView
 import com.shizhuang.duapp.common.component.module.groupPosition
@@ -12,6 +13,7 @@ import com.tory.demo.jetpack.R
 import com.tory.demo.jetpack.event.HiltEvent
 import com.tory.demo.jetpack.model.GankItem
 import com.tory.library.extension.findLifecycleOwnerNotNull
+import com.tory.library.log.LogUtils
 import com.tory.library.utils.livebus.LiveEventBus
 import com.tory.library.utils.livebus.PageEventBus
 import kotlinx.android.synthetic.main.item_gank.view.*
@@ -29,10 +31,29 @@ import java.util.regex.Pattern
  * Why & What is modified:
  */
 class GankItemView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : AbsModuleView<GankItem>(context, attrs, defStyleAttr) {
 
+    init {
+        PageEventBus.get(context)
+                .of(HiltEvent::class.java)
+                .observe(this, {
+                    LogUtils.d("PageEventBus ${groupPosition} ${it?.content}")
+                })
+    }
+
     override fun getLayoutId(): Int = R.layout.item_gank
+
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        LogUtils.d("GankItemViewTest onDetachedFromWindow ${groupPosition} ")
+    }
+
+    override fun update(model: GankItem) {
+        LogUtils.d("GankItemViewTest update ${groupPosition} ")
+        super.update(model)
+    }
 
     override fun onChanged(model: GankItem) {
         super.onChanged(model)
@@ -41,8 +62,8 @@ class GankItemView @JvmOverloads constructor(
         tv_desc.isVisible = !hasImage
         if (hasImage) {
             Glide.with(this)
-                .load(model.url)
-                .into(iv_img)
+                    .load(model.url)
+                    .into(iv_img)
         } else {
             tv_desc.text = model.desc
         }
@@ -53,7 +74,7 @@ class GankItemView @JvmOverloads constructor(
         tv_tag.text = model.type
 
         setOnClickListener {
-            when(groupPosition) {
+            when (groupPosition) {
                 0 -> PageEventBus.get(context).postEmpty("testPageEvent")
                 1 -> context.startActivity(Intent(context, HiltDemoActivity::class.java))
                 2 -> LiveEventBus.get().post(HiltEvent(model.desc.orEmpty()))

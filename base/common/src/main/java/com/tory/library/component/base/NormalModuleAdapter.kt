@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tory.library.component.base.OnLoadMoreListener
+import com.tory.library.log.LogUtils
 
 /**
  * 通用Adapter，适用于非vLayout
@@ -157,6 +158,17 @@ class NormalModuleAdapter(private val calDiff: Boolean = false) :
     override fun onBindViewHolder(holder: MCommonViewHolder, position: Int) {
         val model = list.getOrNull(position) ?: return
         delegate.bindView(holder.itemView, model, position)
+        LogUtils.d(TAG, "onBindViewHolder " + holder.layoutPosition)
+    }
+
+    override fun onViewRecycled(holder: MCommonViewHolder) {
+        LogUtils.d(TAG, "onViewRecycled " + holder.layoutPosition)
+        super.onViewRecycled(holder)
+    }
+
+    override fun onViewDetachedFromWindow(holder: MCommonViewHolder) {
+        LogUtils.d(TAG, "onViewDetachedFromWindow " + holder.layoutPosition)
+        super.onViewDetachedFromWindow(holder)
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {

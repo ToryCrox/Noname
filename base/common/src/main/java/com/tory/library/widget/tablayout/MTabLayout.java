@@ -459,6 +459,13 @@ public class MTabLayout extends HorizontalScrollView {
 
     private boolean mIsToggleBoldText;
 
+    private Drawable bottomDividerDrawable;
+    private int bottomDividerHeight;
+    private Drawable maskLeftDrawable;
+    private Drawable maskRightDrawable;
+
+    private boolean isNeeAdjustScroll = false;
+
     // Pool we use as a simple RecyclerBin
     private final Pools.Pool<TabView> tabViewPool = new Pools.SimplePool<>(12);
 
@@ -588,6 +595,11 @@ public class MTabLayout extends HorizontalScrollView {
             tabSelectedTextSize = tabTextSize;
         }
         mIsToggleBoldText = a.getBoolean(R.styleable.MTabLayout_mTabIsToggleBoldText, false);
+
+        bottomDividerDrawable = a.getDrawable(R.styleable.MTabLayout_mTabBottomDivider);
+        bottomDividerHeight = a.getDimensionPixelOffset(R.styleable.MTabLayout_mTabBottomDividerHeight, 0);
+        maskLeftDrawable = a.getDrawable(R.styleable.MTabLayout_mTabMaskLeft);
+        maskRightDrawable = a.getDrawable(R.styleable.MTabLayout_mTabMaskRight);
         a.recycle();
 
 
@@ -599,6 +611,10 @@ public class MTabLayout extends HorizontalScrollView {
         applyModeAndGravity();
     }
 
+    /**
+     * 设置选中时加粗
+     * @param isToggleBoldText
+     */
     public void setIsToggleBoldText(boolean isToggleBoldText) {
         this.mIsToggleBoldText = isToggleBoldText;
     }
@@ -637,7 +653,7 @@ public class MTabLayout extends HorizontalScrollView {
      * @param updateSelectedText Whether to update the text's selected state.
      * @see #setScrollPosition(int, float, boolean, boolean)
      */
-    public void setScrollPosition(int position, float positionOffset, boolean updateSelectedText) {
+    void setScrollPosition(int position, float positionOffset, boolean updateSelectedText) {
         setScrollPosition(position, positionOffset, updateSelectedText, true);
     }
 
@@ -653,7 +669,7 @@ public class MTabLayout extends HorizontalScrollView {
      * @param updateIndicatorPosition Whether to set the indicator to the given position and offset.
      * @see #setScrollPosition(int, float, boolean)
      */
-    public void setScrollPosition(
+    void setScrollPosition(
             int position,
             float positionOffset,
             boolean updateSelectedText,
@@ -662,6 +678,7 @@ public class MTabLayout extends HorizontalScrollView {
         if (roundedPosition < 0 || roundedPosition >= slidingTabIndicator.getChildCount()) {
             return;
         }
+        LogUtils.d("setScrollPosition position:" + position + ", updateSelectedText:" + updateSelectedText);
 
         // Set the indicator position, if enabled
         if (updateIndicatorPosition) {
@@ -673,6 +690,7 @@ public class MTabLayout extends HorizontalScrollView {
             scrollAnimator.cancel();
         }
         scrollTo(calculateScrollXForTab(position, positionOffset), 0);
+        isNeeAdjustScroll = isViewNeedLayout();
 
         // Update the 'selected state' view as we scroll, if enabled
         if (updateSelectedText) {
@@ -1586,6 +1604,44 @@ public class MTabLayout extends HorizontalScrollView {
     }
 
     @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        if (bottomDividerDrawable != null) {
+            int dividerHeight = bottomDividerHeight > 0 ? bottomDividerHeight
+                    : bottomDividerDrawable.getIntrinsicHeight();
+            bottomDividerDrawable.setBounds(0, getHeight() - dividerHeight,
+                    getWidth(), getHeight());
+        }
+        if (maskLeftDrawable != null) {
+            maskLeftDrawable.setBounds(0,
+                    0, maskLeftDrawable.getIntrinsicWidth(), getHeight());
+        }
+        if (maskRightDrawable != null) {
+            maskRightDrawable.setBounds(getWidth() - maskRightDrawable.getIntrinsicWidth(),
+                    0, getWidth(), getHeight());
+        }
+
+    }
+
+
+    private void drawDrawable(Canvas canvas, @Nullable Drawable drawable){
+        if (drawable != null) {
+            canvas.save();
+            canvas.translate(getScrollX(), 0);
+            drawable.draw(canvas);
+            canvas.restore();
+        }
+    }
+
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        drawDrawable(canvas, bottomDividerDrawable);
+        super.dispatchDraw(canvas);
+        drawDrawable(canvas, maskLeftDrawable);
+        drawDrawable(canvas, maskRightDrawable);
+    }
+
+    @Override
     protected void onDraw(@NonNull Canvas canvas) {
         // Draw tab background layer for each tab item
         for (int i = 0; i < slidingTabIndicator.getChildCount(); i++) {
@@ -1665,6 +1721,18 @@ public class MTabLayout extends HorizontalScrollView {
         }
     }
 
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        if (isNeeAdjustScroll) {
+            int position = slidingTabIndicator.selectedPosition;
+            float positionOffset = slidingTabIndicator.selectionOffset;
+            isNeeAdjustScroll = false;
+            LogUtils.d("MLayout adjustScroll position:" + position + ", positionOffset:" + positionOffset);
+            scrollTo(calculateScrollXForTab(position, positionOffset), 0);
+        }
+    }
+
     private void removeTabViewAt(int position) {
         final TabView view = (TabView) slidingTabIndicator.getChildAt(position);
         slidingTabIndicator.removeViewAt(position);
@@ -1674,6 +1742,13 @@ public class MTabLayout extends HorizontalScrollView {
         }
         requestLayout();
     }
+
+    private boolean isViewNeedLayout() {
+        return getWindowToken() == null
+                || !ViewCompat.isLaidOut(this)
+                || slidingTabIndicator.childrenNeedLayout();
+    }
+
 
     private void animateToTab(int newPosition) {
         if (newPosition == Tab.INVALID_POSITION) {
@@ -1737,6 +1812,14 @@ public class MTabLayout extends HorizontalScrollView {
                 child.setActivated(i == position);
             }
         }
+    }
+
+    /**
+     * 选中
+     * @param position
+     */
+    public void selectTab(int position) {
+        selectTab(getTabAt(position));
     }
 
     /**
