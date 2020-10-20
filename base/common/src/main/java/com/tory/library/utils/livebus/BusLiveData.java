@@ -93,7 +93,9 @@ public class BusLiveData<T> extends MutableLiveData<T> {
                 return;
             }
             lastVersion = activeVersion;
-            realObserver.onChanged(m);
+            if (m != null) {
+                realObserver.onChanged(m);
+            }
         }
     }
 

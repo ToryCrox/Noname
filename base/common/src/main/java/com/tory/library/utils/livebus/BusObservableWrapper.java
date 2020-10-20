@@ -44,7 +44,7 @@ class BusObservableWrapper<T extends LiveBusEvent> implements BusObservable<T> {
 
     @SuppressLint("WrongThread")
     @Override
-    public void post(@Nullable T value) {
+    public void post(@NonNull T value) {
         if (isMainThread()) {
             liveData.setValue(value);
         } else {
@@ -75,7 +75,6 @@ class BusObservableWrapper<T extends LiveBusEvent> implements BusObservable<T> {
     private void observeWithView(@NonNull View view, @NonNull Observer<T> observer,
                                  boolean isSticky) {
         final Runnable observeTask = () -> {
-            LogUtils.d("observeWithView observe add " + observer);
             if (isSticky) {
                 observeStickyForever(observer);
             } else {
@@ -83,15 +82,16 @@ class BusObservableWrapper<T extends LiveBusEvent> implements BusObservable<T> {
             }
         };
 
-        observeTask.run();
+        //observeTask.run();
         view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             private boolean hasDetached = false;
 
             @Override
             public void onViewAttachedToWindow(View v) {
-                if (hasDetached) {
-                    observeTask.run();
-                }
+//                if (hasDetached) {
+//                    observeTask.run();
+//                }
+                observeTask.run();
             }
 
             @Override
