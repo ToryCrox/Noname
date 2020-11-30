@@ -1,13 +1,10 @@
 package com.tory.library.utils.livebus;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.collection.ArrayMap;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-
-import java.util.Objects;
 
 import static androidx.lifecycle.Lifecycle.State.DESTROYED;
 
@@ -15,6 +12,7 @@ import static androidx.lifecycle.Lifecycle.State.DESTROYED;
  * Author: xutao
  * Version V1.0
  * Date: 2020/10/14
+ * 默认为非粘性的事件
  */
 public class BusLiveData<T> extends MutableLiveData<T> {
 
@@ -68,7 +66,7 @@ public class BusLiveData<T> extends MutableLiveData<T> {
     public void removeObserver(@NonNull Observer<? super T> observer) {
         BusObserver<? super T> busObserver;
         if (observer instanceof BusObserver) {
-            busObserver = (BusObserver)observer;
+            busObserver = (BusObserver) observer;
         } else {
             busObserver = busObservers.get(observer);
         }
@@ -96,30 +94,6 @@ public class BusLiveData<T> extends MutableLiveData<T> {
             if (m != null) {
                 realObserver.onChanged(m);
             }
-        }
-    }
-
-    private class ObserverKey<K extends T> {
-        private Observer<K> realObserver;
-        private LifecycleOwner owner;
-
-        public ObserverKey(@NonNull Observer<K> realObserver,@Nullable LifecycleOwner owner) {
-            this.realObserver = realObserver;
-            this.owner = owner;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            ObserverKey<?> that = (ObserverKey<?>) o;
-            return Objects.equals(realObserver, that.realObserver) &&
-                    Objects.equals(owner, that.owner);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(realObserver, owner);
         }
     }
 

@@ -13,4 +13,4 @@ import com.tory.library.utils.livebus.LiveBusEvent
  * 2020/10/14 xutao 1.0
  * Why & What is modified:
  */
-data class HiltEvent(val content: String): LiveBusEvent
+data class HitEvent(val content: String): LiveBusEvent

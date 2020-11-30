@@ -21,5 +21,8 @@ dependencies{
     implementation libraries.kotlinJdk
     implementation libraries.kotlinReflect
     implementation libraries.androidxKtx
+
+    implementation libraries.kotlinCoroutineCore
+    implementation libraries.kotlinCoroutineAndroid
 }
 

@@ -7,7 +7,7 @@ import java.util.Objects;
  * Version V1.0
  * Date: 2020/10/14
  */
-public class LiveEmptyEvent implements LiveBusEvent {
+public final class LiveEmptyEvent implements LiveBusEvent {
 
     private String eventName;
 
@@ -29,8 +29,12 @@ public class LiveEmptyEvent implements LiveBusEvent {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         LiveEmptyEvent that = (LiveEmptyEvent) o;
         return Objects.equals(eventName, that.eventName);
     }

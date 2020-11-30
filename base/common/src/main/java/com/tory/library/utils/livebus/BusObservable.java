@@ -18,7 +18,6 @@ public interface BusObservable<T> {
 
     /**
      * 数据类型
-     * @return
      */
     @NonNull
     public Class<T> getEventType();
@@ -41,9 +40,9 @@ public interface BusObservable<T> {
 
     /**
      * 注册一个Observer，生命周期感知，自动取消订阅
-     *
-     * @param owner    LifecycleOwner
-     * @param observer 观察者
+     * 非粘性事件
+     * @param owner LifecycleOwner
+     * @param observer 观察者，回调已经做了空判断，不会为空
      */
     @MainThread
     void observe(@NonNull LifecycleOwner owner, @NonNull Observer<T> observer);
@@ -51,18 +50,18 @@ public interface BusObservable<T> {
     /**
      * 注册一个Observer，生命周期感知，自动取消订阅
      * 如果之前有消息发送，可以在注册时收到消息（消息同步）
-     *
-     * @param owner    LifecycleOwner
-     * @param observer 观察者
+     * 粘性事件
+     * @param owner LifecycleOwner
+     * @param observer 观察者，回调已经做了空判断，不会为空
      */
     @MainThread
     void observeSticky(@NonNull LifecycleOwner owner, @NonNull Observer<T> observer);
 
     /**
      * 注册一个Observer，view移除时自动取消订阅
-     *
+     * 非粘性事件
      * @param owner    LifecycleOwner
-     * @param observer 观察者
+     * @param observer 观察者，回调已经做了空判断，不会为空
      */
     @MainThread
     void observe(@NonNull View view, @NonNull Observer<T> observer);
@@ -70,9 +69,9 @@ public interface BusObservable<T> {
     /**
      * 注册一个Observer，view移除时自动取消订阅、
      * 如果之前有消息发送，可以在注册时收到消息（消息同步）
-     *
+     * 粘性事件
      * @param owner    LifecycleOwner
-     * @param observer 观察者
+     * @param observer 观察者，回调已经做了空判断，不会为空
      */
     @MainThread
     void observeSticky(@NonNull View view, @NonNull Observer<T> observer);
@@ -80,8 +79,8 @@ public interface BusObservable<T> {
 
     /**
      * 注册一个Observer，需手动解除绑定
-     *
-     * @param observer 观察者
+     * 非粘性事件
+     * @param observer 观察者，回调已经做了空判断，不会为空
      */
     @MainThread
     void observeForever(@NonNull Observer<T> observer);
@@ -89,16 +88,16 @@ public interface BusObservable<T> {
     /**
      * 注册一个Observer，需手动解除绑定
      * 如果之前有消息发送，可以在注册时收到消息（消息同步）
-     *
-     * @param observer 观察者
+     * 粘性事件
+     * @param observer 观察者，回调已经做了空判断，不会为空
      */
     @MainThread
     void observeStickyForever(@NonNull Observer<T> observer);
 
     /**
      * 通过observeForever或observeStickyForever注册的，需要调用该方法取消订阅
-     *
-     * @param observer 观察者
+     * 一般不用移除
+     * @param observer 观察者，回调已经做了空判断，不会为空
      */
     @MainThread
     void removeObserver(@NonNull Observer<T> observer);

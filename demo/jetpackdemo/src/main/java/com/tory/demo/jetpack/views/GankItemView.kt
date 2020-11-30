@@ -4,15 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.util.AttributeSet
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.shizhuang.duapp.common.component.module.AbsModuleView
 import com.shizhuang.duapp.common.component.module.groupPosition
 import com.tory.demo.jetpack.HiltDemoActivity
 import com.tory.demo.jetpack.R
-import com.tory.demo.jetpack.event.HiltEvent
+import com.tory.demo.jetpack.event.HitEvent
 import com.tory.demo.jetpack.model.GankItem
-import com.tory.library.extension.findLifecycleOwnerNotNull
 import com.tory.library.log.LogUtils
 import com.tory.library.utils.livebus.LiveEventBus
 import com.tory.library.utils.livebus.PageEventBus
@@ -36,7 +34,7 @@ class GankItemView @JvmOverloads constructor(
 
     init {
         PageEventBus.get(context)
-                .of(HiltEvent::class.java)
+                .of(HitEvent::class.java)
                 .observe(this, {
                     LogUtils.d("PageEventBus ${groupPosition} ${it?.content}")
                 })
@@ -75,11 +73,17 @@ class GankItemView @JvmOverloads constructor(
 
         setOnClickListener {
             when (groupPosition) {
-                0 -> PageEventBus.get(context).postEmpty("testPageEvent")
+                0 -> {
+                    PageEventBus.get(context).postEmpty("testPageEvent")
+                }
                 1 -> context.startActivity(Intent(context, HiltDemoActivity::class.java))
-                2 -> LiveEventBus.get().post(HiltEvent(model.desc.orEmpty()))
+                2 -> {
+                    LiveEventBus.get().postLatest(HitEvent("HiltEvent 111"))
+                    LiveEventBus.get().postLatest(HitEvent("HiltEvent 222"))
+                    LiveEventBus.get().postLatest(HitEvent("HiltEvent 333"))
+                }
                 3 -> PageEventBus.get(context).postEmpty("testPageEvent1")
-                else -> PageEventBus.get(context).post(HiltEvent(model.desc.orEmpty()))
+                else -> PageEventBus.get(context).post(HitEvent(model.desc.orEmpty()))
 
             }
         }

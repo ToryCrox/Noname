@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import com.tory.library.base.BaseListActivity
 import com.tory.library.log.LogUtils
 import com.tory.demo.jetpack.analytics.AnalyticsService
-import com.tory.demo.jetpack.event.HiltEvent
+import com.tory.demo.jetpack.event.HitEvent
 import com.tory.demo.jetpack.views.GankItemView
 import com.tory.library.utils.livebus.LiveEventBus
 import com.tory.library.utils.livebus.PageEventBus
@@ -26,6 +26,7 @@ import javax.inject.Inject
  */
 @AndroidEntryPoint
 class HiltDemoActivity : BaseListActivity() {
+
     val viewModel: MainViewModel by viewModels()
 
     @Inject
@@ -59,16 +60,15 @@ class HiltDemoActivity : BaseListActivity() {
             })
 
         PageEventBus.get(this)
-            .of(HiltEvent::class.java)
+            .of(HitEvent::class.java)
             .observeSticky(this, Observer {
                 LogUtils.d("PageEventBus HiltEvent receive: $it")
             })
 
         LiveEventBus.get()
-            .of(HiltEvent::class.java)
+            .of(HitEvent::class.java)
             .observe(this, Observer {
-                val result = 1 + 1
-                LogUtils.d("LiveEventBus HiltEvent receive: $it " + this)
+                LogUtils.d("LiveEventBus HiltEvent receive: $it $this")
             })
     }
 

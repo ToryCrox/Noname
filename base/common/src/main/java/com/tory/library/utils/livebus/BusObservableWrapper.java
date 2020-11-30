@@ -1,17 +1,13 @@
 package com.tory.library.utils.livebus;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
-
-import com.tory.library.log.LogUtils;
 
 /**
  * Author: xutao
@@ -31,7 +27,7 @@ class BusObservableWrapper<T extends LiveBusEvent> implements BusObservable<T> {
 
     @Override
     @NonNull
-    public Class<T> getEventType(){
+    public Class<T> getEventType() {
         return eventType;
     }
 
