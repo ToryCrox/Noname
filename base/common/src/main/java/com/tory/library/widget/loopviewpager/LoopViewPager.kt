@@ -24,6 +24,7 @@ import android.view.MotionEvent
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
+import com.tory.library.log.LogUtils
 
 open class LoopViewPager @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : ViewPager(context, attrs) {
     private var mAdapter: LoopPagerAdapterWrapper? = null
@@ -89,6 +90,7 @@ open class LoopViewPager @JvmOverloads constructor(context: Context, attrs: Attr
 
     override fun setCurrentItem(item: Int, smoothScroll: Boolean) {
         val realItem = mAdapter?.toInnerPosition(item) ?: 0
+        LogUtils.d(TAG, "handler realItem $realItem, item:$item")
         super.setCurrentItem(realItem, smoothScroll)
     }
 
@@ -182,6 +184,7 @@ open class LoopViewPager @JvmOverloads constructor(context: Context, attrs: Attr
             super.handleMessage(msg)
             if (msg.what == MESSAGE_SCROLL) {
                 mPosition++
+
                 setCurrentItem(mPosition, true)
                 this.sendEmptyMessageDelayed(MESSAGE_SCROLL, scrollInterval)
             }

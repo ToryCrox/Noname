@@ -2,6 +2,7 @@ package com.tory.library.widget.banner
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -31,8 +32,7 @@ import java.util.*
 open class BannerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) :
-    FrameLayout(context, attrs, defStyleAttr),
+) : FrameLayout(context, attrs, defStyleAttr),
     BannerAdapter.BannerListener, ViewPager.OnPageChangeListener, LifecycleObserver {
     private var mRatio = 0f
     private val mBanners = ArrayList<BannerModel>()
@@ -154,6 +154,10 @@ open class BannerView @JvmOverloads constructor(
         fun onSelected(index: Int, model: BannerModel)
     }
 
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        parent?.requestDisallowInterceptTouchEvent(true)
+        return super.dispatchTouchEvent(ev)
+    }
     companion object {
         private const val TAG = "BannerView"
     }

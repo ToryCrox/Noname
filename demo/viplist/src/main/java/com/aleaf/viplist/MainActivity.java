@@ -5,11 +5,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import androidx.annotation.NonNull;
-import android.support.design.animation.ArgbEvaluatorCompat;
 import androidx.core.content.ContextCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.math.MathUtils;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
@@ -17,6 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
+
+import com.google.android.material.animation.ArgbEvaluatorCompat;
 
 import java.util.List;
 
@@ -80,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         mViewPager.setAdapter(new VipCardAdapter(profileList));
         mViewPager.setOffscreenPageLimit(2);
-        mViewPager.setPageMargin(getResources().getDimensionPixelOffset(R.dimen.vip_card_view_pager_padding_h));
+        mViewPager.setPageMargin(getResources().getDimensionPixelOffset(R.dimen.vip_card_view_padding_h));
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -101,11 +105,17 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        mViewPager.setCurrentItem(1, false);
+        mViewPager.setCurrentItem(0, false);
+        mViewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
+            @Override
+            public void transformPage(@NonNull View page, float position) {
+                Log.d("VipPage", "transformPage:" + position);
+            }
+        });
 
     }
 
-    class VipCardAdapter extends PagerAdapter{
+    class VipCardAdapter extends PagerAdapter {
 
         List<VipViewProfile> profiles;
         SparseArray<VipCardContainerView> mViews = new SparseArray<>();
