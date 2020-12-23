@@ -11,10 +11,8 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
-import com.shizhuang.duapp.modules.rn.views.banner.BannerAdapter
-import com.shizhuang.duapp.modules.rn.views.banner.BannerModel
-import com.shizhuang.duapp.modules.rn.views.loopviewpager.LoopViewPager
 import com.tory.library.extension.addLifecycleObserver
+import com.tory.library.widget.loopviewpager.LoopViewPager
 import com.tory.library.log.LogUtils
 import java.util.*
 

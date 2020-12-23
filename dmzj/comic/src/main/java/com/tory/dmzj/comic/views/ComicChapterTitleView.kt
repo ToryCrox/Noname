@@ -2,7 +2,7 @@ package com.tory.dmzj.comic.views
 
 import android.content.Context
 import android.util.AttributeSet
-import com.shizhuang.duapp.common.component.module.AbsModuleView
+import com.tory.library.component.base.AbsModuleView
 import com.tory.dmzj.comic.R
 import com.tory.dmzj.comic.model.ComicChapterTitleModel
 import kotlinx.android.synthetic.main.view_comic_chapter_title.view.*

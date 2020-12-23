@@ -1,7 +1,7 @@
 package com.tory.dmzj.comic.module.recommend
 
 import android.util.ArrayMap
-import com.shizhuang.duapp.common.component.module.ModuleSpaceModel
+import com.tory.library.component.base.ModuleSpaceModel
 import com.tory.dmzj.comic.ComicConstant
 import com.tory.dmzj.comic.api.ComicRepository
 import com.tory.dmzj.comic.model.RecommendBannerModel

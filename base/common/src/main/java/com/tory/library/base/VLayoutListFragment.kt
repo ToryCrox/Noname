@@ -4,9 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.alibaba.android.vlayout.LayoutHelper
 import com.alibaba.android.vlayout.VirtualLayoutManager
-import com.shizhuang.duapp.common.component.module.VLayoutModuleAdapter
+import com.tory.library.component.vlayout.VLayoutModuleAdapter
 import com.tory.library.R
 import com.tory.library.component.loadmore.LoadMoreHelper
 import com.tory.library.component.vlayout.VLayoutDelegateAdapter

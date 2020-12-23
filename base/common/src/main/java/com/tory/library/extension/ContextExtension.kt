@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.shizhuang.duapp.common.extension
+package com.tory.library.extension
 
 import android.app.Activity
 import android.content.Context

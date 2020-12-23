@@ -4,9 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.TypedValue
 import androidx.appcompat.widget.AppCompatTextView
-import com.shizhuang.duapp.common.component.module.IModuleView
-import com.shizhuang.duapp.common.extension.color
-import com.shizhuang.duapp.common.extension.dp
+import com.tory.library.component.base.IModuleView
 import com.tory.dmzj.comic.R
 import com.tory.dmzj.comic.model.RecommendTitleModel
 

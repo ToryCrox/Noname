@@ -6,7 +6,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.shizhuang.duapp.common.component.module.AbsModuleView
+import com.tory.library.component.base.AbsModuleView
 import com.tory.dmzj.comic.R
 import com.tory.dmzj.comic.model.ComicRankItemModel
 import com.tory.dmzj.dbase.RouterTable

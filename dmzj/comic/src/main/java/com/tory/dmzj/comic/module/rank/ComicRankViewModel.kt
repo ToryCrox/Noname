@@ -1,7 +1,7 @@
 package com.tory.dmzj.comic.module.rank
 
-import com.shizhuang.duapp.common.component.module.ModuleDividerModel
-import com.shizhuang.duapp.common.component.module.joinTo
+import com.tory.library.component.base.ModuleDividerModel
+import com.tory.library.component.base.joinTo
 import com.tory.dmzj.comic.api.ComicRepository
 import com.tory.dmzj.comic.model.ComicRankItemModel
 import com.tory.dmzj.dbase.BaseViewModel

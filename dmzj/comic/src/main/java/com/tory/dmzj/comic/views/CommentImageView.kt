@@ -4,10 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.shizhuang.duapp.common.component.module.AbsModuleView
+import com.tory.library.component.base.AbsModuleView
 import com.tory.dmzj.comic.R
 import com.tory.dmzj.comic.model.CommentImageModel
-import com.tory.dmzj.comic.model.CommentImagesModel
 import com.tory.library.log.LogUtils
 import com.tory.library.model.PicItemModel
 import com.tory.library.ui.pics.PicsHelper

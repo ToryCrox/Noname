@@ -2,10 +2,9 @@ package com.tory.dmzj.comic.views
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.shizhuang.duapp.common.component.module.AbsModuleView
+import com.tory.library.component.base.AbsModuleView
 import com.tory.dmzj.comic.R
 import com.tory.dmzj.comic.model.RecommendTopicModel
 import com.tory.dmzj.dbase.glide.GlideTransforms

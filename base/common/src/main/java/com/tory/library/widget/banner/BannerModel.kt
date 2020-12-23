@@ -1,4 +1,4 @@
-package com.shizhuang.duapp.modules.rn.views.banner
+package com.tory.library.widget.banner
 
 /**
  * Author: xutao

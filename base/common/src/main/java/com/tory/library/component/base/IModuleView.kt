@@ -1,4 +1,4 @@
-package com.shizhuang.duapp.common.component.module
+package com.tory.library.component.base
 
 interface IModuleView<T> {
     /**

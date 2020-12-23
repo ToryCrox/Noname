@@ -3,7 +3,7 @@ package com.tory.dmzj.comic.views
 import android.content.Context
 import android.util.AttributeSet
 import androidx.fragment.app.FragmentActivity
-import com.shizhuang.duapp.common.component.module.AbsModuleView
+import com.tory.library.component.base.AbsModuleView
 import com.tory.dmzj.comic.R
 import com.tory.dmzj.comic.dialog.ComicChapterAllDialog
 import com.tory.dmzj.comic.model.ComicChapterItemModel

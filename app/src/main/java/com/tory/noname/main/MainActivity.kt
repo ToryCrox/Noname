@@ -2,10 +2,10 @@ package com.tory.noname.main
 
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.shizhuang.duapp.common.component.module.ModuleDividerModel
-import com.shizhuang.duapp.common.component.module.NormalModuleAdapter
-import com.shizhuang.duapp.common.component.module.joinTo
 import com.tory.library.base.BaseActivity
+import com.tory.library.component.base.ModuleDividerModel
+import com.tory.library.component.base.NormalModuleAdapter
+import com.tory.library.component.base.joinTo
 import com.tory.module.hilt.KoinDemoActivity
 import com.tory.noname.R
 import com.tory.noname.main.ui.NavMainActivity

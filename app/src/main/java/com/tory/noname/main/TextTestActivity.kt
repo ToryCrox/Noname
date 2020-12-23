@@ -11,8 +11,8 @@ import android.util.Log
 import androidx.annotation.Px
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenCreated
-import com.shizhuang.duapp.common.extension.dp
 import com.tory.library.base.BaseActivity
+import com.tory.library.extension.dp
 import com.tory.library.widget.span.AlignImageSpan
 import com.tory.library.widget.span.ParagraphSpacingSpan
 import com.tory.noname.R

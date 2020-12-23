@@ -1,8 +1,8 @@
 package com.tory.dmzj.comic.module.commic_detail
 
 import androidx.lifecycle.MutableLiveData
-import com.shizhuang.duapp.common.component.module.ModuleDividerModel
-import com.shizhuang.duapp.common.component.module.ModuleEmptyModel
+import com.tory.library.component.base.ModuleDividerModel
+import com.tory.library.component.base.ModuleEmptyModel
 import com.tory.dmzj.comic.api.ComicRepository
 import com.tory.dmzj.comic.api.CommentRepository
 import com.tory.dmzj.comic.model.*

@@ -4,9 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.math.MathUtils
-import com.shizhuang.duapp.common.component.module.IModuleView
-import com.shizhuang.duapp.common.extension.dp
-import com.shizhuang.duapp.modules.rn.views.banner.BannerModel
+import com.tory.library.component.base.IModuleView
+import com.tory.library.extension.dp
+import com.tory.library.widget.banner.BannerModel
 import com.tory.dmzj.comic.model.RecommendBannerModel
 import com.tory.library.log.LogUtils
 import com.tory.library.widget.banner.BannerView

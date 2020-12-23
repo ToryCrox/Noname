@@ -5,12 +5,12 @@ import android.content.Intent
 import android.util.AttributeSet
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
-import com.shizhuang.duapp.common.component.module.AbsModuleView
-import com.shizhuang.duapp.common.component.module.groupPosition
 import com.tory.demo.jetpack.HiltDemoActivity
 import com.tory.demo.jetpack.R
 import com.tory.demo.jetpack.event.HitEvent
 import com.tory.demo.jetpack.model.GankItem
+import com.tory.library.component.base.AbsModuleView
+import com.tory.library.component.base.groupPosition
 import com.tory.library.log.LogUtils
 import com.tory.library.utils.livebus.LiveEventBus
 import com.tory.library.utils.livebus.PageEventBus
@@ -35,9 +35,9 @@ class GankItemView @JvmOverloads constructor(
     init {
         PageEventBus.get(context)
                 .of(HitEvent::class.java)
-                .observe(this, {
+                .observe(this) {
                     LogUtils.d("PageEventBus ${groupPosition} ${it?.content}")
-                })
+                }
     }
 
     override fun getLayoutId(): Int = R.layout.item_gank

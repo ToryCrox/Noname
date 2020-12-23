@@ -1,13 +1,10 @@
-package com.shizhuang.duapp.modules.rn.views.banner
+package com.tory.library.widget.banner
 
 
 import android.content.Context
-import androidx.viewpager.widget.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-
-import java.util.ArrayList
 
 /**
  * Author:    shaw

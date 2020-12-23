@@ -6,7 +6,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.alibaba.android.vlayout.layout.StaggeredGridLayoutHelper
-import com.shizhuang.duapp.common.component.module.VLayoutModuleAdapter
+import com.tory.library.component.vlayout.VLayoutModuleAdapter
 import com.tory.dmzj.agallery.ui.views.GalleryImageView
 import com.tory.library.base.VLayoutListFragment
 import com.tory.library.log.LogUtils

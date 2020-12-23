@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.shizhuang.duapp.modules.rn.views.loopviewpager
+package com.tory.library.widget.loopviewpager
 
 import android.content.Context
 import android.os.Handler
@@ -23,7 +23,6 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
-import androidx.viewpager2.widget.ViewPager2
 import com.tory.library.log.LogUtils
 
 open class LoopViewPager @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : ViewPager(context, attrs) {

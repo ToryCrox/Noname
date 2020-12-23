@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.shizhuang.duapp.common.component.module.NormalModuleAdapter
+import com.tory.library.component.base.NormalModuleAdapter
 import com.tory.library.R
 
 /**

@@ -1,4 +1,4 @@
-package com.shizhuang.duapp.common.component.module
+package com.tory.library.component.vlayout
 
 import android.content.Context
 import android.graphics.Point
@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.vlayout.LayoutHelper
 import com.alibaba.android.vlayout.layout.LinearLayoutHelper
 import com.tory.library.component.CommonViewHolder
-import com.tory.library.component.base.ExtendGridLayoutHelper
-import com.tory.library.component.base.OnLoadMoreListener
-import com.tory.library.component.vlayout.VLayoutDelegateInnerAdapter
+import com.tory.library.component.base.*
 import com.tory.library.log.LogUtils
 
 /**
@@ -208,11 +206,11 @@ open class VLayoutModuleAdapter(
      * @param groupMargin 设置两边的margin，目前只对vLayout有效
      */
     inline fun <reified V, reified M : Any> register(
-        gridSize: Int = 1,
-        groupType: String? = null,
-        poolSize: Int = -1,
-        groupMargin: GroupMargin? = null,
-        crossinline creator: (ViewGroup) -> V
+            gridSize: Int = 1,
+            groupType: String? = null,
+            poolSize: Int = -1,
+            groupMargin: GroupMargin? = null,
+            crossinline creator: (ViewGroup) -> V
     ) where V : IModuleView<M>, V : View {
         delegate.register(gridSize, groupType, poolSize, groupMargin, creator)
     }

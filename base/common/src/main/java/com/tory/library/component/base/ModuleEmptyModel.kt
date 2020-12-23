@@ -1,6 +1,7 @@
-package com.shizhuang.duapp.common.component.module
+package com.tory.library.component.base
 
-import com.shizhuang.duapp.common.extension.dp
+import com.tory.library.extension.dp
+
 
 /**
  * Author: xutao

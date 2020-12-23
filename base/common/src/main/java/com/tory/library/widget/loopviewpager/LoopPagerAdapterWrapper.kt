@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.shizhuang.duapp.modules.rn.views.loopviewpager
+package com.tory.library.widget.loopviewpager
 
 import android.database.DataSetObserver
 import android.os.Parcelable
@@ -22,7 +22,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
 
 class LoopPagerAdapterWrapper internal constructor(val realAdapter: PagerAdapter) : PagerAdapter() {

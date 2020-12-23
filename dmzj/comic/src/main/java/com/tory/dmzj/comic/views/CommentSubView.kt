@@ -6,11 +6,8 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
 import android.view.Gravity
-import androidx.core.view.updatePadding
 import androidx.fragment.app.FragmentActivity
-import com.shizhuang.duapp.common.component.module.AbsModuleView
-import com.shizhuang.duapp.common.extension.color
-import com.shizhuang.duapp.common.extension.dp
+import com.tory.library.component.base.AbsModuleView
 import com.tory.dmzj.comic.R
 import com.tory.dmzj.comic.dialog.CommentAllDialog
 import com.tory.dmzj.comic.model.CommentSubModel

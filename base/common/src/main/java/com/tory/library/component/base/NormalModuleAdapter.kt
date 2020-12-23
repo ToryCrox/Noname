@@ -1,4 +1,4 @@
-package com.shizhuang.duapp.common.component.module
+package com.tory.library.component.base
 
 import android.content.Context
 import android.view.View
@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.tory.library.component.base.OnLoadMoreListener
 import com.tory.library.log.LogUtils
 
 /**
@@ -207,11 +206,11 @@ class NormalModuleAdapter(private val calDiff: Boolean = false) :
      * @param groupMargin 不生效
      */
     inline fun <reified V, reified M : Any> register(
-        gridSize: Int = 1,
-        groupType: String? = null,
-        poolSize: Int = -1,
-        groupMargin: GroupMargin? = null,
-        crossinline creator: (ViewGroup) -> V
+            gridSize: Int = 1,
+            groupType: String? = null,
+            poolSize: Int = -1,
+            groupMargin: GroupMargin? = null,
+            crossinline creator: (ViewGroup) -> V
     )
         where V : IModuleView<M>, V : View {
         delegate.register(gridSize, groupType, poolSize, groupMargin, creator)

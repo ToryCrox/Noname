@@ -20,8 +20,6 @@ import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-import com.shizhuang.duapp.common.extension.color
-import com.shizhuang.duapp.common.extension.formatString
 
 /**
  * Created by joe on 2019-09-18.

@@ -3,7 +3,7 @@ package com.tory.noname.views
 import android.content.Context
 import android.content.Intent
 import android.util.AttributeSet
-import com.shizhuang.duapp.common.component.module.AbsModuleView
+import com.tory.library.component.base.AbsModuleView
 import com.tory.noname.R
 import com.tory.noname.model.RedirectModel
 import kotlinx.android.synthetic.main.item_redirect_view.view.*

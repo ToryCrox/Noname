@@ -1,6 +1,5 @@
 package com.tory.dmzj.dbase.glide
-
-import com.shizhuang.duapp.common.extension.dp
+import com.tory.library.extension.dp
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 /**

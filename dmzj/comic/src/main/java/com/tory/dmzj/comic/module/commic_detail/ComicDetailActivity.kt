@@ -6,8 +6,8 @@ import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
-import com.shizhuang.duapp.common.component.module.GroupMargin
-import com.shizhuang.duapp.common.extension.dp
+import com.tory.library.component.base.GroupMargin
+import com.tory.library.extension.dp
 import com.tory.dmzj.comic.views.*
 import com.tory.dmzj.dbase.RouterTable
 import com.tory.library.base.VLayoutListActivity

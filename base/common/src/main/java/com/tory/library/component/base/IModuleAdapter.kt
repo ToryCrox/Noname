@@ -1,4 +1,4 @@
-package com.shizhuang.duapp.common.component.module
+package com.tory.library.component.base
 
 import android.content.Context
 import androidx.recyclerview.widget.GridLayoutManager

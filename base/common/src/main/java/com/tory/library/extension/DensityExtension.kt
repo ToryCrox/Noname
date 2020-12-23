@@ -1,4 +1,4 @@
-package com.shizhuang.duapp.common.extension
+package com.tory.library.extension
 
 import com.tory.library.MApp
 import com.tory.library.utils.AppUtils

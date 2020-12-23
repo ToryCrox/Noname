@@ -5,13 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.alibaba.android.vlayout.VirtualLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.shizhuang.duapp.common.component.module.GroupMargin
-import com.shizhuang.duapp.common.component.module.ModuleDividerModel
-import com.shizhuang.duapp.common.component.module.VLayoutModuleAdapter
-import com.shizhuang.duapp.common.extension.dp
+import com.tory.library.component.base.GroupMargin
+import com.tory.library.component.vlayout.VLayoutModuleAdapter
+import com.tory.library.extension.dp
 import com.tory.dmzj.comic.model.ComicChapter
 import com.tory.dmzj.comic.model.ComicChapterItemModel
 import com.tory.dmzj.comic.model.ComicChapterTitleModel
