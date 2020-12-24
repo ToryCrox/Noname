@@ -9,6 +9,7 @@ import android.text.Spanned
 import android.text.style.LineHeightSpan
 import android.util.Log
 import androidx.annotation.Px
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenCreated
 import com.tory.library.base.BaseActivity
@@ -31,6 +32,7 @@ import kotlinx.coroutines.launch
  * Why & What is modified:
  */
 class TextTestActivity: BaseActivity() {
+
     override fun getLayoutId(): Int = R.layout.activity_text_test
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -66,6 +68,16 @@ class TextTestActivity: BaseActivity() {
             tagSpan.append(tag)
         }
         textView.text = tagSpan
+
+        //marqueeTextView.startScroll()
+        marqueeTextView.setMarqueeEnable(true)
+        marqueeTextView.setOnClickListener {
+            marqueeTextView.isVisible = false
+            //marqueeTextView.setText("修改文字字dddddddddddddddddddddddddddddddddddddddddd")
+        }
+        marqueeTextView.postDelayed(Runnable {
+            marqueeTextView.setText("我是文字, 我是文字, 我是文字sssssssssssssssssssssssssssssss")
+        }, 1000L)
 
     }
 }

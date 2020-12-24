@@ -57,6 +57,7 @@ public class GsonHelper {
     @NonNull
     public static Gson create() {
         return new GsonBuilder()
+                .disableHtmlEscaping()
                 .registerTypeAdapter(String.class, GsonJsonAdapters.JSON_STRING)
                 .registerTypeAdapter(JSONObject.class, GsonJsonAdapters.JSON_OBJECT)
                 .registerTypeAdapter(JSONArray.class, GsonJsonAdapters.JSON_ARRAY)

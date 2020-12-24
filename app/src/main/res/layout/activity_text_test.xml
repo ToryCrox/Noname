@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:textStyle="bold|italic"
+        android:textSize="14dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.tory.library.widget.MarqueeTextView
+        android:id="@+id/marqueeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        app:marquee_textSize="16dp"
+        app:marquee_textColor="@color/color_text_primary"
+        app:marquee_textStyle="normal"
+        app:marquee_space="120dp"
+        tools:marquee_text="我是文字，我是文字，我是文字，我是文字，我是文字，我是文字，我是文字"/>
+
+</LinearLayout>

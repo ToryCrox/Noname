@@ -2,9 +2,9 @@
     package="com.tory.module.hilt">
 
     <application>
-        <meta-data android:name="com.tory.demo.jetpack.KoinAppLife" android:value="AppLifeModule"/>
+        <meta-data android:name="com.tory.module.hilt.KoinAppLife" android:value="AppLifeModule"/>
 
-        <activity android:name="com.tory.demo.jetpack.KoinDemoActivity" />
+        <activity android:name="com.tory.module.hilt.KoinDemoActivity" />
     </application>
 
 </manifest>

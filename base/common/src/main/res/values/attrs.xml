@@ -112,4 +112,21 @@
         <attr name="mTabMaskLeft" format="reference"/>
         <attr name="mTabMaskRight" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="MarqueeTextView">
+        <attr name="marquee_text" format="string"/>
+        <attr name="marquee_textColor" format="color"/>
+        <attr name="marquee_textSize" format="dimension"/>
+        <attr name="marquee_textStyle">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+        </attr>
+        <attr name="marquee_delay" format="integer"/>
+        <!--每个像素滚动需要的时间-->
+        <attr name="marquee_speed" format="integer"/>
+        <!--滚动时的间距-->
+        <attr name="marquee_space" format="dimension"/>
+        <attr name="marquee_enable" format="boolean" />
+    </declare-styleable>
 </resources>
