@@ -6,7 +6,3 @@ package com.tory.library.component.base
  * Email: xutao@theduapp.com
  * Description:
  */
-interface IViewManager<M: > {
-
-    fun getGridSize(): Int
-}

@@ -50,6 +50,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".main.TextTestActivity" />
+        <activity android:name=".main.TrendImageActivity" />
     </application>
 
 </manifest>

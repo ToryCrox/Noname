@@ -1,6 +1,7 @@
 package com.tory.noname.main
 
 import android.os.Bundle
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tory.library.base.BaseActivity
 import com.tory.library.component.base.ModuleDividerModel
@@ -43,8 +44,10 @@ class MainActivity: BaseActivity() {
         val list = listOf(
             RedirectModel("NavMainActivity", NavMainActivity::class.java),
             RedirectModel("TextTestActivity", TextTestActivity::class.java),
-            RedirectModel("Koin", KoinDemoActivity::class.java)
+            RedirectModel("Koin", KoinDemoActivity::class.java),
+            RedirectModel("TrendImageActivity", TrendImageActivity::class.java)
         )
+
         listAdapter.appendItems(ModuleDividerModel().joinTo(list))
     }
 
