@@ -26,4 +26,31 @@
         app:marquee_space="120dp"
         tools:marquee_text="我是文字，我是文字，我是文字，我是文字，我是文字，我是文字，我是文字"/>
 
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="174dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="【得物独家专供】【薛之谦主理】DANGEROUSPEOPLE 侧边腰果花拼接休闲长裤 情侣款 黑色"
+        android:textStyle="bold"
+        android:breakStrategy="high_quality"
+        android:textColor="#30333F"
+        android:textSize="14dp"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </LinearLayout>

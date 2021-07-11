@@ -51,6 +51,7 @@
         </activity>
         <activity android:name=".main.TextTestActivity" />
         <activity android:name=".main.TrendImageActivity" />
+        <activity android:name=".main.VLayoutTestActivity" />
     </application>
 
 </manifest>

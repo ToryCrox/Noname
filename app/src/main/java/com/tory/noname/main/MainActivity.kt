@@ -45,7 +45,8 @@ class MainActivity: BaseActivity() {
             RedirectModel("NavMainActivity", NavMainActivity::class.java),
             RedirectModel("TextTestActivity", TextTestActivity::class.java),
             RedirectModel("Koin", KoinDemoActivity::class.java),
-            RedirectModel("TrendImageActivity", TrendImageActivity::class.java)
+            RedirectModel("TrendImageActivity", TrendImageActivity::class.java),
+            RedirectModel("VLayoutTestActivity", VLayoutTestActivity::class.java)
         )
 
         listAdapter.appendItems(ModuleDividerModel().joinTo(list))
