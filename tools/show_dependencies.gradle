@@ -1,0 +1,85 @@
+
+
+
+project.afterEvaluate {
+    project.android.applicationVariants.all { variant ->
+        tasks.create(name: "showDependencies${variant.name.capitalize()}", description: "展示所有依赖") {
+        doLast {
+            println("configuration=>start ${variant.name}")
+            Configuration configuration = project.configurations."${variant.name}CompileClasspath"
+            println("configuration=>${variant.name}CompileClasspath")
+
+            List<DependencyDetailModel> dependencyList = new ArrayList<DependencyDetailModel>();
+            configuration.resolvedConfiguration.lenientConfiguration.allModuleDependencies.eachWithIndex { item, index ->
+                def identifier = item.module.id
+                        //println("${identifier.group}:${identifier.name}:${identifier.version}")
+                        if (item.configuration != "compile") {
+                            return
+                        }
+                item.moduleArtifacts.eachWithIndex { ResolvedArtifact entry, int i ->
+                    def id = entry.moduleVersion.id;
+                    DependencyDetailModel detail = new DependencyDetailModel();
+                    detail.group = identifier.group
+                    detail.name = identifier.name
+                    detail.version = identifier.version
+                    detail.filePath = entry.file.absolutePath
+                    detail.fileSize = entry.file.size()
+                    dependencyList.add(detail)
+                    if (!entry.file.absolutePath.endsWith("aar")) {
+                        return
+                    }
+                    FileTree fileTree = zipTree(entry.file.absolutePath)
+                    fileTree.filter { File f->
+                        f.absolutePath.endsWith(".jar")
+                    }.eachWithIndex {f, ii->
+                        if (ii == 0) {
+                            detail.jarName = f.name
+                        } else {
+                            detail.jarName += "," + f.name
+                        }
+                        detail.jarFileSize += f.size()
+                    }
+                }
+            }
+            dependencyList.sort {  -it.jarFileSize }
+                    .eachWithIndex {item, index->
+                        println("${index}=>${item.displayName()}(${item.toFileSize(item.fileSize)}),  ${item.jarName}(${item.toFileSize(item.jarFileSize)})")
+                    }
+
+        }
+    }
+    }
+}
+
+class DependencyDetailModel {
+    public String group;
+    public String name;
+    public String version;
+    public String filePath;
+    public long fileSize;
+
+    public String jarName;
+    public long jarFileSize;
+
+    public String displayName() {
+        return "${group}:${name}:${version}"
+    }
+
+    public String fileName() {
+        int index = filePath.lastIndexOf("/")
+        if (index < 0) {
+            return ""
+        }
+        return filePath.substring(index + 1)
+    }
+
+    public String toFileSize(long size) {
+        if (size < 1024) {
+            return "${size}B"
+        } else if (size < 1024 * 1024) {
+            return "${String.format("%.2f", size / 1024f)}KB"
+        } else {
+            return "${String.format("%.2f", size / (1024f * 1024))}MB"
+        }
+    }
+}

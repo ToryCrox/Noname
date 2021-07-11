@@ -4,6 +4,7 @@ apply plugin: 'com.google.protobuf'
 apply from: "$project.rootDir/tools/basic.gradle"
 apply from: "$project.rootDir/tools/kotlin_support.gradle"
 
+apply from: "$project.rootDir/tools/show_dependencies.gradle"
 
 
 android {
