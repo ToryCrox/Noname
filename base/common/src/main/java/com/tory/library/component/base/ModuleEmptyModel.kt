@@ -71,6 +71,11 @@ class PlaceHolderModel(var targetType: Class<*>)
 class ModuleNoMoreTipModel
 
 /**
+ * 分组间隔，插入到列表后，groupPosition会从0开始
+ */
+data class ModuleGroupSectionModel(val tag: Any = Any())
+
+/**
  * 数组中插入数据
  */
 fun IEmptyDivider.joinTo(list: List<Any>, hasStart: Boolean = false, hasEnd: Boolean = false): List<Any> {

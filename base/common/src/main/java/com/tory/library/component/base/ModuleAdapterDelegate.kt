@@ -2,18 +2,23 @@ package com.tory.library.component.base
 
 import android.content.Context
 import android.graphics.Point
+import android.os.Looper
 import android.os.SystemClock
+import android.util.SparseArray
 import android.util.SparseIntArray
 import android.view.View
 import android.view.ViewGroup
 import androidx.collection.ArrayMap
 import androidx.core.os.TraceCompat
+import androidx.core.util.forEach
+import androidx.core.util.putAll
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tory.library.BuildConfig
 import com.tory.library.R
 import com.tory.library.log.LogUtils
+import com.tory.library.utils.TimeRecorder
 import java.lang.reflect.Constructor
 
 /**
@@ -28,39 +33,73 @@ import java.lang.reflect.Constructor
  * Why & What is modified:
  */
 class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
-
-    private val viewTypes = mutableListOf<ViewType<*>>()
-    private val viewTypeMap = ArrayMap<Class<*>, ViewType<*>>()
-    private val groupTypes = ArrayMap<String, List<Class<*>>>() // 分类
+    internal val viewTypes = SparseArray<ViewType<*>>()
+    internal val viewTypeMap = android.util.ArrayMap<Class<*>, IViewType<*>>()
+    internal val groupTypes = android.util.ArrayMap<String, Set<ViewType<*>>>() // 分类
+    internal val viewPoolSizes = mutableListOf<Pair<Int, Int>>()
 
     private val debugViewCount = SparseIntArray()
-    private var isDebug: Boolean = BuildConfig.DEBUG
+    private var isDebug: Boolean = false
+    private var debugTag: String = ""
     private var recyclerView: RecyclerView? = null
+    private var spanLookupCache: Pair<Int, GridLayoutManager.SpanSizeLookup>? = null
 
-    /**
-     * 加载更多监听器
-     */
-    private var onLoadMoreListener: OnLoadMoreListener? = null
-    private var loadMoreEnable: Boolean = false
+    private var moduleCallback: IModuleCallback? = null
+
+    private var viewTypeMax: Int = 0
+
+    private val tag: String
+        get() = "$TAG $debugTag "
 
     init {
         register { MallEmptyView(it.context) }
         register { MallSpaceView(it.context) }
-        register {
-            ModuleDividerView(it.context)
-        }
+        register { ModuleDividerView(it.context) }
         register { MallNoMoreTipView(it.context) }
-        register {
-            ModuleSeparatorBarView(it.context)
-        }
-        register {
-            ModuleEmptyContentView(it.context)
-        }
+        register { ModuleSeparatorBarView(it.context) }
+        //register { ModuleSeparatorBarWithImageView(it.context) }
+        register { ModuleEmptyContentView(it.context) }
+        //register { ModuleLoadingContentView(it.context) }
+
+        register { ModuleGroupSectionView(it.context) }
     }
 
+    /**
+     * 同步另外一个Adapter注册的view
+     */
+    fun syncWith(delegate: ModuleAdapterDelegate) {
+        assertMainThread()
+        check(recyclerView == null) { // 必需在adapter attach RecyclerView之前注册
+            "$tag syncWith must before to attach RecyclerView (请在设置给RecyclerView之前注册组件)"
+        }
+
+        this.viewTypes.clear()
+        this.viewTypes.putAll(delegate.viewTypes)
+        this.viewTypeMap.clear()
+        this.viewTypeMap.putAll(delegate.viewTypeMap)
+        this.groupTypes.clear()
+        this.groupTypes.putAll(delegate.groupTypes)
+        this.viewTypeMax = delegate.viewTypeMax
+        this.viewPoolSizes.clear()
+        this.viewPoolSizes.addAll(delegate.viewPoolSizes)
+    }
+
+    fun generateViewTypeIndex(): Int = viewTypeMax++
+
+    fun setModuleCallback(moduleCallback: IModuleCallback?) {
+        this.moduleCallback = moduleCallback
+    }
 
     fun setDebug(enable: Boolean) {
         this.isDebug = enable
+    }
+
+    fun setDebugTag(tag: String) {
+        this.debugTag = tag
+    }
+
+    fun getDebugTag(): String {
+        return this.debugTag
     }
 
     fun attachToRecyclerView(recyclerView: RecyclerView) {
@@ -71,37 +110,40 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
         this.recyclerView = null
     }
 
-
-    fun setLoadMoreListener(listener: OnLoadMoreListener?) {
-        loadMoreEnable = listener != null
-        onLoadMoreListener = listener
-    }
-
-    fun setLoadMoreEnable(enable: Boolean) {
-        loadMoreEnable = enable
-    }
-
     /**
      * 注册类型
      */
-    fun registerGroupType(group: String?, clazz: Class<*>) {
-        val groupType = group ?: clazz.name
+    fun registerGroupType(groupType: String, viewType: ViewType<*>) {
         val types = groupTypes[groupType]
         if (types == null) {
-            groupTypes[groupType] = listOf(clazz)
+            groupTypes[groupType] = setOf(viewType)
         } else {
-            groupTypes[groupType] = types.plus(clazz)
+            groupTypes[groupType] = types.plus(viewType)
         }
     }
 
     fun checkRegister(clazz: Class<*>) {
         if (!isDebug) return
-        check(indexOfViewType(clazz) < 0) {
-            "register class $clazz has been registered before!!! Please Not register again"
+        check(!checkClassType(clazz)) {
+            "$tag register class $clazz not illegal, must not Primitive, Collection, Map (注册类型不合法，不允许为基本类型，String, Collection, Map)"
         }
         check(recyclerView == null) { // 必需在adapter attach RecyclerView之前注册
-            "register must before to attach RecyclerView"
+            "$tag register must before to attach RecyclerView (请在设置给RecyclerView之前注册组件)"
         }
+    }
+
+    private fun checkClassType(clazz: Class<*>): Boolean {
+        return ILLEGAL_CLASS_TYPE.any { it?.isAssignableFrom(clazz) == true }
+    }
+
+    fun <T : Any> registerModelKeyGetter(clazz: Class<T>, getter: ModelKeyGetter<T>) {
+        val viewType = viewTypeMap[clazz]
+        check(viewType == null) {
+            "please not repeat registerModelKeyGetter for clazz:$clazz (请不要重复注册)"
+        }
+        viewTypeMap[clazz] = ViewTypeGroup(
+                modelKeyGetter = getter
+        )
     }
 
     /**
@@ -110,10 +152,12 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
     inline fun <reified V, reified M : Any> register(viewClz: Class<V>) where V : IModuleView<M>, V : View {
         val clazzType = M::class.java
         checkRegister(clazzType)
-        registerGroupType(null, clazzType)
-        val viewType = ViewType(
-                clazzType) { parent -> createView(viewClz, parent) }
-        addViewType(viewType)
+        val group = clazzType.name
+        val viewType = ViewType(clazzType, typeIndex = generateViewTypeIndex(), groupType = group) { parent ->
+            createView(viewClz, parent)
+        }
+        registerGroupType(group, viewType)
+        addViewType(viewType, null)
     }
 
     inline fun <reified V, reified M : Any> register(
@@ -121,26 +165,61 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
             groupType: String? = null,
             poolSize: Int = -1,
             groupMargin: GroupMargin? = null,
-            crossinline creator: (ViewGroup) -> V
+            enable: Boolean = true,
+            modelKey: Any? = null, // 注册相同的class时需要以这个做区分
+            noinline creator: (ViewGroup) -> V
     ) where V : IModuleView<M>, V : View {
         val clazzType = M::class.java
+        register(clazzType, gridSize, groupType, poolSize, groupMargin, enable, modelKey, creator)
+    }
+
+    fun <V, M : Any> register(
+            clazzType: Class<M>,
+            gridSize: Int = 1,
+            groupType: String? = null,
+            poolSize: Int = -1,
+            groupMargin: GroupMargin? = null,
+            enable: Boolean = true,
+            modelKey: Any? = null, // 注册相同的class时需要以这个做区分
+            creator: (ViewGroup) -> V
+    ) where V : IModuleView<M>, V : View {
+        if (!enable) return
         checkRegister(clazzType)
-        registerGroupType(groupType, clazzType)
+        val realGroupType = groupType ?: clazzType.name
         val margin = transformMargin(groupMargin)
         val viewType = ViewType(
-                clazzType,
+                clazzType, typeIndex = generateViewTypeIndex(),
+                groupType = realGroupType,
                 gridSize = gridSize,
                 poolSize = poolSize,
                 margin = margin) { parent -> creator(parent) }
-        addViewType(viewType)
+        registerGroupType(realGroupType, viewType)
+        addViewType(viewType, modelKey)
     }
 
-    fun addViewType(viewType: ViewType<*>) {
-        viewTypes.add(viewType)
-        viewTypeMap[viewType.type] = viewType
+    fun addViewType(viewType: ViewType<*>, modelKey: Any? = null) {
+        if (modelKey != null) {
+            val typeGroup = viewTypeMap[viewType.type]
+            check(typeGroup is ViewTypeGroup<*>) {
+                "$tag must registerModelKeyGetter before(请先注册modelKey的生成器，以便查找具体类型), modeKey:$modelKey"
+            }
+            typeGroup.viewTypes.put(viewType.typeIndex, viewType)
+            typeGroup.modelKeyTypeMap.put(modelKey, viewType.typeIndex)
+        } else {
+            if (isDebug) {
+                check(viewTypeMap[viewType.type] == null) {
+                    "$tag please not register ${viewType.type} repeat(请不要重复注册)"
+                }
+            }
+            viewTypeMap[viewType.type] = viewType
+        }
+        viewTypes.put(viewType.typeIndex, viewType)
+        if (viewType.poolSize > 0) {
+            viewPoolSizes.add(viewType.typeIndex to viewType.poolSize)
+        }
     }
 
-    fun transformMargin(groupMargin: GroupMargin?): Point? {
+    private fun transformMargin(groupMargin: GroupMargin?): Point? {
         val margin = if (groupMargin != null) {
             val point = Point(groupMargin.all, groupMargin.all)
             if (groupMargin.start > 0) point.x = groupMargin.start
@@ -158,9 +237,9 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
             constructor.newInstance(parent.context)
         } catch (e: Exception) {
             if (isDebug) {
-                throw IllegalStateException("createView Error can not create View clazz:$clazz")
+                throw IllegalStateException("$tag createView Error can not create View clazz:$clazz")
             } else {
-                LogUtils.e(TAG, "createView Error", e)
+                loge("$tag createView Error", e)
                 View(parent.context)
             }
         }
@@ -170,40 +249,18 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
      * 获取类型
      */
     fun getViewTypeIndex(position: Int): Int {
-        val model = dataAdapter.getItem(position)
-        if (model == null && isDebug) {
-            throw IllegalArgumentException("getItemViewType can not found view type for position: $position," +
-                    " please check you register the Model")
-        } else if (model == null) {
-            return TYPE_NONE
-        }
-        val viewType = getViewTypeIndex(model.javaClass)
-        if (viewType < 1 && isDebug) {
-            throw IllegalArgumentException("getItemViewType can not found view type " +
-                    "for ${model.javaClass.name} model: $model," +
-                    " please check you register the Model")
-        }
-        return viewType
-    }
-
-    /**
-     * 获取adapter的viewType
-     */
-    fun getViewTypeIndex(clazz: Class<*>): Int {
-        return indexOfViewType(clazz) + 1
-    }
-
-    private fun indexOfViewType(clazz: Class<*>): Int {
-        return viewTypes.indexOfFirst { it.type == clazz }
+        return getViewTypeByPosition(position)?.typeIndex ?: -1
     }
 
     /**
      * 通过adapter的viewType获取
      */
-    private fun getViewTypeByIndex(viewType: Int): ViewType<*>? {
-        val type: ViewType<*>? = viewTypes.getOrNull(viewType - 1)
+    private fun getViewTypeByIndex(viewTypeIndex: Int): ViewType<*>? {
+        val type: ViewType<*>? = viewTypes.get(viewTypeIndex)
         if (type == null && isDebug) {
-            throw IllegalStateException("can not found viewType: viewType:$viewType")
+            throw IllegalStateException("$tag can not found viewType: viewType:$viewTypeIndex")
+        } else if (type == null) {
+            bmBug("getViewTypeByIndex is null, viewTypeIndex:$viewTypeIndex")
         }
         return type
     }
@@ -212,20 +269,50 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
      * 获取adapter中的position的viewType
      */
     fun getViewTypeByPosition(position: Int): ViewType<*>? {
-        val item = dataAdapter.getItem(position) ?: return null
-        return viewTypeMap[item.javaClass]
+        val model = dataAdapter.getItem(position)
+        if (model == null && isDebug) {
+            throw IllegalArgumentException("$tag getViewTypeByPosition getItem is null for position: $position")
+        } else if (model == null) {
+            bmBug("getViewTypeByPosition getItem is null for position: $position")
+            return null
+        }
+        return getViewTypeByModel(model)
+    }
+
+    private fun getViewTypeByModel(model: Any): ViewType<*>? {
+        val modelClazz = model.javaClass
+        val type = viewTypeMap[modelClazz]
+        val viewType = if (type is ViewType<*>) {
+            return type
+        } else if (type is ViewTypeGroup<*>) {
+            val key = (type as ViewTypeGroup<Any>).modelKeyGetter(model)
+            val index = type.modelKeyTypeMap[key] ?: return null
+            type.viewTypes[index]
+        } else null
+        //val viewType = getViewTypeIndex(model.javaClass)
+        if (viewType == null && isDebug) {
+            throw IllegalArgumentException("$tag getItemViewType can not found view type " +
+                    "for ${model.javaClass.name} model: $model," +
+                    " please check you register the Model")
+        } else if (viewType == null) {
+            bmBug("getItemViewType can not found view type " +
+                    "for ${model.javaClass.name} model: $model," +
+                    " please check you register the Model")
+        }
+        return viewType
     }
 
     /**
      * 创建view
      */
     fun createView(parent: ViewGroup, viewType: Int): View {
-        TraceCompat.beginSection("$TAG createView viewType:$viewType")
+        TraceCompat.beginSection("$tag createView viewType:$viewType")
         val startTime: Long = if (isDebug) {
-            SystemClock.elapsedRealtime()
+            SystemClock.elapsedRealtimeNanos()
         } else 0L
         val type: ViewType<*> = getViewTypeByIndex(viewType) ?: return View(parent.context)
         val view: View = type.viewCreator.invoke(parent)
+
         val lp = view.layoutParams
         if (lp != null) { // 有LayoutParams时不需要重新沿用
             view.layoutParams = when (lp) {
@@ -237,13 +324,14 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
             view.layoutParams = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT)
         }
+        moduleCallback?.onViewCreated(parent, view, viewType)
 
         if (isDebug) {
-            val timeSpent = SystemClock.elapsedRealtime() - startTime
+            val timeSpent = SystemClock.elapsedRealtimeNanos() - startTime
             debugViewCount.put(viewType, debugViewCount[viewType] + 1)
-            LogUtils.d("$TAG createView viewType:$viewType, " +
+            logd("createView viewType:$viewType, " +
                     "view:${view.javaClass.simpleName}, viewCount:${debugViewCount[viewType]}," +
-                    " timeSpent: ${timeSpent}ms")
+                    " timeSpent: ${TimeRecorder.nanoToMillis(timeSpent)}ms")
         }
         TraceCompat.endSection()
 
@@ -257,21 +345,63 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
             rvAdapter: IModuleAdapter
     ) {
         view.setTag(MALL_ITEM_HOLDER_TAG, object : IRvItemHolder {
-            override fun getLayoutPosition(): Int = viewHolder.adapterPosition - rvAdapter.getStartPosition()
+
+            override fun getStartPosition(): Int = rvAdapter.getStartPosition()
+
+            override fun getViewLayoutPosition(): Int = viewHolder.layoutPosition
+
+            override fun getLayoutPosition(): Int {
+                val adapterPosition = viewHolder.adapterPosition
+                val resultPosition = if (adapterPosition >= 0) {
+                    adapterPosition - rvAdapter.getStartPosition()
+                } else {
+                    //next version remove it
+                    val layoutPosition = viewHolder.layoutPosition
+                    bmBug("IRvItemHolder adapterPosition is invalid, adapterPosition:$adapterPosition, " +
+                            "and try layoutPosition:$layoutPosition")
+                    layoutPosition - rvAdapter.getStartPosition()
+                }
+                if (resultPosition < 0) {
+                    bmBug("IRvItemHolder getLayoutPosition invalid, adapterPosition:$adapterPosition," +
+                            "layoutPosition:${viewHolder.layoutPosition}, startPosition:${getStartPosition()}")
+                }
+                return resultPosition
+            }
+
 
             override fun getGroupPosition(): Int {
                 val type = getViewTypeByIndex(viewType) ?: return getLayoutPosition()
-                return findGroupPosition(type.type, getLayoutPosition())
+                val layoutPosition = getLayoutPosition()
+                if (layoutPosition < 0) {
+                    return -1
+                }
+                val groupPosition = findGroupPosition(type.groupType, layoutPosition)
+                if (groupPosition < 0) {
+                    val item = dataAdapter.getItem(layoutPosition)
+                    bmBug("IRvItemHolder getGroupPosition is invalid, adapterPosition:${viewHolder.adapterPosition}, " +
+                            "layoutPosition:${viewHolder.layoutPosition}, startPosition:${getStartPosition()}, resultPosition:$layoutPosition, " +
+                            "groupType:${type.groupType}, clazz:${type.type}, item:$item")
+                }
+                return groupPosition
             }
 
             override fun getGroupCount(): Int {
                 val type = getViewTypeByIndex(viewType) ?: return getItemCount()
-                val groupType = getGroupTypeByClazz(type.type) ?: return getItemCount()
+                val groupType = type.groupType
                 return rvAdapter.getGroupCount(groupType)
             }
 
             override fun getItemCount(): Int = rvAdapter.getItemCount()
         })
+    }
+
+    /**
+     * 解绑
+     */
+    fun onViewRecycled(view: View) {
+        if (view is IModuleLifecycle) {
+            view.onViewRecycled()
+        }
     }
 
     /**
@@ -281,30 +411,25 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
         if (view !is IModuleView<*>) {
             return
         }
-        TraceCompat.beginSection("$TAG bindView ${view.javaClass.simpleName}")
-        val startTime = if (isDebug) SystemClock.elapsedRealtime() else 0L
+        TraceCompat.beginSection("$tag bindView ${view.javaClass.simpleName}")
+        val startTime = if (isDebug) SystemClock.elapsedRealtimeNanos() else 0L
+        if (view is IModuleLifecycle) {
+            view.onBind()
+        }
+        moduleCallback?.onBind(view, item, position)
         (view as IModuleView<Any>).update(item)
+        moduleCallback?.onBindAfter(view, item, position)
         if (isDebug) {
-            val timeSpent = SystemClock.elapsedRealtime() - startTime
-            LogUtils.d("$TAG bindView position:$position groupPosition:${view.groupPosition}" +
-                    ", view:${view.javaClass.simpleName} timeSpent: ${timeSpent}ms")
+            val timeSpent = SystemClock.elapsedRealtimeNanos() - startTime
+            logd("bindView position:$position groupPosition:${view.groupPosition}" +
+                    ", view:${view.javaClass.simpleName} timeSpent: ${TimeRecorder.nanoToMillis(timeSpent)}ms")
         }
         TraceCompat.endSection()
     }
 
-    /**
-     * 获取类型的第一个值
-     */
-    fun findGroupStartPosition(groupType: String): Int {
-        val types = groupTypes[groupType] ?: return 0
-        val size = dataAdapter.getCount()
-        for (index in 0 until size) {
-            val type = dataAdapter.getItem(index)?.javaClass ?: continue
-            if (type in types) {
-                return index
-            }
-        }
-        return 0
+    fun findGroupTypeByPosition(position: Int): String {
+        val viewType = getViewTypeByPosition(position)
+        return viewType?.groupType.orEmpty()
     }
 
     fun findGroupPosition(groupType: String, position: Int): Int {
@@ -312,18 +437,19 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
         return findGroupPosition(types, position)
     }
 
-    fun findGroupPosition(type: Class<*>, position: Int): Int {
-        val types = groupTypes.values.find { type in it }
-        return findGroupPosition(types ?: listOf(type), position)
-    }
-
-    private fun findGroupPosition(types: List<Class<*>>, position: Int): Int {
+    private fun findGroupPosition(types: Set<ViewType<*>>, position: Int): Int {
         if (position < 0) return -1
         var typePos = -1
         for (index in position downTo 0) {
             val item1 = dataAdapter.getItem(index)
-            if (item1 != null && item1.javaClass in types) {
+            if (item1 is ModuleGroupSectionModel) {
+                break
+            }
+            if (item1 != null && getViewTypeByModel(item1) in types) {
                 typePos++
+            } else if (index == position) {
+                // 若该位置不为目标类型，则返回-1
+                return -1
             }
         }
         return typePos
@@ -333,11 +459,7 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
      * 获取分组类型
      */
     fun getGroupTypes(groupType: String): List<Class<*>> {
-        return groupTypes[groupType].orEmpty()
-    }
-
-    private fun getGroupTypeByClazz(clazz: Class<*>): String? {
-        return groupTypes.entries.find { clazz in it.value }?.key
+        return groupTypes[groupType]?.map { it.type }.orEmpty()
     }
 
     /**
@@ -347,7 +469,7 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
         val types = groupTypes[groupType].orEmpty()
         if (types.isEmpty()) return 0
         return (0 until dataAdapter.getCount()).count {
-            val type = dataAdapter.getItem(it)?.javaClass
+            val type = getViewTypeByPosition(it)
             type != null && type in types
         }
     }
@@ -356,15 +478,33 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
      * @return <Type, Size>
      */
     fun allRecyclerPoolSize(): List<Pair<Int, Int>> {
-        return viewTypes.map { getViewTypeIndex(it.type) to it.poolSize }
+        return viewPoolSizes
+    }
+
+    // log
+    fun logd(msg: String) {
+        LogUtils.d("$tag $msg")
+    }
+
+    fun logw(msg: String, e: Throwable? = null) {
+        LogUtils.w("$tag $msg", e)
+    }
+
+    fun loge(msg: String, e: Throwable? = null) {
+        LogUtils.e("$tag $msg", e)
     }
 
     companion object {
-        const val TAG = "ModuleAdapterDelegate"
-
+        const val TAG = "ModuleAdapter"
         const val TYPE_NONE = 0
+        private val CONSTRUCTOR_CACHE = android.util.ArrayMap<CKey, Constructor<*>>()
 
-        private val CONSTRUCTOR_CACHE = ArrayMap<CKey, Constructor<*>>()
+        private val ILLEGAL_CLASS_TYPE = arrayOf(Int::class.javaPrimitiveType, Long::class.javaPrimitiveType,
+                Short::class.javaPrimitiveType, Float::class.javaPrimitiveType, Double::class.javaPrimitiveType,
+                Byte::class.javaPrimitiveType, Boolean::class.javaPrimitiveType, Char::class.javaPrimitiveType,
+                Int::class.java, Long::class.java, Short::class.java, Float::class.java, Double::class.java,
+                Byte::class.java, Boolean::class.java, Char::class.java,
+                CharSequence::class.java, Collection::class.java, Map::class.java)
 
         fun <V> getConstructor(clazz: Class<V>, dataClz: Class<*>? = null): Constructor<V> {
             val cKey = CKey(clazz,
@@ -395,20 +535,38 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
     }
 
     fun getGridSpanLookup(): Pair<Int, GridLayoutManager.SpanSizeLookup> {
+        val cache = spanLookupCache
+        if (cache != null) {
+            return cache
+        }
         var spanCount = 1
-        for (value in viewTypes) {
-            val size = value.gridSize
+        viewTypes.forEach { _, viewType ->
+            val size = viewType.gridSize
             if (size > 0 && spanCount % size != 0) {
                 spanCount *= size
             }
         }
+
         val spanLockup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
+                if (spanCount == 1) return 1
                 val type = getViewTypeByPosition(position) ?: return 1
                 return spanCount / type.gridSize
             }
         }
-        return Pair(spanCount, spanLockup)
+        val pair = Pair(spanCount, spanLockup)
+        spanLookupCache = pair
+        return pair
+    }
+
+    public fun assertMainThread() {
+        if (!isOnUiThread()) {
+            throw java.lang.IllegalStateException("Expected to run on UI thread!")
+        }
+    }
+
+    fun isOnUiThread(): Boolean {
+        return Looper.getMainLooper().thread === Thread.currentThread()
     }
 }
 
@@ -425,16 +583,28 @@ interface IDataAdapter {
     fun notifyDataSetChange()
 }
 
+
+interface IViewType<T : Any>
+
 /**
  * 组件类型
  */
 class ViewType<T : Any>(
         val type: Class<T>,
+        val typeIndex: Int,
+        val groupType: String,
         val gridSize: Int = 1,
         val poolSize: Int = -1,
         val margin: Point? = null,
         val viewCreator: IViewCreator
-)
+) : IViewType<T>
+
+class ViewTypeGroup<T : Any>(
+        val viewTypes: SparseArray<ViewType<*>> = SparseArray(),
+        val modelKeyTypeMap: MutableMap<Any, Int> = android.util.ArrayMap(),
+        val modelKeyGetter: ModelKeyGetter<T>
+) : IViewType<T>
+
 
 class GroupMargin(
         val all: Int = 0,
@@ -442,9 +612,13 @@ class GroupMargin(
         val end: Int = 0
 )
 
+typealias ModelKeyGetter<T> = (t: T) -> Any?
+
 typealias IViewCreator = (parent: ViewGroup) -> View
 
 interface IRvItemHolder {
+    fun getStartPosition(): Int
+    fun getViewLayoutPosition(): Int
     fun getLayoutPosition(): Int
     fun getGroupPosition(): Int
     fun getGroupCount(): Int
@@ -452,24 +626,54 @@ interface IRvItemHolder {
 }
 
 val MALL_ITEM_HOLDER_TAG = R.id.mall_item_holder_tag
-
 val IModuleView<*>.rvItemHolder: IRvItemHolder?
-    get() = if (this is View) {
+    get() = if (this is ISubModuleView) {
+        this.parent.rvItemHolder
+    } else if (this is View) {
         val tag = getTag(MALL_ITEM_HOLDER_TAG)
         if (tag is IRvItemHolder) tag else null
-    } else null
+    } else {
+        bmBug("can not find IRvItemHolder, $this")
+        null
+    }
 
+/**
+ * 对于VLayout的多Adapter，表示该Adapter的开始的position
+ */
+val IModuleView<*>.startPosition: Int
+    get() = rvItemHolder?.getStartPosition() ?: 0
+
+/**
+ * ViewHolder的layoutPosition, 不考虑startPosition
+ */
+val IModuleView<*>.viewLayoutPosition: Int
+    get() = rvItemHolder?.getViewLayoutPosition() ?: -1
+
+/**
+ * ViewHolder的adapterPosition - startPosition
+ */
 val IModuleView<*>.layoutPosition: Int
     get() = rvItemHolder?.getLayoutPosition() ?: -1
+
+/**
+ * 分组的position
+ */
 val IModuleView<*>.groupPosition: Int
     get() = rvItemHolder?.getGroupPosition() ?: -1
+
+/**
+ * 该分组的数量
+ */
 val IModuleView<*>.groupCount: Int
     get() = rvItemHolder?.getGroupCount() ?: -1
+
+/**
+ * 该Adapter的itemCount
+ */
 val IModuleView<*>.itemCount: Int
     get() = rvItemHolder?.getItemCount() ?: 0
 
 class RvDiffCallback(private val oldList: List<Any>, private val newList: List<Any>) : DiffUtil.Callback() {
-
     override fun getOldListSize(): Int = oldList.size
 
     override fun getNewListSize(): Int = newList.size
@@ -479,4 +683,9 @@ class RvDiffCallback(private val oldList: List<Any>, private val newList: List<A
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
             oldList.getOrNull(oldItemPosition) == newList.getOrNull(newItemPosition)
+}
+
+
+fun bmBug(msg: String, e: Throwable? = null) {
+    LogUtils.e("","ModuleAdapter bmBug $msg", e)
 }

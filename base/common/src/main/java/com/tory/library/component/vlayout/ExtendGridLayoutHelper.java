@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.tory.library.component.base;
+package com.tory.library.component.vlayout;
 
 
 import android.graphics.Point;

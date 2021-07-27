@@ -52,6 +52,7 @@
         <activity android:name=".main.TextTestActivity" />
         <activity android:name=".main.TrendImageActivity" />
         <activity android:name=".main.VLayoutTestActivity" />
+        <activity android:name=".main.test.ModuleAdapterTestActivity" />
     </application>
 
 </manifest>

@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.tory.library.log.LogUtils
 
@@ -12,18 +13,14 @@ import com.tory.library.log.LogUtils
  * 通用Adapter，适用于非vLayout
  */
 class NormalModuleAdapter(private val calDiff: Boolean = false) :
-    RecyclerView.Adapter<NormalModuleAdapter.MCommonViewHolder>(), IModuleAdapter {
-
+        RecyclerView.Adapter<NormalModuleAdapter.MCommonViewHolder>(), IModuleImplAdapter {
     companion object {
         const val TAG = "DuModuleAdapter"
     }
 
     private val list = mutableListOf<Any>()
 
-    val delegate: ModuleAdapterDelegate
-
-    init {
-        delegate = ModuleAdapterDelegate(
+    override val delegate: ModuleAdapterDelegate = ModuleAdapterDelegate(
             object : IDataAdapter {
                 override fun getItem(position: Int): Any? = list.getOrNull(position)
                 override fun getCount(): Int = list.size
@@ -40,10 +37,13 @@ class NormalModuleAdapter(private val calDiff: Boolean = false) :
                     notifyDataSetChanged()
                 }
             })
-    }
 
     override fun setDebug(debug: Boolean) {
         delegate.setDebug(debug)
+    }
+
+    override fun setDebugTag(deubTag: String) {
+        delegate.setDebugTag(deubTag)
     }
 
     override fun isEmpty(): Boolean {
@@ -56,8 +56,14 @@ class NormalModuleAdapter(private val calDiff: Boolean = false) :
     }
 
     override fun appendItems(items: List<Any>) {
-        list.addAll(items)
-        notifyDataSetChanged()
+        if (isEmpty()) {
+            setItems(items)
+        } else if (items.isNotEmpty()) {
+            val startPosition = list.size
+            list.addAll(items)
+            notifyItemRangeInserted(startPosition, items.size)
+        }
+
     }
 
     override fun indexOf(item: Any): Int {
@@ -72,8 +78,8 @@ class NormalModuleAdapter(private val calDiff: Boolean = false) :
         return delegate.findGroupPosition(groupType, position)
     }
 
-    override fun getGroupStartPosition(groupType: String): Int {
-        return delegate.findGroupStartPosition(groupType)
+    override fun getGroupTypeByPosition(position: Int): String {
+        return delegate.findGroupTypeByPosition(position)
     }
 
     override fun getGroupTypes(groupType: String): List<Class<*>> {
@@ -86,11 +92,30 @@ class NormalModuleAdapter(private val calDiff: Boolean = false) :
 
     override fun getStartPosition(): Int = 0
 
+    override fun getSpanCount(): Int {
+        return delegate.getGridSpanLookup().first
+    }
+
+    override fun getSpanSize(position: Int): Int {
+        val spanLookup = delegate.getGridSpanLookup().second
+        return spanLookup.getSpanSize(position)
+    }
+
+    override fun getSpanIndex(position: Int): Int {
+        val (spanCount, spanLookup) = delegate.getGridSpanLookup()
+        return spanLookup.getSpanIndex(position, spanCount)
+    }
+
+    override fun getSpanGroupIndex(position: Int): Int {
+        val (spanCount, spanLookup) = delegate.getGridSpanLookup()
+        return spanLookup.getSpanGroupIndex(position, spanCount)
+    }
+
     override fun setItems(items: List<Any>) {
         if (calDiff && list.size > 0) {
             val result = DiffUtil.calculateDiff(RvDiffCallback(
-                list,
-                items))
+                    list,
+                    items))
             list.clear()
             list.addAll(items)
             result.dispatchUpdatesTo(this)
@@ -101,11 +126,28 @@ class NormalModuleAdapter(private val calDiff: Boolean = false) :
         }
     }
 
-    override fun getItem(position: Int): Any? = list.getOrNull(position)
-
-    override fun getViewType(clazz: Class<*>): Int {
-        return delegate.getViewTypeIndex(clazz)
+    override fun setItemsWithDiff(items: List<Any>, callback: DiffUtil.Callback?, updateCallback: ListUpdateCallback?) {
+        if (list.size > 0) {
+            val result = DiffUtil.calculateDiff(callback ?: RvDiffCallback(list, items))
+            list.clear()
+            list.addAll(items)
+            if (updateCallback != null) {
+                result.dispatchUpdatesTo(updateCallback)
+            } else {
+                result.dispatchUpdatesTo(this)
+            }
+        } else if (items != list) {
+            list.clear()
+            list.addAll(items)
+            notifyDataSetChanged()
+        }
     }
+
+    override fun getItems(): List<Any> {
+        return list
+    }
+
+    override fun getItem(position: Int): Any? = list.getOrNull(position)
 
     fun setData(data: List<Any>) {
         if (data != this.list) {
@@ -141,15 +183,19 @@ class NormalModuleAdapter(private val calDiff: Boolean = false) :
         }
     }
 
-    override fun setLoadMoreListener(listener: OnLoadMoreListener?) {
+    override fun setModuleCallback(moduleCallback: IModuleCallback?) {
+        delegate.setModuleCallback(moduleCallback)
     }
 
-    override fun setLoadMoreEnable(enable: Boolean) {
+    override fun syncWith(adapter: IModuleAdapter) {
+        if (adapter is IModuleImplAdapter) {
+            delegate.syncWith(adapter.delegate)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MCommonViewHolder {
         return MCommonViewHolder(
-            delegate.createView(parent, viewType)).also {
+                delegate.createView(parent, viewType)).also {
             delegate.bindHolder(it.itemView, it, viewType, this)
         }
     }
@@ -157,26 +203,19 @@ class NormalModuleAdapter(private val calDiff: Boolean = false) :
     override fun onBindViewHolder(holder: MCommonViewHolder, position: Int) {
         val model = list.getOrNull(position) ?: return
         delegate.bindView(holder.itemView, model, position)
-        LogUtils.d(TAG, "onBindViewHolder " + holder.layoutPosition)
     }
 
     override fun onViewRecycled(holder: MCommonViewHolder) {
-        LogUtils.d(TAG, "onViewRecycled " + holder.layoutPosition)
         super.onViewRecycled(holder)
-    }
-
-    override fun onViewDetachedFromWindow(holder: MCommonViewHolder) {
-        LogUtils.d(TAG, "onViewDetachedFromWindow " + holder.layoutPosition)
-        super.onViewDetachedFromWindow(holder)
+        delegate.onViewRecycled(holder.itemView)
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         delegate.attachToRecyclerView(recyclerView)
         for ((type, maxSize) in delegate.allRecyclerPoolSize()) {
-            if (type >= 0 && maxSize > 5) {
-                recyclerView.recycledViewPool.setMaxRecycledViews(type, maxSize)
-            }
+            delegate.logd("setMaxRecycledViews type:$type, maxSize:$maxSize")
+            recyclerView.recycledViewPool.setMaxRecycledViews(type, maxSize)
         }
     }
 
@@ -186,12 +225,26 @@ class NormalModuleAdapter(private val calDiff: Boolean = false) :
     }
 
     /**
+     * 如果需要一个类对应多个View需要先注册这个生成器类
+     */
+    inline fun <reified T : Any> registerModelKeyGetter(noinline getter: ModelKeyGetter<T>) {
+        val clazz = T::class.java
+        delegate.registerModelKeyGetter(clazz, getter)
+    }
+
+    override fun <T : Any> registerModelKeyGetter(clazz: Class<T>, getter: ModelKeyGetter<T>) {
+        delegate.registerModelKeyGetter(clazz, getter)
+    }
+
+
+    /**
      * 注册类型
      * 注: 1. 不能重复注册相同的model类, 在Fragment里面使用报错的，将register提前到view创建之前，或者使用FragmentStateAdapter
      * 2. 必需在add到RecyclerView之前调用
      * @param gridSize 每行所占的网格数
      * @param groupType 类型归类，获取position需要
      */
+    @Deprecated("Please use register{} instead")
     inline fun <reified V, reified M : Any> register(viewClz: Class<V>) where V : IModuleView<M>, V : View {
         delegate.register(viewClz)
     }
@@ -201,19 +254,48 @@ class NormalModuleAdapter(private val calDiff: Boolean = false) :
      * 注: 1. 不能重复注册相同的model类, 在Fragment里面使用报错的，将register提前到view创建之前，或者使用FragmentStateAdapter
      * 2. 必需在add到RecyclerView之前调用
      * @param gridSize 每行所占的网格数
-     * @param groupType 类型归类，获取position需要
+     * @param groupType 类型归类，获取position需要, 在View中通过groupPosition获取对应位置，通过ModuleGroupSectionModel可以用来分割
      * @param poolSize recyclerview的缓存大小
      * @param groupMargin 不生效
+     * @param enable 该注册是否生效，方便书写，防止大堆if else
      */
     inline fun <reified V, reified M : Any> register(
             gridSize: Int = 1,
             groupType: String? = null,
             poolSize: Int = -1,
             groupMargin: GroupMargin? = null,
-            crossinline creator: (ViewGroup) -> V
+            enable: Boolean = true,
+            modelKey: Any? = null, // 注册相同的class时需要以这个做区分
+            noinline creator: (ViewGroup) -> V
     )
-        where V : IModuleView<M>, V : View {
-        delegate.register(gridSize, groupType, poolSize, groupMargin, creator)
+            where V : IModuleView<M>, V : View {
+        delegate.register(gridSize = gridSize,
+                groupType = groupType,
+                poolSize = poolSize,
+                groupMargin = groupMargin,
+                enable = enable,
+                modelKey = modelKey,
+                creator = creator)
+    }
+
+    override fun <V, M : Any> register(
+            clazzType: Class<M>,
+            gridSize: Int,
+            groupType: String?,
+            poolSize: Int,
+            groupMargin: GroupMargin?,
+            enable: Boolean,
+            modelKey: Any?, // 注册相同的class时需要以这个做区分
+            creator: (ViewGroup) -> V
+    ) where V : IModuleView<M>, V : View {
+        delegate.register(clazzType = clazzType,
+                gridSize = gridSize,
+                groupType = groupType,
+                poolSize = poolSize,
+                groupMargin = groupMargin,
+                enable = enable,
+                modelKey = modelKey,
+                creator = creator)
     }
 
     class MCommonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

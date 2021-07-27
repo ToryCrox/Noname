@@ -1,7 +1,11 @@
 package com.tory.library.component.base
 
 import android.content.Context
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ListUpdateCallback
 import com.tory.library.component.base.OnLoadMoreListener
 
 /**
@@ -16,31 +20,45 @@ import com.tory.library.component.base.OnLoadMoreListener
  * Why & What is modified:
  */
 interface IModuleAdapter {
-    // 设置log开关
+    /**
+     * 设置log开关
+     */
     fun setDebug(debug: Boolean)
+
+    /**
+     * 调试用，输出log, 方便在报错或者打印log时无法确认哪个adapter打印的，建议设置
+     */
+    fun setDebugTag(deubTag: String)
 
     // 是否为空
     fun isEmpty(): Boolean
+
     // 设置Item
     fun setItems(items: List<Any>)
+
+    // 设置对比
+    fun setItemsWithDiff(items: List<Any>, callback: DiffUtil.Callback? = null, updateCallback: ListUpdateCallback? = null)
+
+    // 获取Items
+    fun getItems(): List<Any>
+
     // 添加item
     fun appendItems(items: List<Any>)
+
     // 获取元素个数
     fun getItemCount(): Int
+
     // 查找元素位置
     fun indexOf(item: Any): Int
+
     // 获取元素位置
     fun indexOf(predicate: (Any) -> Boolean): Int
+
     // 清除元素
     fun clearItems()
+
     // 获取指定位置的元素
     fun getItem(position: Int): Any?
-
-    /**
-     * 获取adapter的viewType
-     * @param clazz model类型
-     */
-    fun getViewType(clazz: Class<*>): Int
 
     /**
      * 获取分组中的相对位置
@@ -50,10 +68,9 @@ interface IModuleAdapter {
     fun getGroupPosition(groupType: String, position: Int): Int
 
     /**
-     * 获取分组的第一个的绝对位置
-     * @param groupType 分组类型
+     * 根据位置获取分组类型
      */
-    fun getGroupStartPosition(groupType: String): Int
+    fun getGroupTypeByPosition(position: Int): String
 
     /**
      * 获致分组的所有类型
@@ -76,12 +93,58 @@ interface IModuleAdapter {
     fun getGridLayoutManager(context: Context): GridLayoutManager
 
     /**
+     * 共有几格
+     */
+    fun getSpanCount(): Int
+
+    /**
+     * 占几格
+     */
+    fun getSpanSize(position: Int): Int
+
+    /**
+     * 在第几格
+     */
+    fun getSpanIndex(position: Int): Int
+
+    /**
+     * 在第几行
+     */
+    fun getSpanGroupIndex(position: Int): Int
+
+    /**
      * 刷新指定的元素
      */
     fun refresh(oldItem: Any, newItem: Any? = oldItem)
 
+    fun setModuleCallback(moduleCallback: IModuleCallback?)
 
-    fun setLoadMoreListener(listener: OnLoadMoreListener?)
+    /**
+     * 同步另外一个view注册的view， 必需在attach到RecyclerView之前
+     */
+    fun syncWith(adapter: IModuleAdapter)
 
-    fun setLoadMoreEnable(enable: Boolean)
+    /**
+     * 用来区分同一个类对应不同View, 获取同一个类中区分类型的字段，如
+     * registerModelKeyGetter(ModelA::class::java) { it.type }
+     * register(clazzType=ModelA::class::java, modelKey="type1") {  ViewA(it.context) }
+     * register(clazzType=ModelA::class::java, modelKey="type2") {  ViewA(it.context) }
+     */
+    fun <T : Any> registerModelKeyGetter(clazz: Class<T>, getter: ModelKeyGetter<T>)
+
+    fun <V, M : Any> register(
+            clazzType: Class<M>,
+            gridSize: Int = 1,
+            groupType: String? = null,
+            poolSize: Int = -1,
+            groupMargin: GroupMargin? = null,
+            enable: Boolean = true,
+            modelKey: Any? = null, // 注册相同的class时需要以这个做区分
+            creator: (ViewGroup) -> V
+    ) where V : IModuleView<M>, V : View
+}
+
+
+internal interface IModuleImplAdapter: IModuleAdapter {
+    val delegate: ModuleAdapterDelegate
 }

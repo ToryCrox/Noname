@@ -37,6 +37,10 @@ public class LogUtils {
         sLog.w(TAG, msg);
     }
 
+    public static void w(String msg, Throwable e) {
+        sLog.w(TAG, msg, e);
+    }
+
     public static void e(String TAG, String msg) {
         sLog.e(TAG, msg);
     }
@@ -63,6 +67,11 @@ public class LogUtils {
         @Override
         public void w(String TAG, String msg) {
             Log.w(TAG, msg);
+        }
+
+        @Override
+        public void w(String TAG, String msg, Throwable e) {
+            Log.w(TAG, msg, e);
         }
 
         @Override

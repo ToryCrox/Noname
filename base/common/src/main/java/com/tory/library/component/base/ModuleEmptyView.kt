@@ -144,3 +144,10 @@ class ModuleEmptyContentView @JvmOverloads constructor(
         }
     }
 }
+
+
+class ModuleGroupSectionView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0
+) : AbsModuleMView<ModuleGroupSectionModel>(context, attrs, defStyleAttr)

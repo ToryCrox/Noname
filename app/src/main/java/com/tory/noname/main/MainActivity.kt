@@ -9,6 +9,7 @@ import com.tory.library.component.base.NormalModuleAdapter
 import com.tory.library.component.base.joinTo
 import com.tory.module.hilt.KoinDemoActivity
 import com.tory.noname.R
+import com.tory.noname.main.test.ModuleAdapterTestActivity
 import com.tory.noname.main.ui.NavMainActivity
 import com.tory.noname.model.RedirectModel
 import com.tory.noname.views.RedirectView
@@ -46,7 +47,8 @@ class MainActivity: BaseActivity() {
             RedirectModel("TextTestActivity", TextTestActivity::class.java),
             RedirectModel("Koin", KoinDemoActivity::class.java),
             RedirectModel("TrendImageActivity", TrendImageActivity::class.java),
-            RedirectModel("VLayoutTestActivity", VLayoutTestActivity::class.java)
+            RedirectModel("VLayoutTestActivity", VLayoutTestActivity::class.java),
+            RedirectModel("ModuleAdapter测试", ModuleAdapterTestActivity::class.java)
         )
 
         listAdapter.appendItems(ModuleDividerModel().joinTo(list))
