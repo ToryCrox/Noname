@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
-import com.tory.library.log.LogUtils
 
 /**
  * 通用Adapter，适用于非vLayout
@@ -21,6 +20,7 @@ class NormalModuleAdapter(private val calDiff: Boolean = false) :
     private val list = mutableListOf<Any>()
 
     override val delegate: ModuleAdapterDelegate = ModuleAdapterDelegate(
+            this,
             object : IDataAdapter {
                 override fun getItem(position: Int): Any? = list.getOrNull(position)
                 override fun getCount(): Int = list.size
@@ -212,7 +212,7 @@ class NormalModuleAdapter(private val calDiff: Boolean = false) :
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        delegate.attachToRecyclerView(recyclerView)
+        delegate.onAttachedToRecyclerView(recyclerView)
         for ((type, maxSize) in delegate.allRecyclerPoolSize()) {
             delegate.logd("setMaxRecycledViews type:$type, maxSize:$maxSize")
             recyclerView.recycledViewPool.setMaxRecycledViews(type, maxSize)
@@ -221,7 +221,7 @@ class NormalModuleAdapter(private val calDiff: Boolean = false) :
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         super.onDetachedFromRecyclerView(recyclerView)
-        delegate.detachFromRecyclerView()
+        delegate.onDetachedFromRecyclerView()
     }
 
     /**
@@ -266,6 +266,7 @@ class NormalModuleAdapter(private val calDiff: Boolean = false) :
             groupMargin: GroupMargin? = null,
             enable: Boolean = true,
             modelKey: Any? = null, // 注册相同的class时需要以这个做区分
+            itemSpace: ItemSpace? = null,
             noinline creator: (ViewGroup) -> V
     )
             where V : IModuleView<M>, V : View {
@@ -275,6 +276,7 @@ class NormalModuleAdapter(private val calDiff: Boolean = false) :
                 groupMargin = groupMargin,
                 enable = enable,
                 modelKey = modelKey,
+                itemSpace = itemSpace,
                 creator = creator)
     }
 

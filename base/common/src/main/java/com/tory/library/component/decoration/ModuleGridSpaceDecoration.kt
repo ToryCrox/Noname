@@ -34,19 +34,22 @@ class ModuleGridSpaceDecoration(
         val perSpan = rvAdapter.getSpanCount() / gridSize
 
         val row: Int = typePosition / gridSize
-        val columns: Int = rvAdapter.getSpanIndex(adapterPosition) / perSpan
+        val column: Int = rvAdapter.getSpanIndex(adapterPosition) / perSpan
         if (row != 0) {
             outRect.top = spaceV
         }
-        // realSpace * 1.5f = spaceH
-        outRect.left = Math.round(columns * spaceH * 1.0f / gridSize + (1 - 2 * columns * 1.0f / gridSize) * edgeH)
 
-        // 每个item均分的space的空间大小(2 * edgeH + (gridSize - 1) * spaceH) * 1f / gridSize
-        // outRect.right = Math.round((2 * edgeH + (gridSize - 1) * spaceH) * 1f / gridSize - outRect.left)
-        outRect.right = Math.round(spaceH - (columns + 1) * spaceH * 1.0f / gridSize + 2 * edgeH * (1 + columns) * 1.0f / gridSize - edgeH)
+        // p为每个Item都需要减去的间距
+        val  p = (2 * edgeH + (gridSize - 1) * spaceH) * 1f / gridSize
+        val left = edgeH + column * (spaceH - p)
+        val right = p - left
+
+        outRect.left = Math.round(left)
+        outRect.right = Math.round(right)
 
         if (BuildConfig.DEBUG) {
-            LogUtils.d("getItemOffsets position:${typePosition} column: $columns, left: ${outRect.left}, right: ${outRect.right}")
+            LogUtils.d("getItemOffsets position:${typePosition} column: $column, left: ${outRect.left}, right: ${outRect.right}")
         }
     }
+
 }

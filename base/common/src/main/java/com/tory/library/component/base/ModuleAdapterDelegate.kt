@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tory.library.BuildConfig
 import com.tory.library.R
+import com.tory.library.component.decoration.ModuleGridSpaceDelegateDecoration
 import com.tory.library.log.LogUtils
 import com.tory.library.utils.TimeRecorder
 import java.lang.reflect.Constructor
@@ -32,7 +33,7 @@ import java.lang.reflect.Constructor
  * 2020/4/7 xutao 1.0
  * Why & What is modified:
  */
-class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
+class ModuleAdapterDelegate(private val moduleAdapter: IModuleAdapter, private val dataAdapter: IDataAdapter) {
     internal val viewTypes = SparseArray<ViewType<*>>()
     internal val viewTypeMap = android.util.ArrayMap<Class<*>, IViewType<*>>()
     internal val groupTypes = android.util.ArrayMap<String, Set<ViewType<*>>>() // 分类
@@ -47,6 +48,8 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
     private var moduleCallback: IModuleCallback? = null
 
     private var viewTypeMax: Int = 0
+
+    private var spaceDecoration: ModuleGridSpaceDelegateDecoration? = null
 
     private val tag: String
         get() = "$TAG $debugTag "
@@ -82,6 +85,7 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
         this.viewTypeMax = delegate.viewTypeMax
         this.viewPoolSizes.clear()
         this.viewPoolSizes.addAll(delegate.viewPoolSizes)
+        this.spaceDecoration = delegate.spaceDecoration
     }
 
     fun generateViewTypeIndex(): Int = viewTypeMax++
@@ -102,12 +106,21 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
         return this.debugTag
     }
 
-    fun attachToRecyclerView(recyclerView: RecyclerView) {
+    fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         this.recyclerView = recyclerView
+        val decoration = spaceDecoration
+        if (decoration != null) {
+            recyclerView.removeItemDecoration(decoration)
+            recyclerView.addItemDecoration(decoration)
+        }
     }
 
-    fun detachFromRecyclerView() {
+    fun onDetachedFromRecyclerView() {
         this.recyclerView = null
+        val decoration = spaceDecoration
+        if (decoration != null) {
+            recyclerView?.removeItemDecoration(decoration)
+        }
     }
 
     /**
@@ -167,10 +180,11 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
             groupMargin: GroupMargin? = null,
             enable: Boolean = true,
             modelKey: Any? = null, // 注册相同的class时需要以这个做区分
+            itemSpace: ItemSpace? = null,
             noinline creator: (ViewGroup) -> V
     ) where V : IModuleView<M>, V : View {
         val clazzType = M::class.java
-        register(clazzType, gridSize, groupType, poolSize, groupMargin, enable, modelKey, creator)
+        register(clazzType, gridSize, groupType, poolSize, groupMargin, enable, modelKey, itemSpace, creator)
     }
 
     fun <V, M : Any> register(
@@ -181,6 +195,7 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
             groupMargin: GroupMargin? = null,
             enable: Boolean = true,
             modelKey: Any? = null, // 注册相同的class时需要以这个做区分
+            itemSpace: ItemSpace? = null,
             creator: (ViewGroup) -> V
     ) where V : IModuleView<M>, V : View {
         if (!enable) return
@@ -195,6 +210,9 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
                 margin = margin) { parent -> creator(parent) }
         registerGroupType(realGroupType, viewType)
         addViewType(viewType, modelKey)
+        if (itemSpace != null) {
+            registerItemSpace(realGroupType, gridSize, itemSpace)
+        }
     }
 
     fun addViewType(viewType: ViewType<*>, modelKey: Any? = null) {
@@ -227,6 +245,13 @@ class ModuleAdapterDelegate(private val dataAdapter: IDataAdapter) {
             point
         } else null
         return margin
+    }
+
+    private fun registerItemSpace(groupType: String, gridSize: Int, itemSpace: ItemSpace) {
+        val decoration = spaceDecoration ?: ModuleGridSpaceDelegateDecoration(moduleAdapter).also {
+            spaceDecoration = it
+        }
+        decoration.registerSpace(groupType, gridSize, itemSpace)
     }
 
     fun <V : View> createView(clazz: Class<V>, parent: ViewGroup):
@@ -610,6 +635,12 @@ class GroupMargin(
         val all: Int = 0,
         val start: Int = 0,
         val end: Int = 0
+)
+
+class ItemSpace(
+        val spaceH: Int = 0,
+        val spaceV: Int = 0,
+        val edgeH: Int = 0
 )
 
 typealias ModelKeyGetter<T> = (t: T) -> Any?

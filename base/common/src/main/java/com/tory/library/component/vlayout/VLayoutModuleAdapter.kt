@@ -12,7 +12,6 @@ import com.alibaba.android.vlayout.LayoutHelper
 import com.alibaba.android.vlayout.layout.LinearLayoutHelper
 import com.tory.library.component.CommonViewHolder
 import com.tory.library.component.base.*
-import com.tory.library.log.LogUtils
 
 /**
  * Author: xutao
@@ -32,6 +31,7 @@ open class VLayoutModuleAdapter(
 ) : VLayoutDelegateInnerAdapter<Any>(), IModuleImplAdapter {
 
     override val delegate: ModuleAdapterDelegate = ModuleAdapterDelegate(
+            this,
             object : IDataAdapter {
                 override fun getItem(position: Int): Any? = list.getOrNull(position)
                 override fun getCount(): Int = list.size
@@ -232,7 +232,7 @@ open class VLayoutModuleAdapter(
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        delegate.attachToRecyclerView(recyclerView)
+        delegate.onAttachedToRecyclerView(recyclerView)
         for ((type, maxSize) in delegate.allRecyclerPoolSize()) {
             if (type >= 0 && maxSize > 5) {
                 delegate.logd("setMaxRecycledViews type:$type, maxSize:$maxSize")
@@ -243,7 +243,7 @@ open class VLayoutModuleAdapter(
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         super.onDetachedFromRecyclerView(recyclerView)
-        delegate.detachFromRecyclerView()
+        delegate.onDetachedFromRecyclerView()
     }
 
     /**
@@ -286,6 +286,7 @@ open class VLayoutModuleAdapter(
             groupMargin: GroupMargin? = null,
             enable: Boolean = true,
             modelKey: Any? = null, // 注册相同的class时需要以这个做区分
+            itemSpace: ItemSpace? = null,
             noinline creator: (ViewGroup) -> V
     ) where V : IModuleView<M>, V : View {
         delegate.register(gridSize = gridSize,
@@ -294,6 +295,7 @@ open class VLayoutModuleAdapter(
                 groupMargin = groupMargin,
                 enable = enable,
                 modelKey = modelKey,
+                itemSpace = itemSpace,
                 creator = creator)
     }
 
