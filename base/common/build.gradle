@@ -24,8 +24,7 @@ dependencies {
     //implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation libraries.multidex
-    //api libraries.appcompat
-    api "androidx.appcompat:appcompat:${libVersions.androidx}"
+    api libraries.appcompat
     api libraries.design
     api libraries.preference
     api libraries.palette
@@ -34,6 +33,7 @@ dependencies {
     api libraries.activityKtx
     api libraries.fragmentKtx
 
+    api libraries.coreKtx
     api libraries.lifecycleKtx
     api libraries.viewmodelKtx
     api libraries.livedataKtx

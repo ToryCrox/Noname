@@ -8,14 +8,13 @@ import android.util.SparseArray
 import android.util.SparseIntArray
 import android.view.View
 import android.view.ViewGroup
-import androidx.collection.ArrayMap
 import androidx.core.os.TraceCompat
 import androidx.core.util.forEach
 import androidx.core.util.putAll
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.tory.library.BuildConfig
+
 import com.tory.library.R
 import com.tory.library.component.decoration.ModuleGridSpaceDelegateDecoration
 import com.tory.library.log.LogUtils
@@ -120,6 +119,9 @@ class ModuleAdapterDelegate(private val moduleAdapter: IModuleAdapter, private v
         val decoration = spaceDecoration
         if (decoration != null) {
             recyclerView?.removeItemDecoration(decoration)
+            recyclerView?.let {
+                it.removeItemDecoration(decoration)
+            }
         }
     }
 
