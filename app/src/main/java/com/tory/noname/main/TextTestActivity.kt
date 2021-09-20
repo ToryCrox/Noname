@@ -1,24 +1,23 @@
 package com.tory.noname.main
 
-import android.graphics.Paint
+import android.graphics.*
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
-import android.text.style.LineHeightSpan
-import android.util.Log
-import androidx.annotation.Px
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.whenCreated
 import com.tory.library.base.BaseActivity
 import com.tory.library.extension.dp
+import com.tory.library.utils.BitmapUtils
+import com.tory.library.utils.blur.BlurUtil
 import com.tory.library.widget.span.AlignImageSpan
 import com.tory.library.widget.span.ParagraphSpacingSpan
 import com.tory.noname.R
 import kotlinx.android.synthetic.main.activity_text_test.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import java.lang.Runnable
 
 /**
  * Author: xutao
@@ -79,5 +78,58 @@ class TextTestActivity: BaseActivity() {
             marqueeTextView.setText("我是文字, 我是文字, 我是文字sssssssssssssssssssssssssssssss")
         }, 1000L)
 
+
+        doTestXFormode()
+    }
+
+    private fun doTestXFormode() {
+        lifecycleScope.launch {
+            val bitmap1 = withContext(Dispatchers.IO) {
+                doXformode(R.drawable.b1)
+            } ?: return@launch
+            imageTest1.setImageBitmap(bitmap1)
+
+            val bitmap2 = withContext(Dispatchers.IO) {
+                doXformode(R.drawable.b2)
+            } ?: return@launch
+            imageTest2.setImageBitmap(bitmap2)
+
+            val bitmap3 = withContext(Dispatchers.IO) {
+                doXformode(R.drawable.b3)
+            } ?: return@launch
+            imageTest3.setImageBitmap(bitmap3)
+
+
+            val bitmap4 = withContext(Dispatchers.IO) {
+                doXformode(R.drawable.b4)
+            } ?: return@launch
+            imageTest4.setImageBitmap(bitmap4)
+        }
+    }
+
+
+    private fun doXformode(srcId: Int): Bitmap? {
+        val w = 200.dp()
+        val h = 125.dp()
+        var tt = BitmapFactory.decodeResource(resources, R.drawable.t2)
+        tt  = BlurUtil.blur(this, tt)
+        //var dst = BitmapUtils.scaleCenterCrop(tt, w, h) ?: return null
+        val dst = BitmapFactory.decodeResource(resources, R.drawable.glass)
+        val dstDrawable = dst.toDrawable(resources)
+        //DrawableCompat.setTint(dstDrawable, Color.RED)
+
+        val source = BitmapUtils.scaleCenterCrop(BitmapFactory.decodeResource(resources, srcId), 72.dp(), 46.dp()) ?: return null
+
+        val bitmap = Bitmap.createBitmap(375.dp(), 85.dp(), Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        val paint = Paint()
+        paint.isAntiAlias = true
+        dstDrawable.setBounds(0, 0, 375.dp(), 85.dp())
+        dstDrawable.draw(canvas)
+        //canvas.drawBitmap(dst, 0.dp().toFloat(), 0.dp().toFloat(), paint)
+        paint.setXfermode(PorterDuffXfermode(PorterDuff.Mode.MULTIPLY))
+        canvas.drawBitmap(source, 168.dp().toFloat(), 30.dp().toFloat(), paint)
+
+        return bitmap
     }
 }

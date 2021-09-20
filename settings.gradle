@@ -20,7 +20,7 @@ include ':demo:viplist'
 //include ':demo:jetpack'
 //include ':demo:iconfont'
 //include ':demo:webview'
-//include 'demo:rv'
+include 'demo:rv'
 //include 'demo:diskcache'
 include 'demo:jetpackdemo'
 

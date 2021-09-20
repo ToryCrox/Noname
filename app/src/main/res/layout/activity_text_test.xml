@@ -42,15 +42,34 @@
 
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/t2">
 
+        <ImageView
+            android:id="@+id/imageTest1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
+        <ImageView
+            android:id="@+id/imageTest2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"/>
 
+        <ImageView
+            android:id="@+id/imageTest3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"/>
 
-
-
-
-
-
-
+        <ImageView
+            android:id="@+id/imageTest4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"/>
+    </LinearLayout>
 
 </LinearLayout>

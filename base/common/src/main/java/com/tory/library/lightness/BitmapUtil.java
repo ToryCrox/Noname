@@ -2,6 +2,8 @@ package com.tory.library.lightness;
 
 import android.graphics.Bitmap;
 
+import androidx.annotation.NonNull;
+
 /**
  * @author tao.xu2
  * @date 2018/3/19
