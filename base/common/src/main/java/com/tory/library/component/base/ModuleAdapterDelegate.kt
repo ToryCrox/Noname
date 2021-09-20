@@ -44,6 +44,14 @@ class ModuleAdapterDelegate(private val moduleAdapter: IModuleAdapter, private v
     private var recyclerView: RecyclerView? = null
     private var spanLookupCache: Pair<Int, GridLayoutManager.SpanSizeLookup>? = null
 
+    // groupType的缓存
+    private var groupPositionCache: SparseIntArray = SparseIntArray()
+    private var isCacheGroupPosition: Boolean = true
+
+    // viewType的缓存
+    private var viewTypeCache = SparseArray<ViewType<*>>()
+    private var isCacheViewType = true
+
     private var moduleCallback: IModuleCallback? = null
 
     private var viewTypeMax: Int = 0
@@ -64,6 +72,8 @@ class ModuleAdapterDelegate(private val moduleAdapter: IModuleAdapter, private v
         //register { ModuleLoadingContentView(it.context) }
 
         register { ModuleGroupSectionView(it.context) }
+
+        (moduleAdapter as RecyclerView.Adapter<*>).registerAdapterDataObserver(ModuleCacheDataObserver(groupPositionCache, viewTypeCache))
     }
 
     /**
@@ -296,6 +306,15 @@ class ModuleAdapterDelegate(private val moduleAdapter: IModuleAdapter, private v
      * 获取adapter中的position的viewType
      */
     fun getViewTypeByPosition(position: Int): ViewType<*>? {
+        if (isDebug) {
+            assertMainThread()
+        }
+        if (isCacheViewType) {
+            val viewType = viewTypeCache.get(position)
+            if (viewType != null) {
+                return viewType
+            }
+        }
         val model = dataAdapter.getItem(position)
         if (model == null && isDebug) {
             throw IllegalArgumentException("$tag getViewTypeByPosition getItem is null for position: $position")
@@ -459,28 +478,63 @@ class ModuleAdapterDelegate(private val moduleAdapter: IModuleAdapter, private v
         return viewType?.groupType.orEmpty()
     }
 
+    /**
+     * 获取groupType
+     */
     fun findGroupPosition(groupType: String, position: Int): Int {
         val types = groupTypes[groupType] ?: return -1
-        return findGroupPosition(types, position)
+        return findCachedGroupPosition(types, position)
     }
 
+    private fun findCachedGroupPosition(types: Set<ViewType<*>>, position: Int): Int {
+        if (!checkPosition(position)) return -1
+        if (!(getViewTypeByPosition(position) in types)) {
+            // 在这里将类型不匹配的拦掉
+            return -1
+        }
+        if (!isCacheGroupPosition) {
+            return findGroupPosition(types, position)
+        }
+        val existing = groupPositionCache.get(position, -1)
+        if (existing >= 0) {
+            return existing
+        }
+        val groupPosition = findGroupPosition(types, position)
+        groupPositionCache.put(position, groupPosition)
+        return groupPosition
+    }
+
+    /**
+     * position一定是对应types的类型
+     */
     private fun findGroupPosition(types: Set<ViewType<*>>, position: Int): Int {
-        if (position < 0) return -1
-        var typePos = -1
-        for (index in position downTo 0) {
+        if (position == 0) return 0
+        var typePos = 0
+        for (index in position - 1 downTo 0) {
             val item1 = dataAdapter.getItem(index)
             if (item1 is ModuleGroupSectionModel) {
                 break
             }
-            if (item1 != null && getViewTypeByModel(item1) in types) {
-                typePos++
-            } else if (index == position) {
-                // 若该位置不为目标类型，则返回-1
-                return -1
+            if (!(getViewTypeByPosition(index) in types)) {
+                continue
+            }
+            // 数据必须是对应的类型
+            typePos++
+            if (isCacheGroupPosition) { // 找到之前的缓存
+                val p = groupPositionCache.get(index, -1)
+                if (p >= 0) {
+                    typePos += p
+                    break
+                }
             }
         }
         return typePos
     }
+
+    /**
+     * 检查是否越界
+     */
+    private fun checkPosition(position: Int) = position >= 0 && position < dataAdapter.getCount()
 
     /**
      * 获取分组类型
