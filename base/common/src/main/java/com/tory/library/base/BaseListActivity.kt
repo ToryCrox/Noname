@@ -1,6 +1,7 @@
 package com.tory.library.base
 
 import android.os.Bundle
+import androidx.annotation.CallSuper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tory.library.component.base.NormalModuleAdapter
@@ -25,6 +26,7 @@ abstract class BaseListActivity: BaseActivity() {
 
     override fun getLayoutId(): Int = R.layout.common_activity_list
 
+    @CallSuper
     override fun initView(savedInstanceState: Bundle?) {
         recyclerView = findViewById(R.id.recyclerView)
         refreshLayout = findViewById(R.id.refreshLayout)

@@ -6,6 +6,7 @@ import android.content.ContextWrapper
 import android.graphics.Outline
 import android.graphics.Paint
 import android.graphics.Rect
+import android.os.SystemClock
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
@@ -191,6 +192,22 @@ inline fun TextView.strike() {
 
 inline fun View.click(crossinline block: (View) -> Unit) = setOnClickListener {
     block(it)
+}
+
+inline fun View.clickThrottle(
+        time: Int = 500,
+        crossinline block: (View) -> Unit) {
+    setOnClickListener(object : View.OnClickListener {
+        val lastClickTime: Long = 0
+        override fun onClick(v: View?) {
+            val current = SystemClock.elapsedRealtime()
+            if (current - lastClickTime < time) {
+                return
+            }
+            val view = v ?: return
+            block(view)
+        }
+    })
 }
 
 inline fun View.isVisibleToParent(p: ViewGroup?): Boolean {

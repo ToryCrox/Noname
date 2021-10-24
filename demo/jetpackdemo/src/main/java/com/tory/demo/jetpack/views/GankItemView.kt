@@ -5,7 +5,7 @@ import android.content.Intent
 import android.util.AttributeSet
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
-import com.tory.demo.jetpack.HiltDemoActivity
+import com.tory.demo.jetpack.hilt.HiltDemoActivity
 import com.tory.demo.jetpack.R
 import com.tory.demo.jetpack.event.HitEvent
 import com.tory.demo.jetpack.model.GankItem

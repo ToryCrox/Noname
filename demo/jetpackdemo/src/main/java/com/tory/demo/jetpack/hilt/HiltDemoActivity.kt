@@ -1,4 +1,4 @@
-package com.tory.demo.jetpack
+package com.tory.demo.jetpack.hilt
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -32,13 +32,17 @@ class HiltDemoActivity : BaseListActivity() {
     @Inject
     lateinit var analyticsService: AnalyticsService
 
+    override fun registerViews() {
+        listAdapter.register { GankItemView(it.context) }
+    }
+
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
         setDisplayHomeAsUpEnabled(false)
         refreshLayout.isEnabled = false
         viewModel.gankData.observe(this, Observer {
             val list = it?.results.orEmpty()
-            LogUtils.d("list: " + list)
+            LogUtils.d("list: $list")
             listAdapter.appendItems(list)
         })
 
@@ -72,7 +76,5 @@ class HiltDemoActivity : BaseListActivity() {
             })
     }
 
-    override fun registerViews() {
-        listAdapter.register { GankItemView(it.context) }
-    }
+
 }

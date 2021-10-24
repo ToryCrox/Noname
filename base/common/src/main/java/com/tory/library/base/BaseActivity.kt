@@ -1,7 +1,9 @@
 package com.tory.library.base
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import androidx.annotation.LayoutRes
@@ -19,16 +21,25 @@ abstract class BaseActivity : AppCompatActivity() {
     var toolbar: Toolbar? = null
         protected set
     protected var mTitle: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val layoutId = getLayoutId()
-        if (layoutId > 0) {
-            setContentView(layoutId)
-        }
+
+        onCreateView(savedInstanceState)
         setThemeColor()
         initToolbar()
         initView(savedInstanceState)
         initData(savedInstanceState)
+    }
+
+    /**
+     * 创建View
+     */
+    open fun onCreateView(savedInstanceState: Bundle?) {
+        val layoutId = getLayoutId()
+        if (layoutId > 0) {
+            setContentView(layoutId)
+        }
     }
 
     protected open fun setThemeColor() {
@@ -116,7 +127,7 @@ abstract class BaseActivity : AppCompatActivity() {
      * @return 布局文件资源id
      */
     @LayoutRes
-    abstract fun getLayoutId(): Int
+    open fun getLayoutId(): Int = 0
 
     /**
      * 初始化控件

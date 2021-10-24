@@ -7,7 +7,10 @@
         android:label="JetpackDemo"
         tools:replace="name">
 
-        <activity android:name=".HiltDemoActivity" >
+        <activity android:name=".hilt.HiltDemoActivity" >
+        </activity>
+        <activity android:name=".databinding.DataBindingActivity" />
+        <activity android:name=".main.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

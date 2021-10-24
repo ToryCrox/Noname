@@ -1,4 +1,4 @@
-package com.tory.demo.jetpack
+package com.tory.demo.jetpack.hilt
 
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject

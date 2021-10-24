@@ -12,6 +12,8 @@ android {
         }
 
         resConfigs "zh", "zh-rCN", "zh-rHK", "zh-rTW"
+
+        consumerProguardFiles "proguard-rules.pro"
     }
 
     lintOptions {

@@ -62,6 +62,7 @@ object ApiRepo {
 
 @Singleton
 class GankRepo @Inject constructor(private val service: GankService) {
+
     suspend fun getGankData(tag: String, pageCount: Int, pageIndex: Int) =
         service.getGankApiResult(tag, pageCount, pageIndex)
 }
