@@ -53,6 +53,7 @@
         <activity android:name=".main.TrendImageActivity" />
         <activity android:name=".main.VLayoutTestActivity" />
         <activity android:name=".main.test.ModuleAdapterTestActivity" />
+        <activity android:name=".interpolator.InterpolatorTestActivity" />
     </application>
 
 </manifest>

@@ -263,7 +263,7 @@ class ModuleAdapterDelegate(private val moduleAdapter: IModuleAdapter, private v
         val decoration = spaceDecoration ?: ModuleGridSpaceDelegateDecoration(moduleAdapter).also {
             spaceDecoration = it
         }
-        decoration.registerSpace(groupType, gridSize, itemSpace)
+        decoration.registerSpace(groupType, gridSize, itemSpace, isDebug)
     }
 
     fun <V : View> createView(clazz: Class<V>, parent: ViewGroup):
