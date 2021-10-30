@@ -4,14 +4,13 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.tory.library.extension.dp
 import com.tory.noname.utils.MaterialColor
 import android.graphics.DashPathEffect
 
 import android.graphics.PathEffect
-import androidx.core.view.animation.PathInterpolatorCompat
-
+import android.view.animation.Interpolator
+import androidx.interpolator.view.animation.*
 
 class InterpolatorTestView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -31,25 +30,28 @@ class InterpolatorTestView @JvmOverloads constructor(
 
     init {
 
-        val interpolatorList = arrayOf(
-            //FastOutSlowInInterpolator(),
+        val interpolatorList: Array<Interpolator> = arrayOf(
+            FastOutSlowInInterpolator(),
             //PathInterpolatorCompat.create(0.4f, 0f, 0.2f, 1f),
-            EaseInOutInterpolator(),
-            PathInterpolatorCompat.create(0.42f, 0f, 0.58f, 1f)
+            FastOutLinearInInterpolator(),
+            LinearOutSlowInInterpolator()
+            //PathInterpolatorCompat.create(0.42f, 0f, 0.58f, 1f)
         )
 
         for ((index, interpolator) in interpolatorList.withIndex()) {
-
             val dots = List(dotCount + 1) {
                 val input = it.toFloat() / dotCount
                 val result = interpolator.getInterpolation(input)
                 PointF(input, result)
             }
 
-            val info = InterpolatorInfo(dots, MaterialColor.values()[index * 2].color)
+            val info = InterpolatorInfo(dots,
+                MaterialColor.values()[index * 2].color,
+                interpolator.javaClass.simpleName)
             interpolatorInfoList.add(info)
         }
 
+        paint.textSize = 12.dp().toFloat()
         paint.isAntiAlias = true
 
     }
@@ -68,11 +70,22 @@ class InterpolatorTestView @JvmOverloads constructor(
 
         canvas ?: return
         drawGrid(canvas)
+        drawCurves(canvas)
 
         drawInfos(canvas)
     }
 
-    private fun drawInfos(canvas: Canvas) {
+    private fun drawGrid(canvas: Canvas) {
+        paint.setColor(MaterialColor.grey.color)
+        canvas.drawLine(zeroPoint.x, zeroPoint.y, zeroPoint.x + xLength, zeroPoint.y, paint)
+        canvas.drawLine(zeroPoint.x, zeroPoint.y, zeroPoint.x, zeroPoint.y - yLength, paint)
+        paint.setPathEffect(dashPathEffect)
+        canvas.drawLine(zeroPoint.x, zeroPoint.y - yLength, zeroPoint.x + xLength, zeroPoint.y - yLength, paint)
+        canvas.drawLine(zeroPoint.x + xLength, zeroPoint.y, zeroPoint.x + xLength, zeroPoint.y - yLength, paint)
+        paint.setPathEffect(null)
+    }
+
+    private fun drawCurves(canvas: Canvas) {
         for (info in interpolatorInfoList) {
             paint.setColor(info.color)
 
@@ -92,21 +105,26 @@ class InterpolatorTestView @JvmOverloads constructor(
     }
 
 
-    private fun drawGrid(canvas: Canvas) {
-        paint.setColor(MaterialColor.grey.color)
-        canvas.drawLine(zeroPoint.x, zeroPoint.y, zeroPoint.x + xLength, zeroPoint.y, paint)
-        canvas.drawLine(zeroPoint.x, zeroPoint.y, zeroPoint.x, zeroPoint.y - yLength, paint)
-        paint.setPathEffect(dashPathEffect)
-        canvas.drawLine(zeroPoint.x, zeroPoint.y - yLength, zeroPoint.x + xLength, zeroPoint.y - yLength, paint)
-        canvas.drawLine(zeroPoint.x + xLength, zeroPoint.y, zeroPoint.x + xLength, zeroPoint.y - yLength, paint)
-        paint.setPathEffect(null)
-    }
+    private fun drawInfos(canvas: Canvas) {
 
+        val left = zeroPoint.x + 10.dp()
+        var top = 10.dp().toFloat()
+
+        val fm = paint.fontMetrics
+        val textHeight = fm.bottom - fm.top
+        top += textHeight
+        for (info in interpolatorInfoList) {
+            paint.setColor(info.color)
+            canvas.drawText(info.name, left, top, paint)
+            top += textHeight * 1.2f
+        }
+    }
 
 
     class InterpolatorInfo(
         val dots: List<PointF>,
-        val color: Int
+        val color: Int,
+        val name: String
     )
 
 }
