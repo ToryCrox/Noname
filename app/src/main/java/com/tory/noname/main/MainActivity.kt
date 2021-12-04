@@ -1,12 +1,15 @@
 package com.tory.noname.main
 
 import android.os.Bundle
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tory.library.base.BaseActivity
 import com.tory.library.component.base.ModuleDividerModel
 import com.tory.library.component.base.NormalModuleAdapter
 import com.tory.library.component.base.joinTo
+import com.tory.library.extension.repeatOnLifecycle
+import com.tory.library.log.LogUtils
 import com.tory.module.hilt.KoinDemoActivity
 import com.tory.noname.R
 import com.tory.noname.interpolator.InterpolatorTestActivity
@@ -15,6 +18,10 @@ import com.tory.noname.main.ui.NavMainActivity
 import com.tory.noname.model.RedirectModel
 import com.tory.noname.views.RedirectView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.*
+import java.lang.RuntimeException
+import kotlin.concurrent.thread
+import kotlin.coroutines.resumeWithException
 
 /**
  * Author: xutao
@@ -54,6 +61,23 @@ class MainActivity: BaseActivity() {
         )
 
         listAdapter.appendItems(ModuleDividerModel().joinTo(list))
+        lifecycleScope.launch {
+            try {
+                val ss = async { testSuspend() }
+                ss.await()
+            } catch (e: Exception) {
+                LogUtils.e("Test lifecycleScope exception", e)
+            }
+        }
+    }
+
+    private suspend fun testSuspend(): Boolean {
+        return suspendCancellableCoroutine {
+            thread {
+                Thread.sleep(5000L)
+                it.resumeWithException(RuntimeException("custom Exception"))
+            }
+        }
     }
 
 }

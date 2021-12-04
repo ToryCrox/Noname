@@ -67,7 +67,7 @@ object NetUtils {
             val connectivity = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             if (connectivity != null) {
                 val info = connectivity.activeNetworkInfo
-                return info.isAvailable
+                return info?.isAvailable == true
             }
         } catch (e: Exception) {
             return false
@@ -79,7 +79,7 @@ object NetUtils {
         val cm = cxt.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         // wifi的状态：ConnectivityManager.TYPE_WIFI
 // 3G的状态：ConnectivityManager.TYPE_MOBILE
-        return cm != null && cm.activeNetworkInfo != null && cm.activeNetworkInfo.type == ConnectivityManager.TYPE_WIFI
+        return cm != null && cm.activeNetworkInfo != null && cm.activeNetworkInfo?.type == ConnectivityManager.TYPE_WIFI
     }
 
     /***

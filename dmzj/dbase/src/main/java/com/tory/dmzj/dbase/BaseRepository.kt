@@ -22,13 +22,11 @@ open class BaseRepository {
     }
 
     suspend fun <T : Any> safeApiCall(lazyMsg: (() -> String)? = null, call: suspend () -> T?): T? {
-        return withContext(Dispatchers.IO) {
-            try {
-                call()
-            } catch (e: Exception) {
-                LogUtils.e(lazyMsg?.invoke().orEmpty(), e)
-                null
-            }
+        return try {
+            call()
+        } catch (e: Exception) {
+            LogUtils.e(lazyMsg?.invoke().orEmpty(), e)
+            null
         }
     }
 }
