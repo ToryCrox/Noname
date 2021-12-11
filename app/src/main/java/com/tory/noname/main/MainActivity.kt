@@ -2,18 +2,16 @@ package com.tory.noname.main
 
 import android.os.Bundle
 import androidx.lifecycle.*
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tory.library.base.BaseActivity
 import com.tory.library.component.base.ModuleDividerModel
 import com.tory.library.component.base.NormalModuleAdapter
 import com.tory.library.component.base.joinTo
-import com.tory.library.extension.repeatOnLifecycle
 import com.tory.library.log.LogUtils
 import com.tory.module.hilt.KoinDemoActivity
 import com.tory.noname.R
 import com.tory.noname.interpolator.InterpolatorTestActivity
-import com.tory.noname.main.test.ModuleAdapterTestActivity
+import com.tory.noname.main.test.*
 import com.tory.noname.main.ui.NavMainActivity
 import com.tory.noname.model.RedirectModel
 import com.tory.noname.views.RedirectView
@@ -57,11 +55,12 @@ class MainActivity: BaseActivity() {
             RedirectModel("TrendImageActivity", TrendImageActivity::class.java),
             RedirectModel("VLayoutTestActivity", VLayoutTestActivity::class.java),
             RedirectModel("ModuleAdapter测试", ModuleAdapterTestActivity::class.java),
-            RedirectModel("Interpolator测试", InterpolatorTestActivity::class.java)
+            RedirectModel("Interpolator测试", InterpolatorTestActivity::class.java),
+            RedirectModel("UI测试", UITestActivity::class.java)
         )
 
         listAdapter.appendItems(ModuleDividerModel().joinTo(list))
-        lifecycleScope.launch {
+        lifecycleScope.launch (CoroutineExceptionHandler { _, _ -> }){
             try {
                 val ss = async { testSuspend() }
                 ss.await()

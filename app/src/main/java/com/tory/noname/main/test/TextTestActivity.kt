@@ -1,10 +1,9 @@
-package com.tory.noname.main
+package com.tory.noname.main.test
 
 import android.graphics.*
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
