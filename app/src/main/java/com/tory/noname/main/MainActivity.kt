@@ -11,6 +11,7 @@ import com.tory.library.log.LogUtils
 import com.tory.module.hilt.KoinDemoActivity
 import com.tory.noname.R
 import com.tory.noname.interpolator.InterpolatorTestActivity
+import com.tory.noname.main.compose.ComposeTestActivity
 import com.tory.noname.main.test.*
 import com.tory.noname.main.ui.NavMainActivity
 import com.tory.noname.model.RedirectModel
@@ -56,27 +57,14 @@ class MainActivity: BaseActivity() {
             RedirectModel("VLayoutTestActivity", VLayoutTestActivity::class.java),
             RedirectModel("ModuleAdapter测试", ModuleAdapterTestActivity::class.java),
             RedirectModel("Interpolator测试", InterpolatorTestActivity::class.java),
-            RedirectModel("UI测试", UITestActivity::class.java)
+            RedirectModel("UI测试", UITestActivity::class.java),
+            RedirectModel("Flow测试", FlowTestActivity::class.java),
+            RedirectModel("ComposeTest测试", ComposeTestActivity::class.java),
         )
 
         listAdapter.appendItems(ModuleDividerModel().joinTo(list))
-        lifecycleScope.launch (CoroutineExceptionHandler { _, _ -> }){
-            try {
-                val ss = async { testSuspend() }
-                ss.await()
-            } catch (e: Exception) {
-                LogUtils.e("Test lifecycleScope exception", e)
-            }
-        }
+
     }
 
-    private suspend fun testSuspend(): Boolean {
-        return suspendCancellableCoroutine {
-            thread {
-                Thread.sleep(5000L)
-                it.resumeWithException(RuntimeException("custom Exception"))
-            }
-        }
-    }
 
 }
