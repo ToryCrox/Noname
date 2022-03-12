@@ -7,6 +7,8 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.tory.library.component.base.IModuleView
 import com.tory.dmzj.comic.R
 import com.tory.dmzj.comic.model.RecommendTitleModel
+import com.tory.library.extension.color
+import com.tory.library.extension.dp
 
 /**
  * Author: xutao

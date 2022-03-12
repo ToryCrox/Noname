@@ -7,20 +7,16 @@ import com.tory.library.base.BaseActivity
 import com.tory.library.component.base.ModuleDividerModel
 import com.tory.library.component.base.NormalModuleAdapter
 import com.tory.library.component.base.joinTo
-import com.tory.library.log.LogUtils
+
 import com.tory.module.hilt.KoinDemoActivity
 import com.tory.noname.R
 import com.tory.noname.interpolator.InterpolatorTestActivity
-import com.tory.noname.main.compose.ComposeTestActivity
 import com.tory.noname.main.test.*
 import com.tory.noname.main.ui.NavMainActivity
 import com.tory.noname.model.RedirectModel
 import com.tory.noname.views.RedirectView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
-import java.lang.RuntimeException
-import kotlin.concurrent.thread
-import kotlin.coroutines.resumeWithException
 
 /**
  * Author: xutao
@@ -59,7 +55,6 @@ class MainActivity: BaseActivity() {
             RedirectModel("Interpolator测试", InterpolatorTestActivity::class.java),
             RedirectModel("UI测试", UITestActivity::class.java),
             RedirectModel("Flow测试", FlowTestActivity::class.java),
-            RedirectModel("ComposeTest测试", ComposeTestActivity::class.java),
         )
 
         listAdapter.appendItems(ModuleDividerModel().joinTo(list))

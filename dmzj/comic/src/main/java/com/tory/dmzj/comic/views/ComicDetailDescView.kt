@@ -7,6 +7,8 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.tory.library.component.base.AbsModuleView
 import com.tory.dmzj.comic.R
 import com.tory.dmzj.comic.model.ComicDetailDescModel
+import com.tory.library.extension.color
+import com.tory.library.extension.dp
 
 /**
  * @author tory

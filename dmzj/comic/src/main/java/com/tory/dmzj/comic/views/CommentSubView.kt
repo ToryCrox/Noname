@@ -6,11 +6,14 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
 import android.view.Gravity
+import androidx.core.view.updatePadding
 import androidx.fragment.app.FragmentActivity
 import com.tory.library.component.base.AbsModuleView
 import com.tory.dmzj.comic.R
 import com.tory.dmzj.comic.dialog.CommentAllDialog
 import com.tory.dmzj.comic.model.CommentSubModel
+import com.tory.library.extension.color
+import com.tory.library.extension.dp
 import kotlinx.android.synthetic.main.view_comment_sub_item.view.*
 
 /**
