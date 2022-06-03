@@ -9,6 +9,7 @@ import com.tory.noname.utils.MaterialColor
 import android.graphics.DashPathEffect
 
 import android.graphics.PathEffect
+import android.view.animation.*
 import android.view.animation.Interpolator
 import androidx.interpolator.view.animation.*
 
@@ -31,10 +32,12 @@ class InterpolatorTestView @JvmOverloads constructor(
     init {
 
         val interpolatorList: Array<Interpolator> = arrayOf(
-            FastOutSlowInInterpolator(),
+            AccelerateDecelerateInterpolator(),
+            PathInterpolator(0.42f, 0f, 0.52f, 1f)
+            //FastOutSlowInInterpolator(),
             //PathInterpolatorCompat.create(0.4f, 0f, 0.2f, 1f),
-            FastOutLinearInInterpolator(),
-            LinearOutSlowInInterpolator()
+            //FastOutLinearInInterpolator(),
+            //LinearOutSlowInInterpolator()
             //PathInterpolatorCompat.create(0.42f, 0f, 0.58f, 1f)
         )
 

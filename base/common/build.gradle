@@ -24,7 +24,7 @@ dependencies {
     //implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation libraries.multidex
-    api libraries.appcompat
+    api libraries.appcompatX
     api libraries.design
     api libraries.preference
     api libraries.palette

@@ -38,7 +38,7 @@ dependencies {
     implementation project(':module:koin')
 
     //support相关包
-    implementation libraries.appcompat
+    implementation libraries.appcompatX
     implementation libraries.design
     implementation libraries.cardview
     implementation libraries.recyclerview
@@ -90,18 +90,31 @@ dependencies {
 
 protobuf {
     protoc {
-        artifact = 'com.google.protobuf:protoc:3.0.0'
+        // for apple m1, please add protoc_platform=osx-x86_64 in $HOME/.gradle/gradle.properties
+        if (project.hasProperty('protoc_platform')) {
+            artifact = "com.google.protobuf:protoc:3.13.0:${protoc_platform}"
+        } else {
+            artifact = "com.google.protobuf:protoc:3.13.0"
+        }
     }
     plugins {
         javalite {
-            artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0'
+            if (project.hasProperty('protoc_platform')) {
+                artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0:${protoc_platform}"
+            } else {
+                artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
+            }
         }
     }
     generateProtoTasks {
         all().each { task ->
+            task.builtins {
+                remove java
+            }
             task.plugins {
                 javalite {}
             }
         }
     }
+
 }

@@ -32,7 +32,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation libraries.multidex
-    implementation libraries.appcompat
+    implementation libraries.appcompatX
     implementation libraries.design
     implementation libraries.constraintLayout
 

@@ -56,6 +56,7 @@
         <activity android:name=".interpolator.InterpolatorTestActivity" />
         <activity android:name=".main.test.UITestActivity" />
         <activity android:name=".main.test.FlowTestActivity" />
+        <activity android:name=".main.test.ExceptionTestActivity" />
     </application>
 
 </manifest>

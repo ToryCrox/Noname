@@ -55,6 +55,7 @@ class MainActivity: BaseActivity() {
             RedirectModel("Interpolator测试", InterpolatorTestActivity::class.java),
             RedirectModel("UI测试", UITestActivity::class.java),
             RedirectModel("Flow测试", FlowTestActivity::class.java),
+            RedirectModel("Exception测试", ExceptionTestActivity::class.java),
         )
 
         listAdapter.appendItems(ModuleDividerModel().joinTo(list))
