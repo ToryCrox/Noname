@@ -12,7 +12,6 @@ import java.lang.annotation.Annotation;
 /**
  * Author: tory
  * Date: 2020/10/21
- * Email: xutao@theduapp.com
  * Description:
  */
 public class DuJsonReader extends JsonReader {

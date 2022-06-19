@@ -5,19 +5,24 @@ import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.internal.bind.TypeAdapters;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.tory.library.log.LogUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Reader;
+import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,11 +113,10 @@ public class GsonHelper {
         try {
             return getGson().toJson(obj);
         } catch (Exception e) {
-            Map<String, Object> extraData = new HashMap<>();
+            Map<String, String> extraData = new HashMap<>();
             extraData.put("class", clazz.toString());
             extraData.put("json", obj.toString());
-            //BusinessHelper.uploadError(TAG + "_toJson", e, extraData);
-            bug(e, "_toJson");
+            onGsonError(e, "_toJson", extraData);
             return null;
         }
     }
@@ -126,34 +130,48 @@ public class GsonHelper {
         return json;
     }
 
+    public static void toJson(@Nullable Object obj, @NonNull Writer writer) {
+        toJson(obj, writer, false);
+    }
+
+    /**
+     * 写入到Writer中
+     *
+     * @param obj
+     * @param writer
+     */
+    public static void toJson(@Nullable Object obj, @NonNull Writer writer, boolean isSafeWrite) {
+        try {
+            if (obj != null && isSafeWrite) {
+                JsonWriter jsonWriter = new DuJsonWriter(writer, true);
+                jsonWriter.setSerializeNulls(getGson().serializeNulls());
+                getGson().toJson(obj, obj.getClass(), jsonWriter);
+            } else {
+                getGson().toJson(obj, writer);
+            }
+            writer.flush();
+        } catch (Exception e) {
+            Map<String, String> extraData = new HashMap<>();
+            extraData.put("class", obj != null ? obj.getClass().toString() : null);
+            extraData.put("json", obj.toString());
+            onGsonError(e, "app_error_" + TAG + "_toJson", extraData);
+        }
+
+    }
+
     /**
      * 反序列化为对象，如果目标为String，会直接返回
      * 该方法安全，不用try cache!!!!
      */
     @Nullable
     public static <T> T fromJson(@Nullable String json, @NonNull Class<T> clazz) {
-        return fromJson(json, clazz, TAG + "_fromJson");
+        return fromJson(json, (Type) clazz, TAG + "_fromJson");
     }
 
     @Nullable
     public static <T> T fromJson(@Nullable String json, @NonNull Class<T> clazz,
                                  @NonNull String section) {
-        if (json == null) {
-            return null;
-        }
-        if (String.class.isAssignableFrom(clazz)) {
-            return (T) json;
-        }
-        try {
-            return getGson().fromJson(json, clazz);
-        } catch (Exception e) {
-            Map<String, Object> extraData = new HashMap<>();
-            extraData.put("class", clazz.toString());
-            extraData.put("json", json);
-            bug(e, "fromJson " + extraData);
-            //BusinessHelper.uploadError(section, e, extraData);
-            return null;
-        }
+        return fromJson(json, (Type) clazz, section);
     }
 
     /**
@@ -162,6 +180,7 @@ public class GsonHelper {
      * <p>
      * GsonHelper.fromJson(popString, object : TypeToken<Map<String, PopLayerConfigModel>>() {}
      * .type)
+     * 参数化Type可以通过GsonHelper.get
      */
     @Nullable
     public static <T> T fromJson(@Nullable String json, @NonNull Type type) {
@@ -177,11 +196,74 @@ public class GsonHelper {
         try {
             return getGson().fromJson(json, type);
         } catch (Exception e) {
-            Map<String, Object> extraData = new HashMap<>();
+            Map<String, String> extraData = new HashMap<>();
             extraData.put("class", type.toString());
             extraData.put("json", json);
-            bug(e, "fromJson " + extraData);
-            //BusinessHelper.uploadError(section, e, extraData);
+            onGsonError(e, "app_error_" + section, extraData);
+            return null;
+        }
+    }
+
+
+    @Nullable
+    public static <T> T fromJson(@Nullable Reader reader, @NonNull Type type) {
+        return fromJson(reader, type, TAG + "_fromJson");
+    }
+
+    /**
+     * 从reader中读取
+     *
+     * @param reader
+     * @param type
+     * @param section
+     * @return
+     */
+    @Nullable
+    public static <T> T fromJson(@Nullable Reader reader, @NonNull Type type,
+                                 @NonNull String section) {
+        if (reader == null) {
+            return null;
+        }
+        try {
+            return getGson().fromJson(reader, type);
+        } catch (Exception e) {
+            String json = "reader";
+            if (reader instanceof DuByteReader) {
+                json = ((DuByteReader) reader).getContent();
+            }
+            Map<String, String> extraData = new HashMap<>();
+            extraData.put("class", type.toString());
+            extraData.put("json", json);
+            onGsonError(e, "app_error_" + section, extraData);
+            return null;
+        }
+    }
+
+    public static <T> T fromJson(@Nullable JsonElement element,
+                                 @NonNull Type type) {
+        return fromJson(element, type, TAG + "_fromJson");
+    }
+
+    /**
+     * 从JsonElement中读取
+     *
+     * @param type
+     * @param section
+     * @return
+     */
+    @Nullable
+    public static <T> T fromJson(@Nullable JsonElement element,
+                                 @NonNull Type type, @NonNull String section) {
+        if (element == null) {
+            return null;
+        }
+        try {
+            return getGson().fromJson(element, type);
+        } catch (Exception e) {
+            Map<String, String> extraData = new HashMap<>();
+            extraData.put("class", type.toString());
+            extraData.put("json", element.toString());
+            onGsonError(e, "app_error_" + section, extraData);
             return null;
         }
     }
@@ -198,39 +280,69 @@ public class GsonHelper {
         try {
             return getGson().fromJson(json, getListType(clazz));
         } catch (Exception e) {
-            Map<String, Object> extraData = new HashMap<>();
+            Map<String, String> extraData = new HashMap<>();
             extraData.put("class", clazz.toString());
             extraData.put("json", json);
-            bug(e, "fromJsonList " + extraData);
+            onGsonError(e, "app_error_" + TAG + "_fromJsonList", extraData);
             return null;
         }
     }
 
+    /**
+     * 使用TypeHelper替代
+     * @return
+     */
+    @Deprecated
     @NonNull
     public static <T> Type getListType(@NonNull Class<T> clazz) {
-        return new ParameterizedTypeImpl(clazz);
+        return TypeHelper.getListType(clazz);
     }
 
+    /**
+     * 使用TypeHelper替代
+     * @return
+     */
+    @Deprecated
     public static <K, V> Type getMapType(@NonNull Class<K> kClazz, @NonNull Class<V> vClass) {
         return TypeToken.getParameterized(Map.class, kClazz, vClass).getType();
     }
 
+    /**
+     * 获取参数化Type，例如 GsonHelper.getParameterized(Map.class, String.class, String.class)
+     * 使用TypeHelper替代
+     * @param rawType
+     * @param typeArguments
+     * @return
+     */
+    @Deprecated
     public static Type getParameterized(Type rawType, Type... typeArguments) {
         return TypeToken.getParameterized(rawType, typeArguments).getType();
     }
 
 
     static void waring(String msg) {
-        LogUtils.w(TAG, " " + msg);
+        // DuLogger.w(TAG + " " + msg);
+        LogUtils.w(TAG, msg);
     }
 
     static void info(String msg) {
-        LogUtils.d(TAG, " " + msg);
+        // DuLogger.d(TAG + " " + msg);
+        LogUtils.d(TAG, msg);
+
     }
 
-    static void bug(Throwable e, String msg, Object... args) {
-        LogUtils.e(TAG, String.format(msg, args));
+    static void bug(@NonNull String msg, @Nullable Throwable e) {
+        LogUtils.e(TAG, msg, e);
     }
+
+    static void onGsonError(@Nullable Throwable e, @NonNull String msg, @NonNull Map<String, String> extra) {
+        LogUtils.e(TAG, msg + ", " + extra.toString(), e);
+    }
+
+    // static void bug(Throwable e, String msg, Object... args) {
+    //     // DuLogger.bug(e, TAG + " " + msg);
+    //     // DuHttpConfig.LOG_CONFIG.bug(TAG + " " + msg, e);
+    // }
 
     static void bug(Throwable e, JsonReader reader, String msg, Object... args) {
         if (reader instanceof DuJsonReader) {
@@ -238,42 +350,21 @@ public class GsonHelper {
             byte[] bytes = duJsonReader.getBytes();
             String jsonData = bytes == null ? "" : new String(bytes, StandardCharsets.UTF_8);
 
-            Map<String, Object> extraData = new HashMap<>();
+            Map<String, String> extraData = new HashMap<>();
             Annotation[] annotations = duJsonReader.getNetAnnotations();
-            if (annotations != null && annotations.length > 0) {
+            if (annotations != null  && annotations.length > 0) {
                 StringBuilder extraAnnotation = new StringBuilder();
                 for (Annotation annotation : annotations) {
                     extraAnnotation.append(annotation.toString());
                 }
-                extraData.put("request_method_url", extraAnnotation);
+                extraData.put("request_method_url", extraAnnotation.toString());
             }
             extraData.put("data_json", jsonData);
-            bug(e, "_error" + extraData);
+           onGsonError(e, "app_error_" + TAG + "_error", extraData);
         } else {
-            LogUtils.e(TAG, msg, e);
+            // DuLogger.bug(e, TAG + " " + msg);
+            bug(TAG + " " + msg, e);
         }
     }
 
-    private static class ParameterizedTypeImpl implements ParameterizedType {
-        private Class<?> clazz;
-
-        public ParameterizedTypeImpl(Class<?> clz) {
-            clazz = clz;
-        }
-
-        @Override
-        public Type[] getActualTypeArguments() {
-            return new Type[]{clazz};
-        }
-
-        @Override
-        public Type getRawType() {
-            return List.class;
-        }
-
-        @Override
-        public Type getOwnerType() {
-            return null;
-        }
-    }
 }

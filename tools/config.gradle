@@ -129,6 +129,9 @@ ext {
             floatingpermissioncompat: 'com.aleaf.android:floatingpermissioncompat:1.1',
             subsamplingImageView    : "com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0",
 
-            mmkv                    : "com.tencent:mmkv-static:1.2.2"
+            mmkv                    : "com.tencent:mmkv-static:1.2.2",
+
+            // loading动画库
+            spinKit                 : "com.github.ybq:Android-SpinKit:1.4.0",
     ]
 }
