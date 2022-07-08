@@ -1,7 +1,9 @@
 package com.tory.noname.main.test
 
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.os.SystemClock
+import android.view.Choreographer
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.annotation.IntDef
@@ -17,9 +19,12 @@ import kotlinx.android.synthetic.main.activity_flow_test.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
+import retrofit2.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicReference
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 import kotlin.random.Random
 
 class FlowTestActivity : BaseActivity() {
@@ -47,11 +52,9 @@ class FlowTestActivity : BaseActivity() {
             }
         }
 
-        val map = HashMap<String, String>()
-        val r = Random.nextInt(100)
-        val ss = ((r / 2) == (r shr 2))
-        val i= 9
-        Executors.newCachedThreadPool()
+        viewModel.combineState.launchCollect(this) {
+            LogUtils.d("FlowTestFlow collect combineState collect... $it")
+        }
 
         viewModel.testState
             .filter { it.isNotBlank() }
@@ -88,15 +91,9 @@ class FlowTestActivity : BaseActivity() {
             LogUtils.d("$value")
         }
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.testEvent
-                    .collect {
-                        LogUtils.d("FlowTestEvent launchWhenStarted event: $it")
-                    }
-            }
-
-        }
+        viewModel.testEvent.onEach {
+            LogUtils.d("FlowTestEvent launchWhenStarted event: $it")
+        }.launchIn(lifecycleScope)
 
         fun testCallbackFlow() = callbackFlow<Int> {
             var isStop = false
@@ -147,7 +144,28 @@ class FlowTestActivity : BaseActivity() {
         btn2.clickThrottle {
             viewModel.postEvent("click event")
         }
+        var lastTime = 0L
+        observeFrameCallback(this) {
+            if (lastTime > 0) {
+                LogUtils.d("doFrame, timeSpent: ${(it - lastTime) * 0.000001f}")
+            }
+            lastTime = it
+        }
 
+    }
+
+    private fun observeFrameCallback(lifecycleOwner: LifecycleOwner, callback: Choreographer.FrameCallback) {
+        val frameCallback =object :Choreographer.FrameCallback {
+            override fun doFrame(frameTimeNanos: Long) {
+                callback.doFrame(frameTimeNanos)
+                Choreographer.getInstance().postFrameCallback(this)
+            }
+        }
+        lifecycleOwner.doOnLifecycle(onCreate = {
+            Choreographer.getInstance().postFrameCallback(frameCallback)
+        }, onDestroy = {
+            Choreographer.getInstance().removeFrameCallback(frameCallback)
+        })
     }
 }
 
@@ -197,3 +215,4 @@ fun <T> LifecycleOwner.tickFlow(
         }
     }
 }
+

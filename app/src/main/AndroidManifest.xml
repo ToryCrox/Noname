@@ -22,7 +22,8 @@
         <meta-data android:name="com.tory.noname.MAppLife" android:value="AppLifeModule"/>
         <activity
             android:name=".main.MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -35,7 +36,8 @@
         </activity>
         <activity
             android:name=".main.ui.WebViewActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.tory.action.WEB_VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -43,7 +45,8 @@
         </activity>
         <activity android:name=".bili.CategoryHomeActivity"></activity>
         <activity android:name=".main.ui.SettingActivity"></activity>
-        <activity android:name=".main.ui.X5WebViewActivity">
+        <activity android:name=".main.ui.X5WebViewActivity"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.tory.action.WEB_VIEW_X5" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -57,6 +60,7 @@
         <activity android:name=".main.test.UITestActivity" />
         <activity android:name=".main.test.FlowTestActivity" />
         <activity android:name=".main.test.ExceptionTestActivity" />
+        <activity android:name=".main.reverse.ReverseDemoActivity" />
     </application>
 
 </manifest>

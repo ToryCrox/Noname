@@ -45,6 +45,28 @@ interface IModuleAdapter {
     // 添加item
     fun appendItems(items: List<Any>)
 
+    /**插入数据*/
+    fun insertItems(position: Int, items: List<Any>)
+
+    /**插入数据*/
+    fun insertItem(position: Int, item: Any)
+
+    /**
+     * 删除数据
+     * 返回
+     */
+    fun removeItem(position: Int): Any?
+
+    /**删除*/
+    fun removeItem(item: Any): Boolean
+
+    /**
+     * 更新Item
+     * @param item 如果为null，则表示只通过notifyItemChange更新
+     *
+     */
+    fun updateItem(position: Int, item: Any? = null)
+
     // 获取元素个数
     fun getItemCount(): Int
 

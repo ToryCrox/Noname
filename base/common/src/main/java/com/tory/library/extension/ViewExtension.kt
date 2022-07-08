@@ -10,8 +10,7 @@ import android.os.SystemClock
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
@@ -301,4 +300,51 @@ inline fun RecyclerView.doOnScrolled(
     crossinline scrolled: RVScrolled
 ) {
     addOnScrollListener(scrolled = scrolled)
+}
+
+
+
+fun FrameLayout.addViewKt(
+    child: View,
+    index: Int = -1,
+    widthFull: Boolean = false, // true 表示充满
+    heightFull: Boolean = false, // true 表示充满
+    width: Int = if (widthFull) ViewGroup.LayoutParams.MATCH_PARENT else ViewGroup.LayoutParams.WRAP_CONTENT,
+    height: Int = if (heightFull) ViewGroup.LayoutParams.MATCH_PARENT else ViewGroup.LayoutParams.WRAP_CONTENT,
+    gravity: Int = -1,
+    start: Int = 0,
+    top: Int = 0,
+    end: Int = 0,
+    bottom: Int = 0
+) {
+    val lp = FrameLayout.LayoutParams(width, height, gravity)
+    lp.marginStart = start
+    lp.topMargin = top
+    lp.marginEnd = end
+    lp.bottomMargin = bottom
+    addView(child, index, lp)
+}
+
+fun LinearLayout.addViewKt(
+    child: View,
+    index: Int = -1,
+    widthFull: Boolean = false, // true 表示充满
+    heightFull: Boolean = false, // true 表示充满
+    width: Int = if (widthFull) ViewGroup.LayoutParams.MATCH_PARENT else ViewGroup.LayoutParams.WRAP_CONTENT,
+    height: Int = if (heightFull) ViewGroup.LayoutParams.MATCH_PARENT else ViewGroup.LayoutParams.WRAP_CONTENT,
+    gravity: Int = -1,
+    weight: Float = 0f,
+    start: Int = 0,
+    top: Int = 0,
+    end: Int = 0,
+    bottom: Int = 0
+) {
+    val lp = LinearLayout.LayoutParams(width, height)
+    lp.gravity = gravity
+    lp.weight = weight
+    lp.marginStart = start
+    lp.topMargin = top
+    lp.marginEnd = end
+    lp.bottomMargin = bottom
+    addView(child, index, lp)
 }

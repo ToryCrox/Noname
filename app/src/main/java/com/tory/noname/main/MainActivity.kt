@@ -11,6 +11,7 @@ import com.tory.library.component.base.joinTo
 import com.tory.module.hilt.KoinDemoActivity
 import com.tory.noname.R
 import com.tory.noname.interpolator.InterpolatorTestActivity
+import com.tory.noname.main.reverse.ReverseDemoActivity
 import com.tory.noname.main.test.*
 import com.tory.noname.main.ui.NavMainActivity
 import com.tory.noname.model.RedirectModel
@@ -56,6 +57,7 @@ class MainActivity: BaseActivity() {
             RedirectModel("UI测试", UITestActivity::class.java),
             RedirectModel("Flow测试", FlowTestActivity::class.java),
             RedirectModel("Exception测试", ExceptionTestActivity::class.java),
+            RedirectModel("卡片反转", ReverseDemoActivity::class.java),
         )
 
         listAdapter.appendItems(ModuleDividerModel().joinTo(list))

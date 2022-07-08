@@ -66,6 +66,59 @@ class NormalModuleAdapter(private val calDiff: Boolean = false) :
 
     }
 
+    private fun checkIllegalPosition(position: Int): Boolean {
+        return list.isEmpty() || position < 0 || position >= list.size
+    }
+
+    override fun insertItems(position: Int, items: List<Any>) {
+        if (items.isEmpty()) {
+            return
+        }
+        val p = when {
+            position < 0 -> 0
+            position > list.size -> list.size
+            else -> position
+        }
+        list.addAll(p, items)
+        notifyItemRangeInserted(position, items.size)
+    }
+
+    override fun insertItem(position: Int, item: Any) {
+        val p = when {
+            position < 0 -> 0
+            position > list.size -> list.size
+            else -> position
+        }
+        list.add(p, item)
+        notifyItemInserted(position)
+    }
+
+    override fun removeItem(position: Int): Any? {
+        if (checkIllegalPosition(position)) {
+            return null
+        }
+        val bean = list.removeAt(position)
+        notifyItemRemoved(position)
+        return bean
+    }
+
+    override fun removeItem(item: Any): Boolean {
+        val position = list.indexOf(item)
+        val removeItem = removeItem(position)
+        return removeItem != null
+    }
+
+    override fun updateItem(position: Int, item: Any?) {
+        if (checkIllegalPosition(position)) {
+            return
+        }
+        if (item != null) {
+            list.removeAt(position)
+            list.add(position, item)
+        }
+        notifyItemChanged(position)
+    }
+
     override fun indexOf(item: Any): Int {
         return list.indexOf(item)
     }
