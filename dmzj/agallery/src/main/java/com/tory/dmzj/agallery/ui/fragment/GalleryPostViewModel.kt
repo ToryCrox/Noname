@@ -24,7 +24,7 @@ class GalleryPostViewModel(var tag: String = "") : BaseViewModel() {
         launchOnUI {
 
             val pageIndex = if (isRefresh) 1 else responseData.size + 1
-           val list = GalleryRepository.getPost(page = pageIndex, tags = tag)
+           val list = GalleryRepository.getPost(page = pageIndex, tags = tag)?.list
             if (!list.isNullOrEmpty()){
                 responseData.add(list)
                 val allList = responseData.flatten()

@@ -39,13 +39,6 @@ class FlowTestActivity : BaseActivity() {
 
     override fun initView(savedInstanceState: Bundle?) {
 
-//        viewModel.stateFlow
-//            .onEach {
-//                LogUtils.d("FlowTestFlow launchWhenStarted stateFlow collect... $it")
-//                textView1.text = it
-//            }
-//            .launchIn(this)
-
         lifecycleScope.launchWhenStarted {
             viewModel.testState.collect {
                 LogUtils.d("FlowTestFlow collect stateFlow collect... $it")
@@ -62,11 +55,18 @@ class FlowTestActivity : BaseActivity() {
             .launchCollect(this) {
                 LogUtils.d("FlowTestFlow launchCollect stateFlow collect... $it")
             }
-//        lifecycleScope.launchWhenStarted {
-//            viewModel.stateFlow.collect {
-//                LogUtils.d("FlowTestFlow launchCollect stateFlow collect... $it")
-//            }
-//        }
+
+        lifecycleScope.launch {
+            LogUtils.d("FlowTestFlow firstOrNull wait....")
+            val result = viewModel.test2State.firstOrNull { it >= 10 }
+            LogUtils.d("FlowTestFlow firstOrNull wait end result:$result")
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.testState.collect {
+                LogUtils.d("FlowTestFlow launchCollect stateFlow collect... $it")
+            }
+        }
 
 //        viewModel.sharedFlow.launchCollect(this) {
 //            LogUtils.d("FlowTestFlow launchCollect sharedFlow collect...$it")
@@ -77,14 +77,6 @@ class FlowTestActivity : BaseActivity() {
             .onEach {
                 LogUtils.d("FlowTestFlow launchCollect bus event...$it")
             }.launchIn(lifecycleScope)
-
-//        lifecycleScope.launch {
-//            delay(5000L)
-//            viewModel.testEvent
-//                .onEach {
-//                    LogUtils.d("FlowTestEvent onEach event...$it")
-//                }.launchIn(lifecycleScope)
-//        }
 
         btn1.clickThrottle {
             val value = "stateFlow ${SystemClock.elapsedRealtime()}"
@@ -102,7 +94,7 @@ class FlowTestActivity : BaseActivity() {
                 while (!isStop) {
                     LogUtils.d("testCallbackFlow send: $index")
                     delay(1000)
-                    trySend(index++)
+                    send(index++)
                 }
             }
             awaitClose {
@@ -110,13 +102,6 @@ class FlowTestActivity : BaseActivity() {
                 isStop = true
             }
         }
-
-//        lifecycleScope.launchWhenStarted {
-//            testCallbackFlow()
-//                .collect {
-//                    LogUtils.d("testCallbackFlow collect: $it")
-//                }
-//        }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -126,20 +111,6 @@ class FlowTestActivity : BaseActivity() {
                     }
             }
         }
-        Dispatchers.IO
-
-//        viewModel.testEvent.launchCollect(this) {
-//            LogUtils.d("FlowTestEvent launchCollect event: $it")
-//        }
-//        viewModel.testEvent
-//            .onEach {
-//                LogUtils.d("FlowTestEvent onEach event: $it")
-//            }.launchIn(lifecycleScope)
-/*        doOnStop {
-            postDelayed(1000) {
-                viewModel.postEvent("stop event")
-            }
-        }*/
 
         btn2.clickThrottle {
             viewModel.postEvent("click event")

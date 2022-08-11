@@ -25,5 +25,5 @@ interface GalleryService {
         @Query("limit") limit: Int = 10,
         @Query("page") page: Int,
         @Query("tags") tags: String? = null
-    ): Response<List<GalleryImageModel>>
+    ): List<GalleryImageModel>
 }

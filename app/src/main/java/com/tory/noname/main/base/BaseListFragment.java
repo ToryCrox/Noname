@@ -37,14 +37,14 @@ public abstract class BaseListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_common_list, container, false);
+        return inflater.inflate(R.layout.fragment_page_list, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-        // mTabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
-        // mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        mTabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
+        mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
         PagerAdapter tabPageAdapter = createPageAdapter();
         mViewPager.setAdapter(tabPageAdapter);
         mTabLayout.setupWithViewPager(mViewPager);

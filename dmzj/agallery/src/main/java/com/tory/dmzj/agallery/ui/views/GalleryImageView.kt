@@ -13,6 +13,7 @@ import com.tory.dmzj.dbase.gallery.GalleryTagItemModel
 import com.tory.dmzj.dbase.gallery.GalleryTagListModel
 import com.tory.library.model.PicItemModel
 import com.tory.library.ui.pics.PicsHelper
+import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.view_gallery_image_item.view.*
 
 /**
@@ -30,6 +31,7 @@ class GalleryImageView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : AbsModuleView<GalleryImageModel>(context, attrs, defStyleAttr) {
 
+    val transform = BlurTransformation(25, 8)
 
     override fun getLayoutId(): Int {
         return R.layout.view_gallery_image_item
@@ -43,11 +45,13 @@ class GalleryImageView @JvmOverloads constructor(
         val thumbnailRequest = if (!model.previewUrl.isNullOrEmpty()) {
             Glide.with(this)
                     .load(model.previewUrl)
+                    .transform(transform)
         } else null
         Glide.with(this)
                 .load(model.sampleUrl)
                 .thumbnail(thumbnailRequest)
                 .transition(DrawableTransitionOptions.withCrossFade())
+                .transform(transform)
                 .into(itemImage)
 
         setOnClickListener {

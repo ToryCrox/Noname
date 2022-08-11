@@ -30,6 +30,8 @@ dependencies {
     //支持多个dex文件构建应用程序
     implementation project(':base:common')
     implementation project(':dmzj:dbase')
+    // paging库
+    implementation "androidx.paging:paging-runtime:3.1.1"
 
     implementation libraries.arouterApi
     kapt libraries.arouterProcessor

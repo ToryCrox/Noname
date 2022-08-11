@@ -63,7 +63,7 @@ object NetHelper {
             //.sslSocketFactory(ProxySSLSocketFactory(socketProxy, createSSLSocketFactory()), TrustAllManager())
             .sslSocketFactory(createSSLSocketFactory(), TrustAllManager())
             .hostnameVerifier(TrustAllHostnameVerifier())
-            .proxySelector(MProxyProxySelector())
+            //.proxySelector(MProxyProxySelector())
             .build()
     }
     val retrofit: Retrofit by lazy {

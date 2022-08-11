@@ -82,3 +82,7 @@ data class GalleryImageModel(
     var index: Int = 0
     var allImages: List<GalleryImageModel>? = null
 }
+
+data class GalleryPageModel(
+    val list: List<GalleryImageModel>
+)

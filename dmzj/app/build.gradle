@@ -26,8 +26,8 @@ dependencies {
     implementation project(':base:common')
     implementation project(':dmzj:dbase')
 
-    implementation project(':dmzj:home')
-    implementation project(':dmzj:comic')
+    //implementation project(':dmzj:home')
+    //implementation project(':dmzj:comic')
     implementation project(':dmzj:agallery')
 
 }

@@ -1,5 +1,6 @@
 package com.tory.dmzj.agallery.api
 
+import com.tory.dmzj.agallery.ui.model.GalleryPageModel
 import com.tory.dmzj.dbase.BaseRepository
 import com.tory.dmzj.dbase.NetHelper
 import retrofit2.http.Query
@@ -23,6 +24,7 @@ object GalleryRepository : BaseRepository() {
         page: Int = 1,
         tags: String? = null
     ) = safeApiCall {
-        service.getPost(limit, page, tags).body()
+        val list = service.getPost(limit, page, tags)
+        GalleryPageModel(list)
     }
 }

@@ -25,6 +25,7 @@ class GalleryMainActivity: BaseActivity() {
     override fun getLayoutId(): Int = R.layout.activity_gallery_main
 
     override fun initView(savedInstanceState: Bundle?) {
+        setDisplayHomeAsUpEnabled(false)
         showFragment(GalleryPostFragment.TAG)
     }
 

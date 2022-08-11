@@ -61,6 +61,7 @@
         <activity android:name=".main.test.FlowTestActivity" />
         <activity android:name=".main.test.ExceptionTestActivity" />
         <activity android:name=".main.reverse.ReverseDemoActivity" />
+        <activity android:name=".paging.PagingTestActivity" />
     </application>
 
 </manifest>

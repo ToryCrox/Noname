@@ -9,8 +9,12 @@
             android:name="com.tory.dmzj.agallery.AGalleryAppLife"
             android:value="AppLifeModule" />
 
-
-        <activity android:name=".ui.activity.GalleryMainActivity" />
+        <activity android:name=".ui.activity.GalleryMainActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.activity.GalleryListActivity" />
     </application>
 
