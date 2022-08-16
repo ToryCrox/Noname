@@ -30,3 +30,5 @@ include("dmzj:home")
 include("dmzj:comic")
 include("dmzj:agallery")
 
+include("plugin")
+

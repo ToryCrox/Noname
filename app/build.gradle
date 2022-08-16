@@ -121,3 +121,22 @@ protobuf {
     }
 
 }
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        google()
+    }
+    dependencies {
+        classpath 'com.tory.plugin:aleaf:1.0.0.8'
+    }
+}
+apply plugin: "tory-aleaf"
+aleaf {
+    versionCode 1001
+
+    dependencies {
+        "implementation"
+    }
+}

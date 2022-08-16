@@ -20,7 +20,6 @@ buildscript {
 
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.1.0-beta02")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
         classpath("com.google.protobuf:protobuf-gradle-plugin:0.8.12")
 
         classpath("com.google.dagger:hilt-android-gradle-plugin:2.28-alpha")
